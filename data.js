@@ -1041,13 +1041,13 @@ window.DEMO = {
     ],
     [
      "P3",
-     "**The check message states numbers that the form then leaves empty**",
+     "~~The check message states numbers that the form then leaves empty~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "Child 1: the Flow message says \"Urdu 57 words, English 58 words, maths 28 quick sums\", and the form's Urdu story field is empty (the Urdu story count is never pre-filled). Confusing for the coach: either show the number with \"please check\", or do not state it. The same message promises \"about a minute\"; the measured check was 107–144 s per child.",
      "bd-s1oo0.27"
     ],
     [
      "P4",
-     "**\"Send to teacher\" disappears now that the child test is separate from the observation**",
+     "~~\"Send to teacher\" disappears now that the child test is separate from the observation~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "The button needs the observed teacher, which only the observation visit supplies. With `CHILD_TEST_OBSERVE_LINK` unset (default since 3 Oct), `/egra` has no teacher, so the coach reads the roll order (still in the list message) to the class teacher. Fix options: ask the coach which class teacher, or pick the class teacher from the drawn class.",
      "bd-s1oo0.28"
     ],
@@ -1083,25 +1083,25 @@ window.DEMO = {
     ],
     [
      "P10",
-     "**A drawn child with no roll number breaks `/egra` for that class**",
+     "~~A drawn child with no roll number breaks `/egra` for that class~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "The draw includes children with no roll; building the list then throws (`resolveUx: missing param \"roll\"` on `childTestRowTitle`, reproduced with the real catalogue). The handler swallows it, so the coach gets no list, and because the draw is already saved, every retry that quarter fails the same way. NIETE roster 3 Oct (read replica, 924 Grade 3/5 classes with children): 1,084 of 31,826 children (3.4%) have no roll; 29 classes have none at all. Expected in 5.4% of first draws, certain in 33 classes, possible in 73; 56 of 315 schools have a roll-less child in Grade 3 or 5. The strips-batch line (`childTestStripsBatch`) has the same fault.",
      "bd-s1oo0.36"
     ],
     [
      "P11",
-     "**Roll numbers are not a stable way to find a child; the name should lead**",
+     "~~Roll numbers are not a stable way to find a child; the name should lead~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "The coach does see the name (list row \"Roll 8 · name\", presence prompt), but the class-teacher line and the strips-batch line give roll numbers only, and the row puts the roll first. NIETE roster 3 Oct: rolls are the register's serial column read from a photo (83% of classes are exactly 1…N), registers are rewritten monthly and renumber (roster code note: the same children moved from rolls 23–25 to 26–28), 30,555 of 31,826 children were imported in September, and no admission numbers are recorded (0%). By later months the roll on our list can point at a different line in the teacher's register. Names: 100% present but 98.9% in English letters and 0% have an Urdu-script name; 6.6% are cut off by the 24-character row limit; 2.0% of children share their name with a classmate (194 classes). The strip's \"Roll no.\" box is never read: a strip photo goes to the oldest child still missing one, so a batch sent out of order attaches to the wrong child silently. Fix: lead with the name everywhere (row, teacher line, strips line), roll as a hint when present; name on the strip; optionally have the vision call read the strip's name and flag a mismatch. Whether teachers actually call children by roll in ICT schools is a field question the data cannot answer.",
      "bd-s1oo0.37"
     ],
     [
      "P12",
-     "**The stop rule sends real readers to the non-reader fallback**",
+     "~~The stop rule sends real readers to the non-reader fallback~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "L23: 12 reading notes went to letters/words although the AI's own count was 20–53 words right (enumerator ≥ 30 in 11); the model marked line 1 `skipped`, and the check Flow then hides the story count, so the child looks like a non-reader.",
      "bd-s1oo0.42"
     ],
     [
      "P13",
-     "**The story minute is cut short while the child is still reading**",
+     "~~The story minute is cut short while the child is still reading~~ **Fixed on sandbox, 3 Oct** (drop 5 #1543; verified on real WhatsApp)",
      "L23: 24 of 370 reading notes (6.5%): a comprehension question's words matched the child reading the story (14), the labeller placed a later section inside the minute (7), a stop-cue match (3). Lowers the count and feeds P12.",
      "bd-s1oo0.42"
     ],
