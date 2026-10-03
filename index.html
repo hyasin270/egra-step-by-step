@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>/egra, Step by Step</title>
-<meta name="description" content="The ICT child reading and maths test on WhatsApp, replayed step by step from a real NIETE sandbox run: what the coach sees, what the bot does, and what is still open.">
+<meta name="description" content="The ICT child reading and maths test, recorded on real WhatsApp against the NIETE sandbox: every screen the coach sees, the printed card the child reads from, and what is still open.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
@@ -14,8 +14,7 @@
   --accent:#1c6a4b; --accent-ink:#ffffff; --accent-soft:#e1efe8;
   --warn:#8f5400; --warn-soft:#fbefd9; --bad:#a8261d; --bad-soft:#fbe4e1;
   --seg-bot:#1c6a4b; --seg-speak:#9cc7b1; --seg-check:#d29a2f; --target:#a8261d;
-  --wa-wall:#efeae2; --wa-in:#ffffff; --wa-out:#d9fdd3; --wa-head:#008069; --wa-head-ink:#ffffff;
-  --wa-text:#111b21; --wa-meta:#667781; --wa-link:#027eb5; --wa-gloss:#3b4a54; --bezel:#1d2522;
+  --bezel:#1d2522; --screen:#0b141a; --paper:#fffdf7;
   --shadow:0 18px 40px -18px rgba(18,32,26,.35);
   --display:"Newsreader", Georgia, "Times New Roman", serif;
   --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -28,9 +27,7 @@
     --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
     --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916;
     --seg-bot:#5ec29a; --seg-speak:#2f6b52; --seg-check:#d29a2f; --target:#f08a80;
-    --wa-wall:#0b141a; --wa-in:#202c33; --wa-out:#005c4b; --wa-head:#202c33; --wa-head-ink:#e9edef;
-    --wa-text:#e9edef; --wa-meta:#8696a0; --wa-link:#53bdeb; --wa-gloss:#aebac1; --bezel:#05080a;
-    --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --bezel:#05080a; --paper:#f4f1e8; --shadow:0 18px 40px -18px rgba(0,0,0,.7);
   }
 }
 :root[data-theme="dark"]{
@@ -38,177 +35,85 @@
     --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
     --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916;
     --seg-bot:#5ec29a; --seg-speak:#2f6b52; --seg-check:#d29a2f; --target:#f08a80;
-    --wa-wall:#0b141a; --wa-in:#202c33; --wa-out:#005c4b; --wa-head:#202c33; --wa-head-ink:#e9edef;
-    --wa-text:#e9edef; --wa-meta:#8696a0; --wa-link:#53bdeb; --wa-gloss:#aebac1; --bezel:#05080a;
-    --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --bezel:#05080a; --paper:#f4f1e8; --shadow:0 18px 40px -18px rgba(0,0,0,.7);
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.6 var(--body);padding-inline:20px}
-.wrap{max-width:1180px;margin-inline:auto}
+.wrap{max-width:1240px;margin-inline:auto}
 a{color:var(--accent)}
 code{font:500 .86em var(--mono);background:var(--accent-soft);padding:.05em .35em;border-radius:4px;overflow-wrap:anywhere}
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ur{font-family:var(--urdu);direction:rtl;line-height:2}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-.ur{font-family:var(--urdu);direction:rtl}
 
-/* masthead */
 .masthead{padding-block:40px 18px;display:grid;gap:14px}
 .eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .masthead h1{font-size:clamp(34px,5vw,52px);letter-spacing:-.01em}
 .masthead h1 .cmd{font-family:var(--mono);font-weight:600;font-size:.82em;color:var(--accent)}
-.lede{max-width:68ch;color:var(--muted);font-size:17px;margin:0}
+.lede{max-width:72ch;color:var(--muted);font-size:17px;margin:0}
 .facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
 .chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--muted)}
 .chip b{color:var(--ink);font-weight:600}
 .chip.ok{border-color:transparent;background:var(--accent-soft);color:var(--ink)}
 .chip.ok::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
 
-/* stepper */
 .rail{display:flex;gap:6px;overflow-x:auto;padding:6px 2px 12px;margin-top:14px;scrollbar-width:thin}
 .rail button{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:5px 12px 5px 5px;cursor:pointer;font-size:13px;color:var(--muted);white-space:nowrap}
 .rail button .n{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ground);font:600 12px var(--mono);color:var(--ink)}
 .rail button.done .n{background:var(--accent-soft)}
 .rail button[aria-current="step"]{border-color:var(--accent);color:var(--ink);font-weight:600}
 .rail button[aria-current="step"] .n{background:var(--accent);color:var(--accent-ink)}
-.stage{display:grid;grid-template-columns:minmax(300px,360px) 1fr;gap:40px;align-items:start;padding-bottom:28px}
-.phone-col{position:sticky;top:16px;display:grid;gap:10px;justify-items:center}
-.toggles{display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
-.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.switch input{appearance:none;width:34px;height:20px;border-radius:999px;background:var(--rule);position:relative;margin:0;cursor:pointer;transition:background .15s}
-.switch input::after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:var(--surface);transition:transform .15s}
-.switch input:checked{background:var(--accent)}
-.switch input:checked::after{transform:translateX(14px)}
+.rail button.bug .n{background:var(--bad-soft);color:var(--bad)}
 
-/* phone */
-.phone{width:min(340px,100%);height:690px;border-radius:46px;background:var(--bezel);padding:11px;box-shadow:var(--shadow);position:relative}
-.screen{position:relative;height:100%;border-radius:36px;overflow:hidden;background:var(--wa-wall);display:flex;flex-direction:column}
-.sbar{display:flex;justify-content:space-between;align-items:center;padding:10px 22px 4px;font:600 13px var(--body);color:var(--wa-head-ink);background:var(--wa-head)}
-.sbar .dots{letter-spacing:2px;font-size:11px}
-.wahead{display:flex;align-items:center;gap:10px;padding:6px 12px 10px;background:var(--wa-head);color:var(--wa-head-ink)}
-.wahead .back{font-size:20px;opacity:.9}
-.avatar{width:34px;height:34px;border-radius:50%;background:#25d366;display:grid;place-items:center;color:#fff;font:700 15px var(--body)}
-.wahead .who{display:grid;line-height:1.2}
-.wahead .who b{font-size:15px;font-weight:600}
-.wahead .who span{font-size:11.5px;opacity:.82}
-.chat{flex:1;overflow-y:auto;padding:10px 10px 14px;display:flex;flex-direction:column;gap:6px;
-  background-image:radial-gradient(circle at 1px 1px, rgba(120,110,90,.10) 1px, transparent 0);background-size:14px 14px}
-.daychip{align-self:center;font-size:11.5px;color:var(--wa-meta);background:var(--wa-in);padding:3px 10px;border-radius:8px;margin:4px 0 6px;box-shadow:0 1px .5px rgba(11,20,26,.13)}
-.compose{display:flex;gap:8px;align-items:center;padding:8px 10px 14px;background:transparent}
-.compose .field{flex:1;background:var(--wa-in);color:var(--wa-meta);border-radius:22px;padding:9px 14px;font-size:14px}
-.compose .mic{width:40px;height:40px;border-radius:50%;background:#00a884;display:grid;place-items:center;color:#fff}
-.msg{max-width:86%;display:grid;gap:2px}
-.msg.in{align-self:flex-start}
-.msg.out{align-self:flex-end}
-.bub{position:relative;min-width:84px;background:var(--wa-in);color:var(--wa-text);border-radius:9px;padding:6px 9px 18px;box-shadow:0 1px .5px rgba(11,20,26,.13);font-size:14px;line-height:1.45;overflow-wrap:anywhere}
-.out .bub{background:var(--wa-out)}
-.in .bub{border-top-left-radius:2px}
-.out .bub{border-top-right-radius:2px}
-.bub .t{position:absolute;right:8px;bottom:3px;font-size:10.5px;color:var(--wa-meta);display:flex;gap:3px;align-items:center}
-.bub .t .tick{color:#53bdeb}
-.bub .head{font-weight:700;margin-bottom:2px}
-.bub .txt.ur{font-size:14px;line-height:2.05;text-align:right}
-.bub .txt.lat{font-family:var(--body)}
-.gloss{display:none;margin-top:5px;padding-top:5px;border-top:1px solid rgba(102,119,129,.25);font:italic 12.5px/1.45 var(--body);color:var(--wa-gloss);direction:ltr;text-align:left}
-.show-gloss .gloss{display:block}
-.btns{display:grid;gap:2px}
-.btns .b{background:var(--wa-in);color:var(--wa-link);border-radius:9px;text-align:center;padding:7px 8px;font:500 14px var(--urdu);line-height:1.9;box-shadow:0 1px .5px rgba(11,20,26,.13);border:0;width:100%}
-.btns .b small{display:block;font:11px var(--body);color:var(--wa-meta);margin-top:-6px}
-.btns .b.act{cursor:pointer}
-.btns .b.act:hover{filter:brightness(.97)}
-.cta{display:flex;justify-content:center;align-items:center;gap:8px;border-top:1px solid rgba(102,119,129,.22);margin:6px -9px -14px;padding:8px;color:var(--wa-link);font:500 14px var(--urdu);line-height:1.9;cursor:pointer;background:none;border-left:0;border-right:0;border-bottom:0;width:calc(100% + 18px)}
-.cta small{font:11px var(--body);color:var(--wa-meta)}
-.reply .bub{padding-bottom:18px}
-.voice{display:flex;align-items:center;gap:8px;min-width:210px;padding-right:2px}
-.voice .play{width:32px;height:32px;border-radius:50%;border:0;background:transparent;color:var(--wa-meta);cursor:pointer;display:grid;place-items:center;flex:0 0 auto}
-.voice .bars{display:flex;align-items:center;gap:2px;height:28px;flex:1}
-.voice .bars i{display:block;width:3px;border-radius:2px;background:var(--wa-meta);opacity:.45}
-.voice .bars i.on{background:#00a884;opacity:1}
-.voice .ava{width:36px;height:36px;border-radius:50%;background:#dfe5e7;display:grid;place-items:center;color:#8696a0;flex:0 0 auto;font-size:15px}
-.voice .dur{position:absolute;left:52px;bottom:3px;font-size:10.5px;color:var(--wa-meta)}
-.imgbub{padding:3px 3px 18px}
-.imgbub img{display:block;width:200px;max-width:100%;border-radius:7px;cursor:zoom-in}
-.msg.linked .bub,.msg.linked .btns .b{opacity:.55}
-.msg.linked .bub{outline:2px dashed #d29a2f;outline-offset:1px}
-.msg .lk{font:600 10.5px var(--body);color:#8f5400;background:#fbefd9;border-radius:6px;padding:2px 7px;justify-self:start}
-.msg.new .bub{animation:flash 1.1s ease-out}
-@keyframes flash{0%{box-shadow:0 0 0 3px rgba(0,168,132,.55)}100%{box-shadow:0 1px .5px rgba(11,20,26,.13)}}
-@media (prefers-reduced-motion: reduce){.msg.new .bub{animation:none}}
+.stage{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start;padding-bottom:28px}
+.devices{position:sticky;top:16px;display:flex;gap:16px;align-items:flex-start}
+.phone{width:340px;height:760px;border-radius:44px;background:var(--bezel);padding:10px;box-shadow:var(--shadow);flex:0 0 auto}
+.screen{height:100%;border-radius:35px;overflow:hidden;background:var(--screen)}
+.screen img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;cursor:zoom-in}
+.devlabel{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
+.paper{width:210px;flex:0 0 auto;display:none}
+.paper.show{display:block}
+.paper .sheet{background:var(--paper);border-radius:6px;padding:8px;box-shadow:var(--shadow);transform:rotate(-1.5deg)}
+.paper img{display:block;width:100%;border-radius:3px;cursor:zoom-in}
 
-/* in-phone sheets */
-.sheet{position:absolute;inset:0;background:rgba(11,20,26,.45);display:none;align-items:flex-end;z-index:5}
-.sheet.open{display:flex}
-.sheet .panel-s{width:100%;max-height:82%;overflow:auto;background:var(--wa-in);color:var(--wa-text);border-radius:18px 18px 0 0;padding:10px 0 16px}
-.sheet .grab{width:36px;height:4px;border-radius:2px;background:var(--wa-meta);opacity:.4;margin:2px auto 8px}
-.sheet .stitle{display:flex;align-items:center;justify-content:space-between;padding:0 16px 6px}
-.sheet .stitle .x{border:0;background:none;font-size:20px;color:var(--wa-meta);cursor:pointer}
-.sheet .sec{font:600 12.5px var(--urdu);color:#00a884;padding:8px 18px 0;text-align:right;line-height:2}
-.sheet .row{display:flex;flex-direction:row-reverse;align-items:center;gap:12px;padding:6px 18px;cursor:pointer;width:100%;border:0;background:none;text-align:right}
-.sheet .row:hover{background:rgba(0,168,132,.07)}
-.sheet .row .r{width:18px;height:18px;border-radius:50%;border:2px solid var(--wa-meta);flex:0 0 auto}
-.sheet .row .lbl{flex:1;display:grid}
-.sheet .row .lbl b{font:500 14px var(--urdu);line-height:2}
-.sheet .row .lbl span{font:12px var(--urdu);color:var(--wa-meta);line-height:1.9}
-.sheet .row .lbl em{font:italic 11.5px var(--body);color:var(--wa-gloss);direction:ltr;text-align:right}
-.overlay{position:absolute;inset:0;background:var(--wa-in);display:none;flex-direction:column;z-index:6}
-.overlay.open{display:flex}
-.ovbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:space-between;padding:12px 10px 8px;background:var(--wa-in);border-bottom:1px solid rgba(102,119,129,.2)}
-.seg{display:inline-flex;border:1px solid rgba(102,119,129,.35);border-radius:999px;overflow:hidden}
-.seg button{border:0;background:none;padding:4px 10px;font-size:12px;cursor:pointer;color:var(--wa-text)}
-.seg button[aria-pressed="true"]{background:#00a884;color:#fff}
-.ovbar .x{border:0;background:none;font-size:20px;color:var(--wa-meta);cursor:pointer;padding:0 4px}
-.ovscroll{flex:1;overflow-y:auto;background:#fff}
-.ovscroll img{display:block;width:100%}
-.ovcap{font-size:11.5px;color:var(--wa-meta);padding:6px 12px;background:var(--wa-in);border-top:1px solid rgba(102,119,129,.2)}
-.appnav{display:flex;align-items:center;gap:8px}
-.appnav button{border:1px solid rgba(102,119,129,.35);background:none;border-radius:999px;width:30px;height:30px;cursor:pointer;color:var(--wa-text)}
-.appnav span{font:12px var(--mono);color:var(--wa-meta)}
-
-/* step panel */
 .panel{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:26px 28px 22px;min-height:560px;display:flex;flex-direction:column}
 .kicker{font:600 12px var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
 .panel h2{font-size:clamp(26px,3vw,34px);margin:6px 0 12px}
 .panel .body{flex:1;display:grid;gap:14px;align-content:start}
 .panel .body > p{margin:0;max-width:66ch}
 .panel .lead{font-size:17.5px}
-.panel h3{font-family:var(--body);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:4px}
-.panel ul{margin:0;padding-left:20px;display:grid;gap:6px;max-width:66ch}
-.try{display:flex;gap:10px;align-items:baseline;background:var(--accent-soft);border-radius:10px;padding:10px 14px;font-size:15px}
-.try::before{content:"Try";font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);flex:0 0 auto}
+.says{border:1px solid var(--rule);border-radius:12px;padding:12px 14px;display:grid;gap:6px;background:var(--ground)}
+.says .ur{font-size:15px;text-align:right}
+.says .en{font-size:14.5px;color:var(--muted)}
+.says .lbl{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
 .call{border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:4px 10px 10px 4px;padding:10px 14px;display:grid;gap:4px}
 .call.bad{border-left-color:var(--bad);background:var(--bad-soft)}
 .call.ok{border-left-color:var(--accent);background:var(--accent-soft)}
 .call .ct{font-weight:600;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-.call .tag{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;background:var(--surface);color:var(--ink)}
+.call .tag{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;background:var(--surface);color:var(--ink);text-decoration:none}
 .call p{margin:0;font-size:15px}
-.timing{display:flex;flex-wrap:wrap;gap:8px}
-.timing span{font-size:13.5px;border:1px solid var(--rule);border-radius:8px;padding:5px 10px;background:var(--ground)}
-.timing b{font:600 13.5px var(--mono)}
-.figs{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-figure{margin:0}
-figure img{display:block;width:100%;max-width:100%;border-radius:8px;border:1px solid var(--rule);background:#fff;cursor:zoom-in}
-figcaption{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.45}
-.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:10px}
-table{border-collapse:collapse;width:100%;font-size:14px}
-th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
-th{font:600 12px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
-tr:last-child td{border-bottom:0}
-td.r,th.r{text-align:right}
-td .ok{color:var(--accent);font-weight:600}
-td .no{color:var(--bad);font-weight:600}
 .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)}
 .nav button{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:8px 18px;cursor:pointer;font-weight:600}
 .nav button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
 .nav button:disabled{opacity:.4;cursor:default}
-.nav .hint{font-size:12.5px;color:var(--faint)}
+.nav .hint{font-size:12.5px;color:var(--faint);text-align:center}
 .note{font-size:13.5px;color:var(--muted)}
 
-/* sections below */
 section.block{padding-block:40px;border-top:1px solid var(--rule)}
 section.block > h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:8px}
-section.block > p.sub{color:var(--muted);max-width:70ch;margin:0 0 20px}
+section.block > p.sub{color:var(--muted);max-width:72ch;margin:0 0 20px}
+.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 12px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
+tr:last-child td{border-bottom:0}
+.verdict{display:inline-block;font:600 11px var(--body);padding:2px 8px;border-radius:999px}
+.v-ok{background:var(--accent-soft);color:var(--accent)}
+.v-part{background:var(--warn-soft);color:var(--warn)}
+.v-no{background:var(--bad-soft);color:var(--bad)}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:22px}
 .stat{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
 .stat .v{font:600 26px var(--mono);font-variant-numeric:tabular-nums}
@@ -219,127 +124,115 @@ section.block > p.sub{color:var(--muted);max-width:70ch;margin:0 0 20px}
 .legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
 svg text{fill:currentColor}
 .chart{color:var(--ink);display:block;min-width:560px;width:100%;height:auto}
-.pill{display:inline-block;font:600 11px var(--body);padding:2px 7px;border-radius:999px;background:var(--bad-soft);color:var(--bad);margin-left:6px;vertical-align:1px}
 .issues h3{font-size:20px;margin:26px 0 10px}
-details.synth{margin-top:22px}
-details.synth summary{cursor:pointer;font-weight:600;color:var(--muted)}
-details.synth[open] summary{margin-bottom:8px}
 .issues tr:target td{background:var(--warn-soft)}
 .issues td:first-child{font:600 13px var(--mono);white-space:nowrap}
 footer{padding-block:30px 50px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
-footer ul{padding-left:20px;display:grid;gap:6px;max-width:80ch}
-.lightbox{position:fixed;inset:0;background:rgba(8,12,10,.85);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;cursor:zoom-out}
+footer ul{padding-left:20px;display:grid;gap:6px;max-width:84ch}
+.lightbox{position:fixed;inset:0;background:rgba(8,12,10,.88);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;cursor:zoom-out}
 .lightbox.open{display:flex}
-.lightbox img{max-width:100%;max-height:100%;border-radius:8px;background:#fff}
+.lightbox img{max-width:100%;max-height:100%;border-radius:8px}
 
-@media (max-width: 880px){
+@media (max-width: 1000px){
   .stage{grid-template-columns:1fr;gap:20px}
-  .phone-col{position:static}
-  .phone{height:620px}
+  .devices{position:static;justify-content:center;flex-wrap:wrap}
   .panel{min-height:0;padding:20px 18px}
+}
+@media (max-width: 520px){
+  .phone{width:min(340px,100%);height:700px}
+  .paper{width:min(210px,70%)}
 }
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="masthead">
-  <div class="eyebrow">ICT child test (EGRA) · NIETE sandbox</div>
+  <div class="eyebrow">ICT child test (EGRA/EGMA-derived) · NIETE sandbox · real WhatsApp</div>
   <h1><span class="cmd">/egra</span>, step by step</h1>
-  <p class="lede">A coach tests five children's reading and maths on WhatsApp. This replays one real run on the NIETE sandbox, message by message: what the coach sees, what the bot does behind it, and what is still open. The children are synthetic voices with exact answer keys; no real child appears here.</p>
+  <p class="lede">Every screen below is a real WhatsApp screenshot, recorded on 3 Oct 2026 against the NIETE sandbox bot: one coach tests one child from <code>/egra</code> to a saved check. The child reads from a printed card, shown beside the phone; WhatsApp only records. The child is synthetic: a generated voice, an invented name, a rendered strip with a known answer key.</p>
   <div class="facts" id="facts"></div>
 </header>
 
 <nav class="rail" id="rail" aria-label="Steps"></nav>
 
-<main class="stage" id="stage">
-  <div class="phone-col">
-    <div class="toggles">
-      <label class="switch"><input type="checkbox" id="glossToggle" checked> English under Urdu</label>
+<main class="stage">
+  <div class="devices">
+    <div>
+      <div class="phone" aria-label="The coach's WhatsApp"><div class="screen"><img id="shot" alt="" src="img/real/01-egra-school.jpg"></div></div>
+      <div class="devlabel">Coach's phone · WhatsApp</div>
     </div>
-    <div class="phone" aria-label="WhatsApp on the coach's phone">
-      <div class="screen" id="screen">
-        <div class="sbar"><span id="clock">01:32</span><span class="dots">●●● ▮</span></div>
-        <div class="wahead"><span class="back">‹</span><div class="avatar">N</div><div class="who"><b>Digital Coach Updates</b><span>NIETE sandbox number</span></div></div>
-        <div class="chat show-gloss" id="chat" aria-live="polite"></div>
-        <div class="compose"><div class="field">Message</div><div class="mic">●</div></div>
-
-        <div class="sheet" id="listSheet" role="dialog" aria-label="Today's children">
-          <div class="panel-s">
-            <div class="grab"></div>
-            <div class="stitle"><button class="x" id="listClose" aria-label="Close">×</button><b class="ur">آج کے بچے</b></div>
-            <div id="listRows"></div>
-          </div>
-        </div>
-
-        <div class="overlay" id="flowOv" role="dialog" aria-label="Check form">
-          <div class="ovbar">
-            <div class="seg" id="flowTabs">
-              <button data-tab="urdu" aria-pressed="true">Urdu</button><button data-tab="english" aria-pressed="false">English</button><button data-tab="maths" aria-pressed="false">Maths</button>
-            </div>
-            <div class="seg" id="flowLang"><button data-lang="ur" aria-pressed="true">اردو</button><button data-lang="en" aria-pressed="false">EN</button></div>
-            <button class="x" id="flowClose" aria-label="Close the check">×</button>
-          </div>
-          <div class="ovscroll" id="flowScroll"><img id="flowImg" alt="Check form screen" src="img/check/urdu_ur_full.png"></div>
-          <div class="ovcap" id="flowCap">Rendered from roll 8's saved AI marks with the bot's own form code.</div>
-        </div>
-
-        <div class="overlay" id="appOv" role="dialog" aria-label="Coach app screens">
-          <div class="ovbar"><b style="font-size:13px">Coach app · test screens</b><div class="appnav"><button id="appPrev" aria-label="Previous screen">‹</button><span id="appPos">1/10</span><button id="appNext" aria-label="Next screen">›</button></div><button class="x" id="appClose" aria-label="Close">×</button></div>
-          <div class="ovscroll"><img id="appImg" alt="Coach app screen" src="img/app/02-list.png"></div>
-          <div class="ovcap" id="appCap"></div>
-        </div>
-      </div>
+    <div class="paper" id="paper">
+      <div class="sheet"><img id="paperImg" alt="" src="img/card/G3-A-1.png"></div>
+      <div class="devlabel" id="paperLabel">In the child's hands · printed card</div>
     </div>
   </div>
 
-  <article class="panel" id="panel" aria-live="polite">
+  <article class="panel" aria-live="polite">
     <div class="kicker" id="kicker"></div>
     <h2 id="ptitle"></h2>
     <div class="body" id="pbody"></div>
     <div class="nav">
       <button id="prev">← Back</button>
-      <span class="hint">← → keys work too</span>
+      <span class="hint">← → keys work too · tap a screen to enlarge</span>
       <button id="next" class="primary">Next →</button>
     </div>
   </article>
 </main>
 
-<section class="block" id="clock-sec">
-  <h2>Five children on the clock</h2>
-  <p class="sub">The target is about five minutes a child, 25–30 for five. Each bar is one child from this run: the bot's own time, the child's speaking time, and the coach's check. The bot is the smallest part.</p>
-  <div class="stats" id="clockStats"></div>
-  <div class="chartbox">
-    <div class="legend"><span><i style="background:var(--seg-bot)"></i>Bot (prompts, saving, replies)</span><span><i style="background:var(--seg-speak)"></i>Child speaking (length of the voice notes)</span><span><i style="background:var(--seg-check)"></i>Coach's check</span><span><i style="background:var(--target)"></i>Five-minute target</span></div>
-    <svg class="chart" id="clockChart" role="img"></svg>
-  </div>
-  <p class="note">Not in these bars: the coach's spoken cues, handing over the card, and walking a child in and out. The protocol model that adds them puts a child at 6.0 minutes with 60-second quick sums and 5.5 with 30-second quick sums. Waiting for marks (18–29 s a child) is left out because the coach moves on to the next child while it runs.</p>
+<section class="block" id="standards">
+  <h2>Is this how EGRA and EGMA are run?</h2>
+  <p class="sub">Checked against the RTI EGRA Toolkit (2016), the Core EGMA instrument (2014), USAID's Sindh and Uzbekistan studies and ASER. The reading follows EGRA closely. The maths borrows from EGMA but is our own short form. The full batteries take 15–20 minutes each, so this is an <b>EGRA/EGMA-derived check</b>, not EGRA scores.</p>
+  <div class="tbl"><table>
+    <thead><tr><th>Question</th><th>How the standard does it</th><th>Ours</th><th>Verdict</th></tr></thead>
+    <tbody>
+      <tr><td>Reading passage</td><td>About 60 words, grade level, from the national textbooks</td><td>Grade 3: the May 2026 Rawalpindi passage, word for word (60 words)</td><td><span class="verdict v-ok">matches</span></td></tr>
+      <tr><td>One passage or one per grade</td><td>The toolkit is silent. Sindh 2014: the same Grade 2 passage for Grades 3 and 5, plus a harder Grade 4 passage for Grade 5</td><td>Grade 5: the May passage plus a written continuation (longer, not shown to be harder)</td><td><span class="verdict v-part">check difficulty</span></td></tr>
+      <tr><td>Item order</td><td>Randomised once at design; every child reads the same sheet; never shuffled per child</td><td>Fixed per form; only the children are drawn at random</td><td><span class="verdict v-ok">matches</span></td></tr>
+      <tr><td>No drift</td><td>A printed, fixed instrument</td><td>Pre-generated, frozen and versioned; nothing generated at test time</td><td><span class="verdict v-ok">matches</span></td></tr>
+      <tr><td>Comprehension</td><td>3–5 questions; the passage is removed before questioning (2016 core)</td><td>Urdu 3, English 2; the card is not turned over</td><td><span class="verdict v-part">add 1 English question; decide on the card</span></td></tr>
+      <tr><td>Retest form</td><td>Built, piloted and equated before comparing a child's two scores</td><td>Form B matched on text measures, not piloted</td><td><span class="verdict v-part">pilot-equate first</span></td></tr>
+      <tr><td>Fact fluency</td><td>Two separate 60-second runs, addition and subtraction, 20 items each, answers spoken</td><td>One mixed 60-second run (Grade 5 adds × and ÷)</td><td><span class="verdict v-no">variant</span></td></tr>
+      <tr><td>Two-digit sums</td><td>5 + 5, oral, paper optional</td><td>4 written on the strip</td><td><span class="verdict v-no">variant (ASER-style)</span></td></tr>
+      <tr><td>Word problems</td><td>6, read aloud by the assessor</td><td>1, read aloud by the coach</td><td><span class="verdict v-part">too few for a score</span></td></tr>
+      <tr><td>The May Rawalpindi maths</td><td>A levelled ladder (14+1 … 72 ÷ 6), item by item</td><td>None of its items</td><td><span class="verdict v-no">not comparable</span></td></tr>
+      <tr><td>Showing the passage</td><td>A printed, large-font sheet in front of the child</td><td>The printed card; WhatsApp only records</td><td><span class="verdict v-ok">matches</span></td></tr>
+    </tbody>
+  </table></div>
+  <p class="note">Open decisions for the operator, Sabeena and Sameer: maths (keep and label, move toward Core EGMA, or use the May levelled items), a third English question, the card face-down before questions, the Grade 5 passage, and Form B equating. See D2 in the register below.</p>
 </section>
 
 <section class="block" id="accuracy">
   <h2>How close the AI is to the enumerators</h2>
-  <p class="sub">Every recording from the May 2026 Rawalpindi study: 185 children, Grades 1–5. Each AI mark is compared with the enumerator's tablet mark for the same child and item. The "human floor" column is how often a QA reviewer, re-listening to the same children, agreed with the enumerator.</p>
+  <p class="sub">Every recording from the May 2026 Rawalpindi study: 185 children, Grades 1–5. Each AI mark is compared with the enumerator's tablet mark for the same child and item. The human floor is how often a QA reviewer, re-listening to the same children, agreed with the enumerator.</p>
   <div class="tbl"><table id="realTable"></table></div>
   <p class="note" id="realNote"></p>
-  <details class="synth">
-    <summary>The five synthetic children in this run (not an accuracy measure)</summary>
-    <p class="note">Synthetic voices read the card with exact answer keys, and a simulated coach fixes a disagreement 9 times in 10. This shows the check mechanics working. Real children score much lower; use the table above for accuracy.</p>
-    <div class="tbl"><table id="accTable"></table></div>
-  </details>
+</section>
+
+<section class="block" id="clock-sec">
+  <h2>Five children on the clock</h2>
+  <p class="sub">The target is about five minutes a child, 25–30 for five. Each bar is one child from the five-child sandbox run: the bot's own time, the child's speaking time, and the coach's check.</p>
+  <div class="stats" id="clockStats"></div>
+  <div class="chartbox">
+    <div class="legend"><span><i style="background:var(--seg-bot)"></i>Bot</span><span><i style="background:var(--seg-speak)"></i>Child speaking</span><span><i style="background:var(--seg-check)"></i>Coach's check</span><span><i style="background:var(--target)"></i>Five-minute target</span></div>
+    <svg class="chart" id="clockChart" role="img"></svg>
+  </div>
+  <p class="note">That run sent the voice notes back to back, which added about 4 minutes of pacing and polling for five children that a real visit does not have (L22). At real speed the projection is 35.4 minutes. Not in the bars: the coach's spoken cues, handing over the card, walking children in and out.</p>
 </section>
 
 <section class="block issues" id="issues">
   <h2>Open issues and decisions</h2>
-  <p class="sub">The same register the team works from, kept with the go-live plan. Steps above link here where an issue shows up.</p>
+  <p class="sub">The register the team works from. Steps above link here where an issue shows up.</p>
   <div id="issueTables"></div>
 </section>
 
 <footer>
-  <b>How this page was made</b>
+  <b>How these screens were made</b>
   <ul>
-    <li>Every chat message is the bot's real outbound WhatsApp payload from the sandbox run of 2 Oct 2026 at 20:32 UTC (01:32 on 3 Oct, Pakistan time), read back from the sandbox logs. Message times are Pakistan time.</li>
-    <li>The simulator sends each voice note as soon as the bot has replied, so the chat clock is compressed. The five-child clock adds each child's real speaking time.</li>
-    <li>The check screens are rendered from roll 8's saved AI marks with the bot's own form code. The card pages are the printed card, form A. The strip photos are rendered test images (crumpled, angled, shadowed, blurred) with a known answer key.</li>
-    <li>Voices are synthetic. No real child's voice, photo or name is on this page.</li>
+    <li>Real WhatsApp (WhatsApp Web, linked to the operator's account) messaging the NIETE sandbox number on 3 Oct 2026, with sandbox drops 5 and 6 live. Only the sandbox chat is shown.</li>
+    <li>For the recording, the coach account was set up as a coach at the synthetic SIM school. The class list carries invented names; one child (Abdullah Tariq) was given no roll on purpose, to show the fix.</li>
+    <li>The three voice notes are real WhatsApp voice notes. A synthetic child's recordings were fed to the browser's microphone, and WhatsApp's own recorder made the notes in real time (1:44, 1:34, 1:25).</li>
+    <li>The strip photo is a rendered test strip with "1" written in its Child no. box. The check was filled from the synthetic child's answer key, as a coach who listened would fill it.</li>
+    <li>No real child's voice, photo or name is on this page.</li>
   </ul>
 </footer>
 </div>
@@ -351,338 +244,150 @@ footer ul{padding-left:20px;display:grid;gap:6px;max-width:80ch}
 (function(){
 'use strict';
 const D = window.DEMO;
-const $ = (s, el=document) => el.querySelector(s);
+const $ = (s) => document.querySelector(s);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const md = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
-const isUrdu = s => /[؀-ۿ]/.test(s || '');
-const fmt = (n, d=1) => Number(n).toFixed(d);
-const mins = s => fmt(s/60, 1);
-
-/* ---------- English glosses for every bot message, by step and position ---------- */
-const NEXT_PROMPT = 'Child 1 of 5 · {B} · Form A card, {P} page · say “{S}” · one locked voice note; turn the pages, do not stop the recording.';
-const G = {
-  list: [`Class 3 · Section A — Today's children were picked by the server and cannot be changed. Tap a child to start. Done: 0 of 5. Give the class teacher these roll numbers in this order, so one child comes at a time: 8, 25, 15, 6, 3. [button: Today's children]`],
-  pick: ['Roll 8 (tapped in the list)',
-         'The observed teacher is this class\'s class teacher. Send them today\'s roll numbers in order? [button: Send to teacher]',
-         'Child 1 of 5 · Roll 8 · Is the child present and willing to read? [Present · Absent · Refused]'],
-  present: ['Present',
-         'Child 1 of 5 · Urdu 1/3 · Form A card, Urdu page · say “اب شروع کریں” (start now) · one locked voice note; turn the pages, do not stop the recording. While you wait, give roll 25 the maths strip to write. [No printed card · Stop this child · Menu]'],
-  urdu: [null, 'Got it · Urdu', NEXT_PROMPT.replace('{B}','English 2/3').replace('{P}','English').replace('{S}','Please start reading')],
-  english: [null, 'Got it · English', 'Child 1 of 5 · Maths 3/3 · Form A card, maths page · say “now read these numbers one by one”, then “now start the sums” and 60 seconds of spoken sums · one locked voice note.'],
-  maths: [null, 'Got it · Maths', 'Roll 8\'s strip: send a photo once it is written, or all the strips together at the end. Tap the next child now. [button: No photo]',
-          'The list again — Done: 0 of 5. Order for the class teacher: 25, 15, 6, 3.'],
-  strip: [null, 'Roll 8\'s strip saved.', 'All three parts for roll 8 received. The check button comes once the marks are ready.'],
-  next: ['Roll 25 (tapped in the list)', 'Child 2 of 5 · Roll 25 · Is the child present and willing to read? [Present · Absent · Refused]', 'Present'],
-  check: ['Check: roll 8 — From the recording for roll 8: Urdu 57 words, English 58 words, maths 28 quick sums. Open the check, change anything you heard differently, and save. About a minute. [button: Check]'],
-};
-
-/* ---------- steps ---------- */
-const T = D.timings, P1 = D.prefill_child1, F = D.five;
+const mins = s => (s/60).toFixed(1);
+const R = 'img/real/';
+const CARD = { ur: ['img/card/G3-A-1.png', 'Printed card, form A, Urdu page'], en: ['img/card/G3-A-2.png', 'Printed card, form A, English page'], ma: ['img/card/G3-A-3.png', 'Printed card, form A, maths page'], strip: ['img/card/G3-A-5.png', 'The maths strip the next child writes on'] };
+const says = (ur, en) => `<div class="says"><div class="lbl">On screen</div><div class="ur">${ur}</div><div class="en">${en}</div></div>`;
 const call = (kind, tag, title, text) => `<div class="call ${kind}"><div class="ct">${tag ? `<a class="tag" href="#${tag}">${tag}</a>` : ''}${title}</div><p>${text}</p></div>`;
-const chips = arr => `<div class="timing">${arr.map(([l,v]) => `<span>${l} <b>${v}</b></span>`).join('')}</div>`;
-const fig = (src, cap) => `<figure><img src="${src}" alt="${esc(cap)}" loading="lazy"><figcaption>${cap}</figcaption></figure>`;
-const MODEL = m => ({'soniox:stt-async-v5':'Soniox','google/gemini-3-flash-preview':'Gemini 3 Flash','google/gemini-3.8-flash':'Gemini 3.8 Flash','speechace:text/v9':'SpeechAce','google/gemini-3.1-pro-preview':'Gemini 3.1 Pro'}[m] || m);
-const JOB = j => ({stt:'speech to text',comprehension:'story questions',phonics:'sounds and made-up words',story:'story words',speechace:'per-word English marks',speechace_nonwords:'made-up words (English)',labeller:'numbers and quick sums',vision:'reads the strip photo'}[j] || j);
-const callsTable = (blocks) => {
-  const rows = []; let tot = 0;
-  blocks.forEach(b => D.calls[b].forEach(c => { tot += c.usd; rows.push(`<tr>${blocks.length>1?`<td>${b}</td>`:''}<td>${JOB(c.job)}</td><td>${MODEL(c.model)}</td><td class="r num">${fmt(c.s)} s</td><td class="r num">$${c.usd.toFixed(4)}</td></tr>`); }));
-  return `<div class="tbl"><table><thead><tr>${blocks.length>1?'<th>Part</th>':''}<th>Job</th><th>Model</th><th class="r">Time</th><th class="r">Cost</th></tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
-};
-const COMPRESSED = `<p class="note">The chat clock here is compressed: the simulator sends each note as soon as the bot replies. With a real child, the note lasts as long as the child reads.</p>`;
-const probe = D.probe;
 
 const STEPS = [
- { id:'start', chat:'start', title:'The coach sends /egra', body: () => `
-   <p class="lead">At the school, the coach types <code>/egra</code> to the bot. Nothing else starts the test.</p>
-   <h3>What the bot does</h3>
-   <ul><li>Checks the coach may run it: the child test is switched on, the coach is in the ICT region and, during the pilot, on the list of pilot coaches.</li>
-   <li>Finds the coach's school and its class list, and draws today's five children.</li></ul>
-   ${call('ok','', 'Kept separate from the observation (3 Oct)', 'The test is no longer offered at the end of <code>/observe2</code> or <code>/observe</code>; <code>/egra</code> is the only way in. One setting, <code>CHILD_TEST_OBSERVE_LINK=true</code>, brings the offer back. Live on sandbox since 3 Oct.')}
-   ${probe ? `<p class="note">${probe.note}</p>` : `<p class="note">The run replayed here was recorded on 2 Oct, before the change, so <code>/egra</code> borrowed that day's observation. One message differs in separate mode; step 3 shows it.</p>`}` },
- { id:'list', chat:'list', title:'Five children, drawn by the server', body: () => `
-   <p class="lead">The five arrive as a WhatsApp list. The server picked them and the coach cannot swap them.</p>
-   <div class="try">Tap <span class="ur">آج کے بچے</span> in the phone to open the list, then tap roll 8.</div>
-   <h3>How the five are chosen</h3>
-   <ul><li>One draw per class per quarter, from a secret seed: sending <code>/egra</code> again that quarter brings back the same five. Nobody can redraw.</li>
-   <li>Four new children and one returning from an earlier quarter. This class had no earlier test, so all five are new.</li>
-   <li>Two alternates (rolls 18 and 9), used only if a child is absent or refuses.</li>
-   <li>The message gives the order to pass to the class teacher, <span class="num">8, 25, 15, 6, 3</span>, so one child comes at a time.</li>
-   <li>The grade: with no observation, Grade 3 on the school's first test visit of the quarter, Grade 5 on the next, and so on. Today's probe drew Grade 3.</li></ul>
-   ${call('bad','P9','The coach cannot choose the grade', 'When the test was linked, the observed class set the grade. Separate, it follows the visit order. Fix option: when both grades have a class list, ask the coach.')}
-   ${call('bad','P10','A child with no roll number breaks the list', 'The synthetic school has a roll for every child; real class lists do not. 3.4% of Grade 3 and 5 children have no roll (29 classes have none). If one of them is drawn, the list fails to build and the coach gets nothing, on every retry that quarter. Expected in about 1 first draw in 20.')}
-   ${call('bad','P7','Only schools with a class list can run', 'The draw needs the Grade 3 and Grade 5 class lists. 254 of 424 schools had both on 27 Sep; the rest get "no class list".')}` },
- { id:'pick', chat:'pick', title:'Roll 8 is called', body: () => `
-   <p class="lead">The coach taps roll 8 and the class teacher sends the child over.</p>
-   <h3>What the bot does</h3>
-   <ul><li>Asks whether the child is present and willing: <em>Present</em>, <em>Absent</em> or <em>Refused</em>. Absent or refused moves the coach to an alternate.</li></ul>
-   ${call('bad','P11','Roll numbers drift; the name should lead', 'The coach sees the name, but after the roll, and the line for the class teacher gives rolls only. Real rolls are the register\'s line numbers from a September photo, and registers are rewritten and renumbered each month, so “roll 25” can point at a different child by November. Names are all present, nearly all in English letters; 6.6% are cut off in the list.')}
-   ${call('bad','P4','“Send to teacher” is gone now that the test is separate', `The message offering to send the roll order to the teacher comes from the observation: it needs the observed teacher. In separate mode there is no observed teacher, so it no longer appears${probe && probe.noSendToTeacher ? ' (checked on sandbox, 3 Oct)' : ''}. The order is still in the list message. Fix options: ask which class teacher, or take the class teacher from the drawn class.`)}` },
- { id:'present', chat:'present', title:'Present: the Urdu page', body: () => `
-   <p class="lead">The coach taps <em>Present</em>, opens the printed card at the Urdu page and holds one locked voice note while the child reads the story, then the made-up words, then answers the questions.</p>
-   ${chips([['Present → Urdu prompt', fmt(T.present_to_urdu_prompt_s)+' s']])}
-   <div class="figs">${fig('img/card/G3-A-1.png','Printed card, form A, Urdu page: the story (60 seconds), then five made-up words.')}</div>
-   <ul><li>The prompt also says what to do meanwhile: give roll 25 the maths strip to write, so the next child's written sums are done before their turn.</li>
-   <li><em>No printed card</em> sends the card pages into the chat instead. That is slower (35–60 s a part), which is why the printed card is the default.</li></ul>` },
- { id:'urdu', chat:'urdu', title:'Urdu: one voice note', body: () => `
-   <p class="lead">The coach sends the note. Here it is 1 min 41 s of a synthetic fluent reader; press play on it in the phone.</p>
-   ${chips([['Saved, “got it”', fmt(T.urdu_saved_s)+' s'],['Urdu marks ready', fmt(T.urdu_scored_after_note_s)+' s after the note']])}
-   <ul><li>The English prompt follows straight away. Marking runs in the background; the coach never waits for it.</li>
-   <li>Urdu marking: speech to text, then three model calls (the study's models).</li></ul>
-   ${callsTable(['urdu'])}
-   ${COMPRESSED}` },
- { id:'english', chat:'english', title:'English', body: () => `
-   <p class="lead">Same pattern on the English page: “Please start reading”, one note for the story, the made-up words and the questions.</p>
-   ${chips([['Saved, “got it”', fmt(T.english_saved_s)+' s'],['English marks ready', fmt(T.english_scored_after_note_s)+' s after the note']])}
-   <div class="figs">${fig('img/card/G3-A-2.png','English page: story, then eight made-up words.')}</div>
-   ${callsTable(['english'])}
-   ${call('', 'D4','SpeechAce for English', 'SpeechAce gives the best per-word English marks we measured. It costs about 2–3 cents more per child. Keep it or drop it is open.')}` },
- { id:'maths', chat:'maths', title:'Maths, then the strip', body: () => `
-   <p class="lead">The maths page: eight numbers read aloud, then 60 seconds of spoken quick sums, in one note.</p>
-   ${chips([['Saved, “got it”', fmt(T.maths_saved_s)+' s']])}
-   <div class="figs">${fig('img/card/G3-A-3.png','Maths page: numbers to read, then the quick sums.')}</div>
-   <ul><li>The bot asks for roll 8's strip photo, now or all strips together at the end, and sends the list again so the coach can call the next child.</li>
-   <li>Maths is not marked yet. It waits for the photo (or <em>No photo</em>), so it is marked once, with everything in.</li></ul>
-   ${call('', 'D2','Quick sums: 60 or 30 seconds', 'One setting. 30 seconds saves about 30 seconds per child. Owners: Sabeena and Sameer, with the rest of the instrument trim.')}` },
- { id:'strip', chat:'strip', title:'The written strip', body: () => `
-   <p class="lead">While the child before them read, the child wrote four sums and a word problem on the strip. The coach photographs it.</p>
-   ${chips([['Maths marks ready', fmt(T.maths_scored_after_photo_s)+' s after the photo'],['Check sent', fmt(T.check_sent_after_photo_s)+' s after the photo']])}
-   <div class="figs">${fig('img/card/G3-A-5.png','The blank strip (card page 5).')}${fig('img/strip/'+D.strips[0].file,'Roll 8\'s photo (test image, light damage).')}${fig('img/strip/'+D.strips[1].file,'Roll 3\'s photo: the hardest in the run (dark, glare, blur, angled).')}</div>
-   ${stripTable()}
-   ${call('bad','P11','The strip is matched by order, not by what is written on it', 'The “Roll no.” box is never read. A photo goes to the oldest child still missing a strip, so strips sent together out of order attach to the wrong child without a warning.')}
-   <p class="note">Both strips were read exactly as written: blanks as blank, a wrong answer as wrong. Read by Gemini 3.1 Pro in ${fmt(D.calls.maths.find(c=>c.job==='vision').s)} s.</p>` },
- { id:'next', chat:'next', title:'Roll 25 starts; roll 8\'s check arrives', body: () => `
-   <p class="lead">The coach moves on: roll 25, <em>Present</em>. ${fmt(T.check_sent_after_photo_s)} seconds after roll 8's photo, the check for roll 8 arrives.</p>
-   <ul><li>Checks can be done as they arrive or all at the end. In this run the coach did all five at the end.</li></ul>
-   ${call('bad','P3','The message states numbers the form leaves empty', 'It says “Urdu 57 words”, but the form\'s Urdu story count arrives empty, because that count is never pre-filled. It also promises “about a minute”; roll 8\'s check took '+fmt(D.check_s_child1)+' s.')}` },
- { id:'check', chat:'check', phone:'flow', title:'The check form', body: () => `
-   <p class="lead">Tapping <span class="ur">جانچ کریں</span> opens the check: one screen each for Urdu, English and maths. The coach confirms or corrects the AI's marks.</p>
-   <div class="try">Switch screens and labels with the bar at the top of the phone; scroll the form.</div>
-   ${chips([['Roll 8: fields pre-filled', P1.prefilled+' of '+P1.fields],['Check time', fmt(D.check_s_child1)+' s']])}
-   <ul><li>Strict pre-fill: a field arrives filled only when the AI is sure. Red dashed boxes are the ones the coach fills.</li>
-   <li>The Urdu story count always arrives empty: on real children the AI's confidence did not predict when its count was right, so it is never pre-filled. Here the AI said ${D.story_child1[0].ai}; the key is ${D.story_child1[0].key}.</li>
-   <li>Across five children, ${D.accuracy.prefill.prefilled} of ${D.accuracy.prefill.fields} fields (${Math.round(D.accuracy.prefill.rate*100)}%) arrived filled. All Urdu first-sound and English made-up-word fields arrived empty.</li></ul>
-   ${call('', 'D3','Strict or assist', 'Assist fills every field and names the unsure ones. It is faster for the coach but invites rubber-stamping. Recommendation: keep strict, and pilot assist with one filmed coach.')}`,
-   flowTab:'urdu' },
- { id:'edits', chat:'check', phone:'flow', flowTab:'maths', title:'What the coach changed', body: () => `
-   <p class="lead">The AI's marks are saved once and never overwritten. The coach's marks and every change sit beside them, so we can always see who said what.</p>
-   ${editsTable()}
-   <p class="note">This coach is simulated: it fixes a disagreement with the key 9 times in 10, so its changes match the key. It missed one: English story words, AI ${D.story_child1[1].ai}, key ${D.story_child1[1].key}.</p>
-   ${call('bad','P5','Weaker AI fields, on real children', 'On all 185 real May children: English made-up words 49%, no better than marking all wrong; quick sums within 3 only 59% (humans 95%); which words were wrong, precision 0.22. These arrive empty and the coach marks them. The synthetic children here score far higher, so the real table below is the one to trust.')}` },
- { id:'scoring', chat:'check', title:'Behind the scenes: time and cost', body: () => `
-   <p class="lead">For roll 8, the bot made ${D.calls.urdu.length + D.calls.english.length + D.calls.maths.length} paid calls. Each part is marked while the coach is already on the next one.</p>
-   ${chips([['Urdu', fmt(D.blockSeconds.urdu)+' s'],['English', fmt(D.blockSeconds.english)+' s'],['Maths', fmt(D.blockSeconds.maths)+' s'],['Roll 8', '$'+D.cost_child1.toFixed(3)],['Average child', '$'+D.accuracy.cost_usd_per_child.toFixed(3)]])}
-   ${callsTable(['urdu','english','maths'])}
-   <p class="note">Times per part are wall-clock; some calls run side by side. About $${(D.accuracy.cost_usd_per_child*5).toFixed(2)} for a five-child visit.</p>` },
- { id:'app', chat:'check', phone:'app', title:'The app path (optional)', body: () => `
-   <p class="lead">The same test also runs inside the coach app, with its own recorder: a timer per section, a review before sending, and a photo step for the strip.</p>
-   <div class="try">Page through the app screens in the phone.</div>
-   ${call('', 'D5','Not on coaches\' phones yet', 'It needs a Play release with the microphone permission (version 1216 or later) and the production storage settings for the portal. WhatsApp works without either.')}` },
+ { shot: '01-egra-school', title: 'The coach sends /egra', body: () => `
+   <p class="lead">The coach types <code>/egra</code>. The test is separate from the observation (operator's call, 3 Oct): <code>/egra</code> is the only way in.</p>
+   ${says('آج کس اسکول میں ٹیسٹ کرنا ہے؟', 'Which school are you testing at today? [Schools]')}
+   <p>This coach is linked to two schools, so Rumi asks which one. A coach with one school goes straight to the list.</p>` },
+ { shot: '02-school-list', title: 'Pick the school', body: () => `
+   <p class="lead">A WhatsApp list: the coach taps the school.</p>
+   <p class="note">On a phone this list slides up from the bottom; on WhatsApp Web it opens as a box.</p>` },
+ { shot: '03-list-message', title: 'Today\'s five, by name', body: () => `
+   <p class="lead">The server has drawn five children for this class this quarter. The coach cannot swap them.</p>
+   ${says('کلاس ٹیچر سے یہ بچے ایک ایک کر کے اسی ترتیب سے بلوائیں: Usman Ghani · رول ۸، Laiba Shakeel · رول ۲۵، Noor Fatima · رول ۱۵، Abdullah Tariq، Fatima Zahra · رول ۳', 'Ask the class teacher for these children, one at a time, in this order. Full name first, roll only as a hint.')}
+   ${says('SIM — Teacher 3A اس جماعت کے کلاس ٹیچر ہیں۔ آج کے بچوں کی ترتیب انہیں بھیج دیں؟ [SIM کو بھیجیں]', 'SIM — Teacher 3A is this class\'s class teacher. Send them today\'s order? [Send to SIM]')}
+   ${call('ok','', 'Fixed today', 'Children are named by full name, because rolls renumber monthly. Abdullah Tariq has no roll and is named alone; before, a child without a roll broke /egra. "Send to teacher" now works without an observation, using the drawn class\'s own teacher.')}` },
+ { shot: '04-children-list', title: 'Today\'s children', body: () => `
+   <p class="lead">Tapping "آج کے بچے" opens the list: five children, then two alternates used only if a child is absent or refuses.</p>
+   <p>Each row shows the full name, then "roll 8 · new". The coach taps Usman Ghani.</p>` },
+ { shot: '05-presence', title: 'Is the child here?', body: () => `
+   ${says('بچہ ۱ از ۵ · Usman Ghani · رول ۸ · کیا بچہ موجود ہے اور پڑھنے پر آمادہ ہے؟', 'Child 1 of 5 · Usman Ghani · roll 8 · Is the child here and willing to read? [Present · Absent · Refused]')}
+   <p>Absent or refused moves the coach to an alternate. The coach taps Present.</p>` },
+ { shot: '06-urdu-prompt', paper: 'ur', title: 'The Urdu page', body: () => `
+   ${says('اردو ۱/۳ · فارم A کارڈ، اردو صفحہ · «اب شروع کریں» کہیں · ایک لاک وائس نوٹ، صفحے پلٹیں، ریکارڈنگ نہ روکیں۔ انتظار کے دوران Laiba Shakeel · رول ۲۵ کو ریاضی کی پٹی دیں؛ پہلے «بچہ نمبر» کے خانے میں ۲ لکھیں۔', 'Urdu 1/3 · printed card form A, Urdu page · say "start now" · one locked voice note; turn the pages, do not stop recording. While you wait, give Laiba Shakeel the maths strip; first write 2 in its Child no. box.')}
+   <p><b>The passage is on paper</b>, in the child's hands (shown beside the phone). The phone shows only the instructions, then records. Nothing needs to be shown full screen.</p>` },
+ { shot: '07-recording-urdu', paper: 'ur', title: 'One locked voice note', body: () => `
+   <p class="lead">The coach locks the recorder and sets the phone between them. The child reads the story for a minute, then the made-up words; the coach asks the questions and first sounds from the coach's copy. It is all one note.</p>
+   <p class="note">Here the "child" is a synthetic voice played into the microphone. WhatsApp's own recorder made the note; this frame is 0:23 into 1:44.</p>` },
+ { shot: '08-urdu-sent-english-prompt', paper: 'en', title: 'Urdu in; English next', body: () => `
+   ${says('🎧 ملا · اردو', 'Got it · Urdu')}
+   <p>The note is saved in a few seconds and the English prompt follows at once. Marking runs in the background; the coach never waits for it. The child turns to the English page.</p>` },
+ { shot: '09-english-sent-maths-prompt', paper: 'ma', title: 'English in; maths next', body: () => `
+   <p class="lead">Same pattern. The maths prompt: read the eight numbers, then "start the sums" and 60 seconds of spoken quick sums, all in one note.</p>` },
+ { shot: '10-maths-sent-strip-ask', paper: 'strip', title: 'Maths in; the strip', body: () => `
+   ${says('Usman Ghani · رول ۸ کی پٹی (بچہ نمبر ۱): لکھ لی جائے تو تصویر بھیجیں، یا آخر میں سب پٹیاں ایک ساتھ۔', 'Usman Ghani\'s strip (Child no. 1): send a photo once it is written, or send all the strips together at the end.')}
+   <p>The child wrote four sums and a word problem on the strip while the child before them read. The list comes again, ready for the next child.</p>` },
+ { shot: '11-strip-preview', paper: 'strip', title: 'Photograph the strip', body: () => `
+   <p class="lead">The strip carries "1" in its Child no. box. The coach wrote it when handing the strip over.</p>
+   ${call('ok','', 'Fixed today', 'The box used to ask for a roll number that nothing ever read, and strips were matched by order, so a batch sent out of order went to the wrong children. Now a quick read of the number sends each strip to its child, in any order. No names go to the model.')}` },
+ { shot: '12-strip-saved', title: 'Strip saved, to the right child', body: () => `
+   ${says('📷 پٹی نمبر ۱، Usman Ghani · رول ۸ کے لیے محفوظ۔ ✅ تینوں حصے مل گئے۔', 'Strip no. 1 saved for Usman Ghani · roll 8. All three parts are in; the check comes once marking is done.')}` },
+ { shot: '13-check-message', title: 'The check arrives', body: () => `
+   ${says('بھرے ہوئے: انگریزی ۵۸ الفاظ۔ آپ خود بھریں: اردو: کہانی کی گنتی، ۵ پہلی آوازیں، ۲ بے معنی الفاظ؛ انگریزی: ۸ بے معنی الفاظ؛ حساب: ۱ نمبر، فوری سوالوں کی گنتی۔ تقریباً دو منٹ۔', 'Filled in: English 58 words. You fill in: Urdu story count, 5 first sounds, 2 made-up words; 8 English made-up words; 1 number, quick-sums count. About two minutes.')}
+   ${call('ok','', 'Fixed today', 'The message used to state numbers the form left empty and promise "about a minute". It now says only what the form fills, lists what the coach fills, and gives the measured time.')}` },
+ { shot: '14-check-urdu-top', title: 'The check, inside WhatsApp', body: () => `
+   <p class="lead">"جانچ کریں" opens a WhatsApp Flow with one screen each for Urdu, English and maths. The coach confirms or corrects the AI's marks.</p>
+   <p>The Urdu story count arrives empty on purpose: on real children the AI's confidence for it ranks the wrong way, so it is never pre-filled. The questions arrive filled.</p>` },
+ { shot: '16-BUG-phone-validation', bug: true, title: 'A bug only real WhatsApp could show', body: () => `
+   ${says('Enter a valid phone number', 'WhatsApp\'s own message under the count "60"; the save button stayed disabled.')}
+   ${call('bad','', 'Found during this recording', 'The count boxes were "phone" type, a workaround that got the Flow published. WhatsApp then checked every count as a phone number, so no coach could ever save a check. Every earlier test sent marks straight to our server and never met this check.')}
+   ${call('ok','', 'Fixed the same evening', 'Counts are now plain text boxes of up to 3 characters, and the server reads 58, ۵۸ or ٥٨. Republished on the sandbox WhatsApp account and verified in the next step.')}` },
+ { shot: '17-check-urdu-fixed', title: 'After the fix', body: () => `
+   <p class="lead">"58" and "۶۰" (typed in Urdu digits) are accepted. The coach marks the first sounds and the two unclear made-up words, and saves the screen.</p>
+   ${call('','P14', 'One catch for rollout', 'A check message delivered before a fix keeps the old form, even after reloading WhatsApp. Tapping the child in the list sends a fresh check with the new form.')}` },
+ { shot: '18-check-english', title: 'English: the coach corrects the AI', body: () => `
+   <p class="lead">The AI pre-filled 58 words; this child's key says 56. The coach changes it to 56. The AI's 58 stays on record, and the coach's 56 and the change are saved beside it.</p>` },
+ { shot: '19-check-maths', title: 'Maths: the strip, read', body: () => `
+   <p class="lead">From the photo: 34 + 28 = 62 and 56 + 27 = 83 are right; 52 − 17 written as 36 and 73 − 48 written as 52 are wrong; the word problem's 9 is right. Exactly what the child wrote.</p>
+   <p>The quick-sums count is never pre-filled (the AI is within 3 for only 59% of real children), so the coach types 30 and 30.</p>` },
+ { shot: '20-check-done', title: 'Saved', body: () => `
+   ${says('محفوظ ہو گیا · Usman Ghani · رول ۸ کے نمبر محفوظ ہو گئے۔', 'Saved · Usman Ghani · roll 8\'s marks are saved.')}` },
+ { shot: '21-saved-chat', title: 'Back in the chat', body: () => `
+   ${says('✓ Usman Ghani · رول ۸ کے نمبر محفوظ ہو گئے۔', 'Usman Ghani · roll 8\'s marks are saved.')}
+   <p>Stored on the sandbox: Urdu 58 of 60, English 56 of 60, quick sums 30 of 30, with each change the coach made recorded beside the AI's mark. Next: Laiba Shakeel, whose strip is already written.</p>` },
 ];
 
-function stripTable(){
-  const [a,b] = D.strips;
-  const v = x => x === 'correct' ? '<span class="ok">right</span>' : x === 'wrong' ? '<span class="no">wrong</span>' : x;
-  const rows = a.items.map((it,i) => { const jt = b.items[i];
-    return `<tr><td class="num">${esc(it.prompt)}</td><td class="num">${esc(it.written)}</td><td class="num">${esc(it.ai)} · ${v(it.ai_verdict)}</td><td class="num">${esc(jt.written)}</td><td class="num">${esc(jt.ai)} · ${v(jt.ai_verdict)}</td></tr>`; }).join('');
-  return `<div class="tbl"><table><thead><tr><th>Item</th><th>Roll ${a.roll} wrote</th><th>AI read</th><th>Roll ${b.roll} wrote</th><th>AI read</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-function editsTable(){
-  const NAME = {'story.words_correct':'Story: words read right','maths.quick_sums.correct':'Quick sums right'};
-  const nice = p => NAME[p] || p.replace(/^story\.flagged\[(\d+)\]$/, 'Story word #$1 marked wrong').replace(/^nonwords\[e3A-nw(\d)\]\.verdict$/, 'Made-up word $1').replace(/^maths\.numbers\[m3A-n(\d)\]\.verdict$/, 'Number $1 read aloud');
-  const val = v => v === 'none' ? 'no mark' : v;
-  const rows = D.edits_child1.map(e => `<tr><td>${e.block}</td><td>${nice(e.path)}</td><td class="num">${esc(val(e.ai))}</td><td class="num"><b>${esc(val(e.coach))}</b></td></tr>`).join('');
-  return `<div class="tbl"><table><thead><tr><th>Part</th><th>Field</th><th>AI</th><th>Coach</th></tr></thead><tbody>${rows}</tbody></table></div>`;
-}
-
-/* ---------- chat rendering ---------- */
-const CHAT_ORDER = ['start','list','pick','present','urdu','english','maths','strip','next','check'];
-function waFormat(t){ return esc(t).replace(/\*([^*\n]+)\*/g,'<b>$1</b>').replace(/\n/g,'<br>'); }
-let seed = 7; const rnd = () => (seed = (seed*16807) % 2147483647) / 2147483647;
-function bubble(m, gloss, isNew){
-  const d = m.dir === 'out' ? 'out' : 'in';
-  const time = `<span class="t">${m.time}${d==='out'?'<span class="tick">✓✓</span>':''}</span>`;
-  const gl = gloss ? `<div class="gloss">${esc(gloss)}</div>` : '';
-  const txt = t => t ? `<div class="txt ${isUrdu(t)?'ur':'lat'}" dir="auto">${waFormat(t)}</div>` : '';
-  let inner = '', after = '';
-  if (m.kind === 'voice'){
-    seed = m.audio.length * 97; const bars = Array.from({length:30},()=>`<i style="height:${6+Math.round(rnd()*20)}px"></i>`).join('');
-    inner = `<div class="voice"><button class="play" aria-label="Play voice note">▶</button><div class="bars">${bars}</div><div class="ava">🎙</div></div><span class="dur">${Math.floor(m.secs/60)}:${String(m.secs%60).padStart(2,'0')}</span><audio preload="none" src="${m.audio}"></audio>`;
-  } else if (m.kind === 'image'){
-    return `<div class="msg ${d}${isNew?' new':''}"><div class="bub imgbub"><img src="${m.src}" alt="Photo of roll 8's written strip">${time}</div></div>`;
-  } else {
-    inner = (m.header ? `<div class="head ${isUrdu(m.header)?'ur':''}" dir="auto">${esc(m.header)}</div>` : '') + txt(m.text);
-  }
-  if (m.kind === 'list') inner += `<button class="cta act-list" type="button">☰ <span class="ur">${esc(m.button)}</span></button>`;
-  if (m.kind === 'flow') inner += `<button class="cta act-flow" type="button">↗ <span class="ur">${esc(m.button)}</span></button>`;
-  if (m.kind === 'buttons') after = `<div class="btns">${m.buttons.map(b => `<div class="b">${esc(b)}</div>`).join('')}</div>`;
-  const lk = m.linkedOnly ? '<span class="lk">Linked mode only · not sent since 3 Oct</span>' : '';
-  return `<div class="msg ${d}${isNew?' new':''}${m.reply?' reply':''}${m.linkedOnly?' linked':''}">${lk}<div class="bub">${inner}${gl}${time}</div>${after}</div>`;
-}
-function renderChat(uptoKey, newKey){
-  const chat = $('#chat'); const parts = ['<div class="daychip">Today</div>'];
-  let last = '01:32';
-  for (const k of CHAT_ORDER){
-    (D.chat[k] || []).forEach((m,i) => { parts.push(bubble(m, (G[k]||[])[i], k === newKey)); last = m.time || last; });
-    if (k === uptoKey) break;
-  }
-  chat.innerHTML = parts.join('');
-  $('#clock').textContent = last;
-  const place = () => { const firstNew = chat.querySelector('.msg.new'); chat.scrollTop = firstNew ? Math.max(0, firstNew.offsetTop - chat.offsetTop - 40) : chat.scrollHeight; };
-  place(); requestAnimationFrame(place);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
-}
-$('#chat').addEventListener('click', e => {
-  if (e.target.closest('.act-list')) openList();
-  if (e.target.closest('.act-flow')) openFlow('urdu');
-  const im = e.target.closest('.imgbub img'); if (im) lightbox(im.src);
-  const pb = e.target.closest('.play');
-  if (pb){
-    const msg = pb.closest('.msg'); const au = msg.querySelector('audio'); const bars = [...msg.querySelectorAll('.bars i')];
-    document.querySelectorAll('#chat audio').forEach(a => { if (a !== au){ a.pause(); } });
-    if (au.paused){ au.play(); pb.textContent = '❚❚'; } else { au.pause(); pb.textContent = '▶'; }
-    au.ontimeupdate = () => { const f = au.currentTime / (au.duration || 1); bars.forEach((b,i) => b.classList.toggle('on', i/bars.length < f)); };
-    au.onended = () => { pb.textContent = '▶'; };
-    au.onpause = () => { pb.textContent = '▶'; };
-  }
-});
-$('#glossToggle').addEventListener('change', e => $('#chat').classList.toggle('show-gloss', e.target.checked));
-
-/* list sheet */
-function openList(){
-  const rows = D.listRows.map((r,i) => `<button class="row" data-i="${i}" type="button"><span class="r"></span><span class="lbl"><b>${esc(r.title)}</b><span>${esc(r.desc)}</span><em>${i===0?'Roll 8 · new':'Roll '+r.title.match(/[۰-۹]+/)[0].replace(/[۰-۹]/g,d=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(d))+' · new'}</em></span></button>`).join('');
-  const alts = D.alternates.map(r => `<button class="row" type="button" disabled><span class="r"></span><span class="lbl"><b>${esc(r.title)}</b><span>${esc(r.desc)}</span><em>Alternate: only if a child is absent or refuses</em></span></button>`).join('');
-  $('#listRows').innerHTML = `<div class="sec">آج کے بچے</div>${rows}<div class="sec">متبادل</div>${alts}`;
-  $('#listSheet').classList.add('open');
-}
-$('#listClose').onclick = () => $('#listSheet').classList.remove('open');
-$('#listSheet').addEventListener('click', e => {
-  if (e.target === e.currentTarget) e.currentTarget.classList.remove('open');
-  const r = e.target.closest('.row[data-i]'); if (!r) return;
-  $('#listSheet').classList.remove('open');
-  if (STEPS[cur].id === 'list' && r.dataset.i === '0') go(cur + 1);
-});
-
-/* flow overlay */
-let flowTab = 'urdu', flowLang = 'ur';
-function setFlow(){
-  $('#flowImg').src = `img/check/${flowTab}_${flowLang}_full.png`;
-  $('#flowScroll').scrollTop = 0;
-  document.querySelectorAll('#flowTabs button').forEach(b => b.setAttribute('aria-pressed', b.dataset.tab === flowTab));
-  document.querySelectorAll('#flowLang button').forEach(b => b.setAttribute('aria-pressed', b.dataset.lang === flowLang));
-}
-function openFlow(tab){ flowTab = tab || flowTab; setFlow(); $('#flowOv').classList.add('open'); }
-$('#flowTabs').onclick = e => { const b = e.target.closest('button'); if (b){ flowTab = b.dataset.tab; setFlow(); } };
-$('#flowLang').onclick = e => { const b = e.target.closest('button'); if (b){ flowLang = b.dataset.lang; setFlow(); } };
-$('#flowClose').onclick = () => $('#flowOv').classList.remove('open');
-
-/* app overlay */
-const APP = [['02-list.png','Today\'s five, in the app'],['03-is-child-here.png','Is the child here?'],['04-urdu-ready.png','Urdu: ready to record'],['05-urdu-recording-43s.png','Recording, 43 seconds in'],['06-urdu-time-up-questions.png','Time up: on to the questions'],['07-urdu-review.png','Review before sending'],['11-maths-quick-sums.png','Maths: quick sums timer'],['13-maths-review-photo.png','Maths review with the strip photo'],['14-check.png','The check, in the app'],['15-check-missing-items.png','The check names what is missing']];
-let appI = 0;
-function setApp(){ $('#appImg').src = 'img/app/' + APP[appI][0]; $('#appCap').textContent = APP[appI][1]; $('#appPos').textContent = (appI+1)+'/'+APP.length; $('#appImg').parentElement.scrollTop = 0; }
-$('#appPrev').onclick = () => { appI = (appI + APP.length - 1) % APP.length; setApp(); };
-$('#appNext').onclick = () => { appI = (appI + 1) % APP.length; setApp(); };
-$('#appClose').onclick = () => $('#appOv').classList.remove('open');
-
-/* lightbox */
-function lightbox(src){ $('#lbImg').src = src; $('#lightbox').classList.add('open'); }
-$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
-$('#pbody').addEventListener('click', e => { const im = e.target.closest('figure img'); if (im) lightbox(im.src); });
-
-/* ---------- stepper ---------- */
 let cur = 0;
-$('#rail').innerHTML = STEPS.map((s,i) => `<button type="button" data-i="${i}"><span class="n">${i+1}</span>${esc(s.title)}</button>`).join('');
+$('#rail').innerHTML = STEPS.map((s,i) => `<button type="button" data-i="${i}" class="${s.bug?'bug':''}"><span class="n">${i+1}</span>${esc(s.title)}</button>`).join('');
 $('#rail').onclick = e => { const b = e.target.closest('button'); if (b) go(+b.dataset.i); };
+STEPS.forEach(s => { const im = new Image(); im.src = R + s.shot + '.jpg'; });
 function go(i){
   cur = Math.max(0, Math.min(STEPS.length - 1, i));
   const s = STEPS[cur];
   $('#kicker').textContent = `Step ${cur+1} of ${STEPS.length}`;
   $('#ptitle').textContent = s.title;
   $('#pbody').innerHTML = s.body();
-  renderChat(s.chat, s.chat === (STEPS[cur-1]||{}).chat ? null : s.chat);
-  $('#listSheet').classList.remove('open');
-  $('#flowOv').classList.toggle('open', s.phone === 'flow');
-  if (s.phone === 'flow'){ flowTab = s.flowTab || 'urdu'; setFlow(); }
-  $('#appOv').classList.toggle('open', s.phone === 'app');
-  if (s.phone === 'app'){ appI = 0; setApp(); }
-  document.querySelectorAll('#rail button').forEach((b,j) => { b.toggleAttribute('aria-current', j === cur); if (j === cur) b.setAttribute('aria-current','step'); b.classList.toggle('done', j < cur); });
+  const shot = $('#shot'); shot.src = R + s.shot + '.jpg'; shot.alt = s.title + ' (real WhatsApp screenshot)';
+  const p = $('#paper');
+  if (s.paper){ p.classList.add('show'); $('#paperImg').src = CARD[s.paper][0]; $('#paperImg').alt = CARD[s.paper][1]; $('#paperLabel').textContent = 'In the child\'s hands · ' + (s.paper === 'strip' ? 'maths strip' : 'printed card'); }
+  else p.classList.remove('show');
+  document.querySelectorAll('#rail button').forEach((b,j) => { if (j === cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); b.classList.toggle('done', j < cur); });
   const rb = $('#rail').children[cur]; rb && rb.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
   $('#prev').disabled = cur === 0;
-  $('#next').textContent = cur === STEPS.length - 1 ? 'To the numbers ↓' : 'Next →';
+  $('#next').textContent = cur === STEPS.length - 1 ? 'To the evidence ↓' : 'Next →';
   try { history.replaceState(null, '', '#step-' + (cur+1)); } catch(_){}
 }
 $('#prev').onclick = () => go(cur - 1);
-$('#next').onclick = () => { if (cur === STEPS.length - 1) $('#clock-sec').scrollIntoView({behavior:'smooth'}); else go(cur + 1); };
+$('#next').onclick = () => { if (cur === STEPS.length - 1) $('#standards').scrollIntoView({behavior:'smooth'}); else go(cur + 1); };
 document.addEventListener('keydown', e => {
-  if (e.target.closest('input,textarea') || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key === 'ArrowRight') go(cur + 1);
   if (e.key === 'ArrowLeft') go(cur - 1);
-  if (e.key === 'Escape'){ $('#lightbox').classList.remove('open'); $('#listSheet').classList.remove('open'); }
+  if (e.key === 'Escape') $('#lightbox').classList.remove('open');
 });
+function lightbox(src){ $('#lbImg').src = src; $('#lightbox').classList.add('open'); }
+$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
+$('#shot').onclick = () => lightbox($('#shot').src);
+$('#paperImg').onclick = () => lightbox($('#paperImg').src);
 
-/* ---------- facts ---------- */
 $('#facts').innerHTML = [
-  `<span class="chip ok">Separate from the observation, <b>live on sandbox</b></span>`,
-  `<span class="chip">Run <b>${D.run.started_pkt}</b></span>`,
-  `<span class="chip"><b>5</b> synthetic children, exact keys</span>`,
+  `<span class="chip ok">Recorded on <b>real WhatsApp</b> · NIETE sandbox · 3 Oct</span>`,
+  `<span class="chip ok">Separate from the observation · <b>/egra</b> only</span>`,
+  `<span class="chip">Synthetic child, invented names</span>`,
   `<span class="chip">Not on staging or production</span>`,
 ].join('');
 
-/* ---------- five-child clock ---------- */
 (function(){
-  const V = D.visit;
+  const Rr = D.real; if (!Rr) return;
+  $('#realTable').innerHTML = `<thead><tr><th>Field</th><th>AI vs enumerator</th><th>Human floor</th><th>On the check form</th></tr></thead><tbody>${Rr.rows.map(r => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody>`;
+  $('#realNote').textContent = Rr.source + '. ' + Rr.not_real;
+})();
+
+(function(){
+  const F = D.five, V = D.visit;
   const minT = Math.min(...F.map(f=>f.total)), maxT = Math.max(...F.map(f=>f.total));
   $('#clockStats').innerHTML = [
-    [`${mins(V.five_child_total_s)} min`, `for five children (tests ${mins(V.tests_s)} + checks ${mins(V.checks_s)}); target 25–30`, true],
+    [`${mins(V.five_child_total_s)} min`, 'five children in the run (target 25–30); about 35.4 at real speed', true],
     [`${mins(minT)}–${mins(maxT)} min`, 'per child, against about 5', true],
     [`${Math.round(Math.min(...F.map(f=>f.bot)))}–${Math.round(Math.max(...F.map(f=>f.bot)))} s`, 'of that is the bot', false],
     [`${mins(Math.min(...F.map(f=>f.speak)))}–${mins(Math.max(...F.map(f=>f.speak)))} min`, 'is the child speaking', false],
   ].map(([v,l,b]) => `<div class="stat"><div class="v${b?' bad':''}">${v}</div><div class="l">${l}</div></div>`).join('');
   const LBL = {fluent:'reads fluently', average:'average reader', struggling:'struggling reader', nonreader:'non-reader', skipper:'skips items'};
-  const W = 700, L = 168, R = 74, rowH = 40, top = 12, maxS = 540, sx = s => L + s * (W - L - R) / maxS;
+  const W = 700, L = 168, Rm = 74, rowH = 40, top = 12, maxS = 540, sx = s => L + s * (W - L - Rm) / maxS;
   const H = top + F.length * rowH + 34;
   let g = '';
   for (let s = 0; s <= maxS; s += 60){ const x = sx(s); g += `<line x1="${x}" y1="${top-4}" x2="${x}" y2="${top + F.length*rowH}" stroke="currentColor" stroke-opacity=".12"/><text x="${x}" y="${H-12}" font-size="11.5" text-anchor="middle" opacity=".7">${s ? s/60 + ' min' : '0'}</text>`; }
   F.forEach((f,i) => {
     const y = top + i*rowH + 8, h = 20; let x = L;
-    const seg = (w, col) => { const ww = w * (W - L - R) / maxS; const r = `<rect x="${x}" y="${y}" width="${ww}" height="${h}" fill="${col}"/>`; x += ww; return r; };
-    g += `<text x="0" y="${y+14}" font-size="13" font-weight="600">Roll ${f.roll}</text><text x="56" y="${y+14}" font-size="12.5" opacity=".75">${LBL[f.child]||f.child}</text>`;
+    const seg = (w, col) => { const ww = w * (W - L - Rm) / maxS; const r = `<rect x="${x}" y="${y}" width="${ww}" height="${h}" fill="${col}"/>`; x += ww; return r; };
+    g += `<text x="0" y="${y+14}" font-size="13" font-weight="600">Child ${i+1}</text><text x="56" y="${y+14}" font-size="12.5" opacity=".75">${LBL[f.child]||f.child}</text>`;
     g += seg(f.bot, 'var(--seg-bot)') + seg(f.speak, 'var(--seg-speak)') + seg(f.check, 'var(--seg-check)');
     g += `<text x="${x+6}" y="${y+14}" font-size="12.5" font-family="JetBrains Mono, monospace">${mins(f.total)} min</text>`;
   });
   const tx = sx(300);
-  g += `<line x1="${tx}" y1="${top-6}" x2="${tx}" y2="${top + F.length*rowH}" stroke="var(--target)" stroke-width="2" stroke-dasharray="5 4"/><text x="${tx+4}" y="${top+2}" font-size="11.5" fill="var(--target)" style="fill:var(--target)">5 min</text>`;
-  const svg = $('#clockChart'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('aria-label', `Per-child time for five children: every child between ${mins(minT)} and ${mins(maxT)} minutes against a five-minute target; the child's speaking time is the largest part.`); svg.innerHTML = g;
+  g += `<line x1="${tx}" y1="${top-6}" x2="${tx}" y2="${top + F.length*rowH}" stroke="var(--target)" stroke-width="2" stroke-dasharray="5 4"/><text x="${tx+4}" y="${top+2}" font-size="11.5" style="fill:var(--target)">5 min</text>`;
+  const svg = $('#clockChart'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('aria-label', `Per-child time for five children: between ${mins(minT)} and ${mins(maxT)} minutes against a five-minute target; the child's speaking time is the largest part.`); svg.innerHTML = g;
 })();
 
-/* ---------- accuracy ---------- */
-(function(){
-  const A = D.accuracy, S = A.story, I = A.items, Q = A.quick_sums;
-  const pct = v => `${v}%`;
-  const weak = v => v < 85 ? '<span class="pill">weak</span>' : '';
-  const rows = [
-    ['Story: words read right, Urdu', `off by ${S.urdu.ai.mae} words on average; ${S.urdu.ai.within3}% within 3`, `${S.urdu.coach.exact}% exact (n ${S.urdu.coach.n})`],
-    ['Story: words read right, English', `off by ${S.english.ai.mae} words on average; ${S.english.ai.within3}% within 3${weak(S.english.ai.within3)}`, `off by ${S.english.coach.mae}; ${S.english.coach.within3}% within 3`],
-    ['Words marked wrong, Urdu', `precision ${S.urdu.ai_words.precision} · recall ${S.urdu.ai_words.recall}`, `${S.urdu.coach_words.precision} · ${S.urdu.coach_words.recall}`],
-    ['Words marked wrong, English', `precision ${S.english.ai_words.precision} · recall ${S.english.ai_words.recall}${weak(S.english.ai_words.recall*100)}`, `${S.english.coach_words.precision} · ${S.english.coach_words.recall}`],
-    ['Story questions', pct(I.questions.ai.agree), pct(I.questions.coach.agree)],
-    ['First sounds (Urdu)', pct(I.first_sounds.ai.agree), pct(I.first_sounds.coach.agree)],
-    ['Made-up words', pct(I.nonwords.ai.agree)+weak(I.nonwords.ai.agree), pct(I.nonwords.coach.agree)],
-    ['Numbers read aloud', pct(I.numbers.ai.agree)+weak(I.numbers.ai.agree), pct(I.numbers.coach.agree)],
-    ['Written sums (strip photo)', pct(I.written.ai.agree), pct(I.written.coach.agree)],
-    ['Word problem (strip photo)', pct(I.word_problem.ai.agree), pct(I.word_problem.coach.agree)],
-    ['Quick sums right', `off by ${Q.ai.mae} on average; ${Q.ai.within3}% within 3, ${Q.ai.within5}% within 5`, `${Q.coach.exact}% exact`],
-  ];
-  $('#accTable').innerHTML = `<thead><tr><th>Field</th><th>AI</th><th>After the check</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td></tr>`).join('')}</tbody>`;
-})();
-
-/* ---------- real children vs enumerators ---------- */
-(function(){
-  const R = D.real; if (!R) return;
-  $('#realTable').innerHTML = `<thead><tr><th>Field</th><th>AI vs enumerator</th><th>Human floor</th><th>On the check form</th></tr></thead><tbody>${R.rows.map(r => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody>`;
-  $('#realNote').textContent = R.source + '. ' + R.not_real;
-})();
-
-/* ---------- issues register (from ISSUES.md) ---------- */
 (function(){
   $('#issueTables').innerHTML = D.issues.map(sec => {
     const head = sec.head.map(h => `<th>${md(h)}</th>`).join('');

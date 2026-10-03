@@ -1030,7 +1030,7 @@ window.DEMO = {
     [
      "P1",
      "**Five minutes per child is not met**",
-     "Sandbox, full battery (synthetic): test 28.0 min + checks 10.5 min = 38.4 min for five. Real May children (partial battery): 20.8 + 11.6 = 32.4 min. Protocol model: 6.0 min per child at quick sums 60 s, 5.5 at 30 s (`sim/PROTOCOL_TIMING.md`). The bot is 30–60 s of it; the rest is the child's speaking and the coach's check.",
+     "Sandbox, full battery (synthetic): test 28.0 min + checks 10.5 min = 38.4 min for five, of which about 4.3 min was simulator artefact (pacer wait from back-to-back notes, driver read delay; L22). At real speed the projection is 35.4 min (L22, `--realtime`). Real May children (partial battery): 20.8 + 11.6 = 32.4 min. Protocol model: 6.0 min per child at quick sums 60 s, 5.5 at 30 s (`sim/PROTOCOL_TIMING.md`). The bot is 30–60 s of it; the rest is the child's speaking and the coach's check.",
      "(D2, D3)"
     ],
     [
@@ -1071,8 +1071,8 @@ window.DEMO = {
     ],
     [
      "P8",
-     "**The 👍 reaction on each coach message fails**",
-     "Run `sandbox5-syn-2032`: all 37 reactions failed (21 rate-limited, 16 refused); every one of the 69 real messages was delivered. Partly a simulation artefact (injected message ids), but the 429s are real pacing. Probe `sandbox1-separate-1313` (3 Oct): 8 of 8 reactions refused, 14 of 14 real messages delivered.",
+     "~~The 👍 reaction on each coach message fails~~ **Closed: simulation artefact (L22)**",
+     "The 400s are Meta 131009 \"invalid message_id\" on the simulator's injected ids (0 in 14 days of NIETE production). The \"429s\" are our own pacer skipping an optional 👍, mislabelled as 429 (Meta returned 0 rate-limit refusals in 14 days, 511,515 reactions delivered). The ~6 s reply gaps came from sending notes back to back; at real speed the pacer waits 0 s and replies land 0.6–1.2 s apart. Echo now carries `local: skipped`; simulator fixed (PR #1541). Spin-off: the webhook awaits the 👍 before handling each message, p50 0.63 s on every NIETE feature (bd-x7en0).",
      "bd-s1oo0.30"
     ],
     [
@@ -1104,6 +1104,12 @@ window.DEMO = {
      "**The story minute is cut short while the child is still reading**",
      "L23: 24 of 370 reading notes (6.5%): a comprehension question's words matched the child reading the story (14), the labeller placed a later section inside the minute (7), a stop-cue match (3). Lowers the count and feeds P12.",
      "bd-s1oo0.42"
+    ],
+    [
+     "P14",
+     "**A check message already delivered keeps the old Flow after a republish**",
+     "Real WhatsApp capture, 3 Oct: after the fixed check Flow was republished, reopening the earlier check message (even after reloading WhatsApp Web) still showed the old version; a new check message opened the new one. Rollout note: after any check-Flow republish, pending checks need a fresh message (tap the child in today's list to resend it).",
+     "—"
     ]
    ]
   },
@@ -1170,6 +1176,31 @@ window.DEMO = {
      "bd-s1oo0.24",
      "English story returned no JSON for near-non-readers",
      "Strict JSON schema for the story call"
+    ],
+    [
+     "bd-s1oo0.43",
+     "**The check could not be saved**: count inputs were `phone` type, so WhatsApp showed \"Enter a valid phone number\" for any count (found in the real WhatsApp capture, 3 Oct)",
+     "Counts are text inputs (3 chars); the endpoint reads Latin, Urdu and Arabic-Indic digits; Flow republished; a real check saved through WhatsApp"
+    ],
+    [
+     "bd-s1oo0.36 / .37",
+     "A child without a roll broke `/egra`; children were named by roll",
+     "Full name first, roll as a hint; never throws (live on sandbox)"
+    ],
+    [
+     "bd-s1oo0.38",
+     "Strips matched by order only",
+     "Child no. on the strip, read at receipt; any order works"
+    ],
+    [
+     "bd-s1oo0.27 / .28",
+     "Check message stated empty numbers; no \"Send to teacher\" in separate mode",
+     "States only what is filled; class teacher offered from the drawn class"
+    ],
+    [
+     "bd-s1oo0.42",
+     "Stop rule hid readers; story minute cut short",
+     "12 → 0; 24 → 2 (real pairs)"
     ],
     [
      "(L0)",
