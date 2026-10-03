@@ -1072,8 +1072,14 @@ window.DEMO = {
     [
      "P8",
      "**The 👍 reaction on each coach message fails**",
-     "Run `sandbox5-syn-2032`: all 37 reactions failed (21 rate-limited, 16 refused); every one of the 69 real messages was delivered. Partly a simulation artefact (injected message ids), but the 429s are real pacing.",
+     "Run `sandbox5-syn-2032`: all 37 reactions failed (21 rate-limited, 16 refused); every one of the 69 real messages was delivered. Partly a simulation artefact (injected message ids), but the 429s are real pacing. Probe `sandbox1-separate-1313` (3 Oct): 8 of 8 reactions refused, 14 of 14 real messages delivered.",
      "bd-s1oo0.30"
+    ],
+    [
+     "P9",
+     "**In separate mode the coach cannot choose the grade**",
+     "With no observation there is no observed class, so the draw picks the grade by the order of test visits to the school this quarter: Grade 3 on the first, Grade 5 on the next, and so on, falling back to the other grade when one has no class list (`draw/index.js` `todaysList`: `prior.size % 2`). Linked mode used the observed teacher's class. Fine if the plan is one visit per grade per quarter; wrong the day a coach wants the other grade. Fix option: when both grades have a list, ask the coach (two buttons).",
+     "bd-s1oo0.35"
     ]
    ]
   },
@@ -1094,7 +1100,7 @@ window.DEMO = {
     ],
     [
      "3 Oct",
-     "**Kept separate from the observation** (operator): no offer after `/observe2` or classic `/observe`; `/egra` stands alone and draws on the coach's school. `CHILD_TEST_OBSERVE_LINK=true` restores the link. bd-s1oo0.25, PR #1526 → sandbox #1527."
+     "**Kept separate from the observation** (operator): no offer after `/observe2` or classic `/observe`; `/egra` stands alone and draws on the coach's school. `CHILD_TEST_OBSERVE_LINK=true` restores the link. bd-s1oo0.25, PR #1526 → sandbox #1527 (`b37f6635`), live on sandbox 3 Oct 13:08 UTC (bot, sqs-worker, sqs-worker-video, portal SUCCESS; uptime reset). Probe `sandbox1-separate-1313`: same five drawn, no \"Send to teacher\", check saved. Not on staging or main."
     ]
    ]
   },

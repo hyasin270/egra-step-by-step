@@ -397,7 +397,9 @@ const STEPS = [
    <ul><li>One draw per class per quarter, from a secret seed: sending <code>/egra</code> again that quarter brings back the same five. Nobody can redraw.</li>
    <li>Four new children and one returning from an earlier quarter. This class had no earlier test, so all five are new.</li>
    <li>Two alternates (rolls 18 and 9), used only if a child is absent or refuses.</li>
-   <li>The message gives the order to pass to the class teacher, <span class="num">8, 25, 15, 6, 3</span>, so one child comes at a time.</li></ul>
+   <li>The message gives the order to pass to the class teacher, <span class="num">8, 25, 15, 6, 3</span>, so one child comes at a time.</li>
+   <li>The grade: with no observation, Grade 3 on the school's first test visit of the quarter, Grade 5 on the next, and so on. Today's probe drew Grade 3.</li></ul>
+   ${call('bad','P9','The coach cannot choose the grade', 'When the test was linked, the observed class set the grade. Separate, it follows the visit order. Fix option: when both grades have a class list, ask the coach.')}
    ${call('bad','P7','Only schools with a class list can run', 'The draw needs the Grade 3 and Grade 5 class lists. 254 of 424 schools had both on 27 Sep; the rest get "no class list".')}` },
  { id:'pick', chat:'pick', title:'Roll 8 is called', body: () => `
    <p class="lead">The coach taps roll 8 and the class teacher sends the child over.</p>
