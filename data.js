@@ -1036,13 +1036,13 @@ window.DEMO = {
     [
      "P2",
      "**Low pre-fill in strict mode**",
-     "70 of 202 check fields (35%) arrived filled. A fluent child's Urdu story count (AI 57, key 58) arrived empty because its confidence was 0.69. All 40 English made-up-word fields and all 25 first-sound fields arrived empty.",
+     "70 of 202 check fields (35%) arrived filled. A fluent child's Urdu story count (AI 57, key 58) arrived empty: the Urdu story count is never pre-filled (`thresholds.js` bar NEVER, because on the 53 real children of L5 its confidence did not predict accuracy). All 40 English made-up-word fields and all 25 first-sound fields arrived empty.",
      "bd-s1oo0.29"
     ],
     [
      "P3",
      "**The check message states numbers that the form then leaves empty**",
-     "Child 1: the Flow message says \"Urdu 57 words, English 58 words, maths 28 quick sums\", and the form's Urdu story field is empty (below the bar). Confusing for the coach: either show the number with \"please check\", or do not state it. The same message promises \"about a minute\"; the measured check was 107–144 s per child.",
+     "Child 1: the Flow message says \"Urdu 57 words, English 58 words, maths 28 quick sums\", and the form's Urdu story field is empty (the Urdu story count is never pre-filled). Confusing for the coach: either show the number with \"please check\", or do not state it. The same message promises \"about a minute\"; the measured check was 107–144 s per child.",
      "bd-s1oo0.27"
     ],
     [
@@ -1054,8 +1054,8 @@ window.DEMO = {
     [
      "P5",
      "**Weaker AI fields**",
-     "Synthetic children with exact keys: made-up words 79%, numbers read aloud 81%, English per-word flags precision 0.80 / recall 0.75. Coach confirms these today.",
-     "(D3)"
+     "Real May children against the enumerator's marks (L5 run 3, 53 Grade 3/5 children): per-word flags precision 0.25 / recall 0.33; English made-up words 41% (enumerators agree with reviewers 52%); English comprehension 54%; quick sums within ±3 62% (human floor 90%); letters/words fallback r 0.19 / 0.26. All of these are never pre-filled; the coach marks them. Synthetic children score far higher (made-up words 79%, flags 0.80/0.75), so synthetic numbers must not be quoted as accuracy. Full run on every study recording: L23, bd-s1oo0.40.",
+     "bd-s1oo0.40"
     ],
     [
      "P6",
@@ -1175,5 +1175,59 @@ window.DEMO = {
   "sameFive": true,
   "checkSaved": true,
   "note": "Checked again on sandbox after the change (3 Oct, 18:13 Pakistan time, one synthetic child, no observation): <code>/egra</code> drew the same five in the same order, no “Send to teacher” message came, all three parts were marked, and the check saved. 14 of 14 messages delivered. The coach-facing text of every other message matches this replay; the only difference is the AI's English count for the same recording (58 on 2 Oct, 57 on 3 Oct). The earlier draw had been deleted before the check, so the same five coming back is the seeded draw at work."
+ },
+ "real": {
+  "source": "L5 evaluation, run 3: the go-live pipeline on 53 real Grade 3/5 children from the May 2026 Rawalpindi recordings, against the enumerator's tablet marks",
+  "rows": [
+   [
+    "Story: words read right, Urdu",
+    "off by 6.9 words on average; 83% within 5 (n 30)",
+    "54%",
+    "never pre-filled"
+   ],
+   [
+    "Story: words read right, English",
+    "off by 5.7; 77% within 5 (n 35); when confident 88% (n 16)",
+    "62%",
+    "pre-filled when confident"
+   ],
+   [
+    "Which words were wrong",
+    "precision 0.25, recall 0.33",
+    "—",
+    "never pre-ticked"
+   ],
+   [
+    "Story questions, Urdu",
+    "76% (n 70); when confident 79%",
+    "73%",
+    "pre-filled when confident"
+   ],
+   [
+    "Story questions, English",
+    "54% (n 26); when very confident 71% (n 7)",
+    "—",
+    "pre-filled when very confident"
+   ],
+   [
+    "Made-up words, English",
+    "41% (n 304)",
+    "52%",
+    "never pre-filled"
+   ],
+   [
+    "Quick sums right",
+    "within 3 for 62% (n 42)",
+    "90%",
+    "never pre-filled"
+   ],
+   [
+    "Letters / words (non-readers)",
+    "weak: r 0.19 letters, 0.26 words (n 30)",
+    "89% / 51%",
+    "never pre-filled"
+   ]
+  ],
+  "not_real": "Not measurable on the May recordings: Urdu made-up words and first sounds (the May test had none) and numbers read aloud (not keyed). The strip photos (96% of 250) are rendered test images, not real children's work."
  }
 };

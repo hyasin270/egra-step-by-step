@@ -221,6 +221,9 @@ svg text{fill:currentColor}
 .chart{color:var(--ink);display:block;min-width:560px;width:100%;height:auto}
 .pill{display:inline-block;font:600 11px var(--body);padding:2px 7px;border-radius:999px;background:var(--bad-soft);color:var(--bad);margin-left:6px;vertical-align:1px}
 .issues h3{font-size:20px;margin:26px 0 10px}
+details.synth{margin-top:22px}
+details.synth summary{cursor:pointer;font-weight:600;color:var(--muted)}
+details.synth[open] summary{margin-bottom:8px}
 .issues tr:target td{background:var(--warn-soft)}
 .issues td:first-child{font:600 13px var(--mono);white-space:nowrap}
 footer{padding-block:30px 50px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
@@ -313,9 +316,15 @@ footer ul{padding-left:20px;display:grid;gap:6px;max-width:80ch}
 </section>
 
 <section class="block" id="accuracy">
-  <h2>How close the marks are</h2>
-  <p class="sub">Five synthetic children, each with an exact answer key. "AI" is the mark the bot pre-fills; "after the check" is the mark once the coach has confirmed or corrected it. This coach is simulated (it fixes a disagreement 9 times in 10), so the second column shows the check working, not a real coach's accuracy.</p>
-  <div class="tbl"><table id="accTable"></table></div>
+  <h2>How close the AI is to the enumerators</h2>
+  <p class="sub">Real children from the May 2026 Rawalpindi study: the AI's mark against the enumerator's tablet mark for the same child and item. The last-but-one column is how often a QA reviewer, re-listening, agreed with the enumerator: the human floor. A run on every study recording, all grades, is under way and will replace this table.</p>
+  <div class="tbl"><table id="realTable"></table></div>
+  <p class="note" id="realNote"></p>
+  <details class="synth">
+    <summary>The five synthetic children in this run (not an accuracy measure)</summary>
+    <p class="note">Synthetic voices read the card with exact answer keys, and a simulated coach fixes a disagreement 9 times in 10. This shows the check mechanics working. Real children score much lower; use the table above for accuracy.</p>
+    <div class="tbl"><table id="accTable"></table></div>
+  </details>
 </section>
 
 <section class="block issues" id="issues">
@@ -444,13 +453,13 @@ const STEPS = [
  { id:'next', chat:'next', title:'Roll 25 starts; roll 8\'s check arrives', body: () => `
    <p class="lead">The coach moves on: roll 25, <em>Present</em>. ${fmt(T.check_sent_after_photo_s)} seconds after roll 8's photo, the check for roll 8 arrives.</p>
    <ul><li>Checks can be done as they arrive or all at the end. In this run the coach did all five at the end.</li></ul>
-   ${call('bad','P3','The message states numbers the form leaves empty', 'It says “Urdu 57 words”, but the form\'s Urdu story count arrives empty, because the AI was not sure enough to pre-fill it. It also promises “about a minute”; roll 8\'s check took '+fmt(D.check_s_child1)+' s.')}` },
+   ${call('bad','P3','The message states numbers the form leaves empty', 'It says “Urdu 57 words”, but the form\'s Urdu story count arrives empty, because that count is never pre-filled. It also promises “about a minute”; roll 8\'s check took '+fmt(D.check_s_child1)+' s.')}` },
  { id:'check', chat:'check', phone:'flow', title:'The check form', body: () => `
    <p class="lead">Tapping <span class="ur">جانچ کریں</span> opens the check: one screen each for Urdu, English and maths. The coach confirms or corrects the AI's marks.</p>
    <div class="try">Switch screens and labels with the bar at the top of the phone; scroll the form.</div>
    ${chips([['Roll 8: fields pre-filled', P1.prefilled+' of '+P1.fields],['Check time', fmt(D.check_s_child1)+' s']])}
    <ul><li>Strict pre-fill: a field arrives filled only when the AI is sure. Red dashed boxes are the ones the coach fills.</li>
-   <li>The Urdu story count arrived empty: the AI said ${D.story_child1[0].ai} (the key is ${D.story_child1[0].key}) at confidence ${D.story_child1[0].conf}, under the bar.</li>
+   <li>The Urdu story count always arrives empty: on real children the AI's confidence did not predict when its count was right, so it is never pre-filled. Here the AI said ${D.story_child1[0].ai}; the key is ${D.story_child1[0].key}.</li>
    <li>Across five children, ${D.accuracy.prefill.prefilled} of ${D.accuracy.prefill.fields} fields (${Math.round(D.accuracy.prefill.rate*100)}%) arrived filled. All Urdu first-sound and English made-up-word fields arrived empty.</li></ul>
    ${call('', 'D3','Strict or assist', 'Assist fills every field and names the unsure ones. It is faster for the coach but invites rubber-stamping. Recommendation: keep strict, and pilot assist with one filmed coach.')}`,
    flowTab:'urdu' },
@@ -458,7 +467,7 @@ const STEPS = [
    <p class="lead">The AI's marks are saved once and never overwritten. The coach's marks and every change sit beside them, so we can always see who said what.</p>
    ${editsTable()}
    <p class="note">This coach is simulated: it fixes a disagreement with the key 9 times in 10, so its changes match the key. It missed one: English story words, AI ${D.story_child1[1].ai}, key ${D.story_child1[1].key}.</p>
-   ${call('bad','P5','Weaker AI fields', 'Made-up words (79% agree with the key) and numbers read aloud (81%) need the most correcting today; see the accuracy table below.')}` },
+   ${call('bad','P5','Weaker AI fields, on real children', 'Against the enumerators\' marks on real May children: which words were wrong, precision 0.25; English made-up words 41%; quick sums within 3 only 62%. These arrive empty and the coach marks them. The synthetic children here score far higher, so the real table below is the one to trust.')}` },
  { id:'scoring', chat:'check', title:'Behind the scenes: time and cost', body: () => `
    <p class="lead">For roll 8, the bot made ${D.calls.urdu.length + D.calls.english.length + D.calls.maths.length} paid calls. Each part is marked while the coach is already on the next one.</p>
    ${chips([['Urdu', fmt(D.blockSeconds.urdu)+' s'],['English', fmt(D.blockSeconds.english)+' s'],['Maths', fmt(D.blockSeconds.maths)+' s'],['Roll 8', '$'+D.cost_child1.toFixed(3)],['Average child', '$'+D.accuracy.cost_usd_per_child.toFixed(3)]])}
@@ -664,6 +673,13 @@ $('#facts').innerHTML = [
     ['Quick sums right', `off by ${Q.ai.mae} on average; ${Q.ai.within3}% within 3, ${Q.ai.within5}% within 5`, `${Q.coach.exact}% exact`],
   ];
   $('#accTable').innerHTML = `<thead><tr><th>Field</th><th>AI</th><th>After the check</th></tr></thead><tbody>${rows.map(r => `<tr><td>${r[0]}</td><td class="num">${r[1]}</td><td class="num">${r[2]}</td></tr>`).join('')}</tbody>`;
+})();
+
+/* ---------- real children vs enumerators ---------- */
+(function(){
+  const R = D.real; if (!R) return;
+  $('#realTable').innerHTML = `<thead><tr><th>Field</th><th>AI vs enumerator</th><th>Human floor</th><th>On the check form</th></tr></thead><tbody>${R.rows.map(r => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody>`;
+  $('#realNote').textContent = R.source + '. ' + R.not_real;
 })();
 
 /* ---------- issues register (from ISSUES.md) ---------- */
