@@ -1080,6 +1080,18 @@ window.DEMO = {
      "**In separate mode the coach cannot choose the grade**",
      "With no observation there is no observed class, so the draw picks the grade by the order of test visits to the school this quarter: Grade 3 on the first, Grade 5 on the next, and so on, falling back to the other grade when one has no class list (`draw/index.js` `todaysList`: `prior.size % 2`). Linked mode used the observed teacher's class. Fine if the plan is one visit per grade per quarter; wrong the day a coach wants the other grade. Fix option: when both grades have a list, ask the coach (two buttons).",
      "bd-s1oo0.35"
+    ],
+    [
+     "P10",
+     "**A drawn child with no roll number breaks `/egra` for that class**",
+     "The draw includes children with no roll; building the list then throws (`resolveUx: missing param \"roll\"` on `childTestRowTitle`, reproduced with the real catalogue). The handler swallows it, so the coach gets no list, and because the draw is already saved, every retry that quarter fails the same way. NIETE roster 3 Oct (read replica, 924 Grade 3/5 classes with children): 1,084 of 31,826 children (3.4%) have no roll; 29 classes have none at all. Expected in 5.4% of first draws, certain in 33 classes, possible in 73; 56 of 315 schools have a roll-less child in Grade 3 or 5. The strips-batch line (`childTestStripsBatch`) has the same fault.",
+     "bd-s1oo0.36"
+    ],
+    [
+     "P11",
+     "**Roll numbers are not a stable way to find a child; the name should lead**",
+     "The coach does see the name (list row \"Roll 8 · name\", presence prompt), but the class-teacher line and the strips-batch line give roll numbers only, and the row puts the roll first. NIETE roster 3 Oct: rolls are the register's serial column read from a photo (83% of classes are exactly 1…N), registers are rewritten monthly and renumber (roster code note: the same children moved from rolls 23–25 to 26–28), 30,555 of 31,826 children were imported in September, and no admission numbers are recorded (0%). By later months the roll on our list can point at a different line in the teacher's register. Names: 100% present but 98.9% in English letters and 0% have an Urdu-script name; 6.6% are cut off by the 24-character row limit; 2.0% of children share their name with a classmate (194 classes). The strip's \"Roll no.\" box is never read: a strip photo goes to the oldest child still missing one, so a batch sent out of order attaches to the wrong child silently. Fix: lead with the name everywhere (row, teacher line, strips line), roll as a hint when present; name on the strip; optionally have the vision call read the strip's name and flag a mismatch. Whether teachers actually call children by roll in ICT schools is a field question the data cannot answer.",
+     "bd-s1oo0.37"
     ]
    ]
   },

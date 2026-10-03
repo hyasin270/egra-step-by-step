@@ -400,11 +400,13 @@ const STEPS = [
    <li>The message gives the order to pass to the class teacher, <span class="num">8, 25, 15, 6, 3</span>, so one child comes at a time.</li>
    <li>The grade: with no observation, Grade 3 on the school's first test visit of the quarter, Grade 5 on the next, and so on. Today's probe drew Grade 3.</li></ul>
    ${call('bad','P9','The coach cannot choose the grade', 'When the test was linked, the observed class set the grade. Separate, it follows the visit order. Fix option: when both grades have a class list, ask the coach.')}
+   ${call('bad','P10','A child with no roll number breaks the list', 'The synthetic school has a roll for every child; real class lists do not. 3.4% of Grade 3 and 5 children have no roll (29 classes have none). If one of them is drawn, the list fails to build and the coach gets nothing, on every retry that quarter. Expected in about 1 first draw in 20.')}
    ${call('bad','P7','Only schools with a class list can run', 'The draw needs the Grade 3 and Grade 5 class lists. 254 of 424 schools had both on 27 Sep; the rest get "no class list".')}` },
  { id:'pick', chat:'pick', title:'Roll 8 is called', body: () => `
    <p class="lead">The coach taps roll 8 and the class teacher sends the child over.</p>
    <h3>What the bot does</h3>
    <ul><li>Asks whether the child is present and willing: <em>Present</em>, <em>Absent</em> or <em>Refused</em>. Absent or refused moves the coach to an alternate.</li></ul>
+   ${call('bad','P11','Roll numbers drift; the name should lead', 'The coach sees the name, but after the roll, and the line for the class teacher gives rolls only. Real rolls are the register\'s line numbers from a September photo, and registers are rewritten and renumbered each month, so “roll 25” can point at a different child by November. Names are all present, nearly all in English letters; 6.6% are cut off in the list.')}
    ${call('bad','P4','“Send to teacher” is gone now that the test is separate', `The message offering to send the roll order to the teacher comes from the observation: it needs the observed teacher. In separate mode there is no observed teacher, so it no longer appears${probe && probe.noSendToTeacher ? ' (checked on sandbox, 3 Oct)' : ''}. The order is still in the list message. Fix options: ask which class teacher, or take the class teacher from the drawn class.`)}` },
  { id:'present', chat:'present', title:'Present: the Urdu page', body: () => `
    <p class="lead">The coach taps <em>Present</em>, opens the printed card at the Urdu page and holds one locked voice note while the child reads the story, then the made-up words, then answers the questions.</p>
@@ -437,6 +439,7 @@ const STEPS = [
    ${chips([['Maths marks ready', fmt(T.maths_scored_after_photo_s)+' s after the photo'],['Check sent', fmt(T.check_sent_after_photo_s)+' s after the photo']])}
    <div class="figs">${fig('img/card/G3-A-5.png','The blank strip (card page 5).')}${fig('img/strip/'+D.strips[0].file,'Roll 8\'s photo (test image, light damage).')}${fig('img/strip/'+D.strips[1].file,'Roll 3\'s photo: the hardest in the run (dark, glare, blur, angled).')}</div>
    ${stripTable()}
+   ${call('bad','P11','The strip is matched by order, not by what is written on it', 'The “Roll no.” box is never read. A photo goes to the oldest child still missing a strip, so strips sent together out of order attach to the wrong child without a warning.')}
    <p class="note">Both strips were read exactly as written: blanks as blank, a wrong answer as wrong. Read by Gemini 3.1 Pro in ${fmt(D.calls.maths.find(c=>c.job==='vision').s)} s.</p>` },
  { id:'next', chat:'next', title:'Roll 25 starts; roll 8\'s check arrives', body: () => `
    <p class="lead">The coach moves on: roll 25, <em>Present</em>. ${fmt(T.check_sent_after_photo_s)} seconds after roll 8's photo, the check for roll 8 arrives.</p>
