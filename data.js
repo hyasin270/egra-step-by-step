@@ -990,7 +990,7 @@ window.DEMO = {
     ],
     [
      "D2",
-     "**Instrument trim (D3)**: quick sums 30 or 60 s; any section cuts for 5 min per child; letter names for first sounds; اہم ہیں / اہم ہے; partial answers",
+     "**Instrument trim and fidelity (D3)**: quick sums 30 or 60 s; any section cuts for 5 min per child; letter names for first sounds; اہم ہیں / اہم ہے; partial answers. **Added 3 Oct from the standards check** (`research/EGRA_EGMA_STANDARDS_CHECK.md`): call it EGRA/EGMA-derived; maths (keep ours and label the variants, move toward Core EGMA, or use the May items for comparison with Rawalpindi); a 3rd English question; card face-down before questions or allow lookbacks; Grade 5 continuation difficulty; pilot-equate Form B; device test of the voice recorder with an image open",
      "The child's own speaking time is 4–5 minutes; five minutes per child is not reachable without a content decision. Quick sums at 30 s saves about 30 s per child.",
      "Sabeena + Sameer",
      "bd-s1oo0.32"
@@ -1036,7 +1036,7 @@ window.DEMO = {
     [
      "P2",
      "**Low pre-fill in strict mode**",
-     "70 of 202 check fields (35%) arrived filled. A fluent child's Urdu story count (AI 57, key 58) arrived empty: the Urdu story count is never pre-filled (`thresholds.js` bar NEVER, because on the 53 real children of L5 its confidence did not predict accuracy). All 40 English made-up-word fields and all 25 first-sound fields arrived empty.",
+     "Real children (L23, 185): per child 1.6 fields arrive filled (1.1 confirmed, 0.5 changed) and 10.7 arrive empty; about 2 minutes per check. Synthetic run: 70 of 202 check fields (35%) arrived filled. A fluent child's Urdu story count (AI 57, key 58) arrived empty: the Urdu story count is never pre-filled (`thresholds.js` bar NEVER, because on the 53 real children of L5 its confidence did not predict accuracy). All 40 English made-up-word fields and all 25 first-sound fields arrived empty.",
      "bd-s1oo0.29"
     ],
     [
@@ -1054,7 +1054,7 @@ window.DEMO = {
     [
      "P5",
      "**Weaker AI fields**",
-     "Real May children against the enumerator's marks (L5 run 3, 53 Grade 3/5 children): per-word flags precision 0.25 / recall 0.33; English made-up words 41% (enumerators agree with reviewers 52%); English comprehension 54%; quick sums within ±3 62% (human floor 90%); letters/words fallback r 0.19 / 0.26. All of these are never pre-filled; the coach marks them. Synthetic children score far higher (made-up words 79%, flags 0.80/0.75), so synthetic numbers must not be quoted as accuracy. Full run on every study recording: L23, bd-s1oo0.40.",
+     "L23, all 185 May 2026 Rawalpindi children against the enumerators (human floor in brackets = QA reviewers agreeing with the enumerator): story counts within ±5 Urdu 70% (58%), English 77% (59%), i.e. as good as a second human; Urdu questions 73% (82%), 86% when ≥ 0.90 sure; English questions 61% (76%); English made-up words 49% = marking all wrong (63%); quick sums within ±3 59% (95%); letters/words 21–71% (60–90%); chips precision 0.22 / 0.06. Synthetic children score far higher and must not be quoted as accuracy.",
      "bd-s1oo0.40"
     ],
     [
@@ -1092,6 +1092,18 @@ window.DEMO = {
      "**Roll numbers are not a stable way to find a child; the name should lead**",
      "The coach does see the name (list row \"Roll 8 · name\", presence prompt), but the class-teacher line and the strips-batch line give roll numbers only, and the row puts the roll first. NIETE roster 3 Oct: rolls are the register's serial column read from a photo (83% of classes are exactly 1…N), registers are rewritten monthly and renumber (roster code note: the same children moved from rolls 23–25 to 26–28), 30,555 of 31,826 children were imported in September, and no admission numbers are recorded (0%). By later months the roll on our list can point at a different line in the teacher's register. Names: 100% present but 98.9% in English letters and 0% have an Urdu-script name; 6.6% are cut off by the 24-character row limit; 2.0% of children share their name with a classmate (194 classes). The strip's \"Roll no.\" box is never read: a strip photo goes to the oldest child still missing one, so a batch sent out of order attaches to the wrong child silently. Fix: lead with the name everywhere (row, teacher line, strips line), roll as a hint when present; name on the strip; optionally have the vision call read the strip's name and flag a mismatch. Whether teachers actually call children by roll in ICT schools is a field question the data cannot answer.",
      "bd-s1oo0.37"
+    ],
+    [
+     "P12",
+     "**The stop rule sends real readers to the non-reader fallback**",
+     "L23: 12 reading notes went to letters/words although the AI's own count was 20–53 words right (enumerator ≥ 30 in 11); the model marked line 1 `skipped`, and the check Flow then hides the story count, so the child looks like a non-reader.",
+     "bd-s1oo0.42"
+    ],
+    [
+     "P13",
+     "**The story minute is cut short while the child is still reading**",
+     "L23: 24 of 370 reading notes (6.5%): a comprehension question's words matched the child reading the story (14), the labeller placed a later section inside the minute (7), a stop-cue match (3). Lowers the count and feeds P12.",
+     "bd-s1oo0.42"
     ]
    ]
   },
@@ -1177,57 +1189,57 @@ window.DEMO = {
   "note": "Checked again on sandbox after the change (3 Oct, 18:13 Pakistan time, one synthetic child, no observation): <code>/egra</code> drew the same five in the same order, no “Send to teacher” message came, all three parts were marked, and the check saved. 14 of 14 messages delivered. The coach-facing text of every other message matches this replay; the only difference is the AI's English count for the same recording (58 on 2 Oct, 57 on 3 Oct). The earlier draw had been deleted before the check, so the same five coming back is the seeded draw at work."
  },
  "real": {
-  "source": "L5 evaluation, run 3: the go-live pipeline on 53 real Grade 3/5 children from the May 2026 Rawalpindi recordings, against the enumerator's tablet marks",
+  "source": "L23, 3 Oct: the go-live pipeline on all 185 children of the May 2026 Rawalpindi study (Grades 1–5, 555 voice notes), against the enumerator's tablet marks. Human floor: how often a QA reviewer, re-listening to the same children, agreed with the enumerator",
   "rows": [
    [
-    "Story: words read right, Urdu",
-    "off by 6.9 words on average; 83% within 5 (n 30)",
-    "54%",
-    "never pre-filled"
+    "Story: words read right, Urdu (within 5)",
+    "70% (n 108)",
+    "58%",
+    "never pre-filled: its confidence ranks the wrong way (fix under way)"
    ],
    [
-    "Story: words read right, English",
-    "off by 5.7; 77% within 5 (n 35); when confident 88% (n 16)",
-    "62%",
-    "pre-filled when confident"
-   ],
-   [
-    "Which words were wrong",
-    "precision 0.25, recall 0.33",
-    "—",
-    "never pre-ticked"
+    "Story: words read right, English (within 5)",
+    "77% (n 79)",
+    "59%",
+    "pre-filled when confident: 22% of children, 76% right"
    ],
    [
     "Story questions, Urdu",
-    "76% (n 70); when confident 79%",
-    "73%",
-    "pre-filled when confident"
+    "73% (n 182); 86% when very sure",
+    "82%",
+    "pre-filled when very sure (bar raised to 0.90)"
    ],
    [
     "Story questions, English",
-    "54% (n 26); when very confident 71% (n 7)",
-    "—",
-    "pre-filled when very confident"
+    "61% (n 46); 82% when very sure",
+    "76%",
+    "pre-filled when very sure"
    ],
    [
     "Made-up words, English",
-    "41% (n 304)",
-    "52%",
+    "49% (n 848): no better than marking all wrong",
+    "63%",
     "never pre-filled"
    ],
    [
-    "Quick sums right",
-    "within 3 for 62% (n 42)",
-    "90%",
+    "Quick sums right (within 3)",
+    "59% (n 136)",
+    "95%",
     "never pre-filled"
    ],
    [
     "Letters / words (non-readers)",
-    "weak: r 0.19 letters, 0.26 words (n 30)",
-    "89% / 51%",
+    "21–71%",
+    "60–90%",
     "never pre-filled"
+   ],
+   [
+    "Which words were wrong",
+    "precision 0.22 Urdu, 0.06 English",
+    "—",
+    "never pre-ticked"
    ]
   ],
-  "not_real": "Not measurable on the May recordings: Urdu made-up words and first sounds (the May test had none) and numbers read aloud (not keyed). The strip photos (96% of 250) are rendered test images, not real children's work."
+  "not_real": "Story counts match the enumerator as often as a second person re-listening does, or better. The coach's check therefore arrives mostly empty: 1.6 fields filled and 10.7 to fill per child, about 2 minutes. Not measurable on the May recordings: Urdu first sounds and made-up words, and numbers read aloud. Two scoring bugs found on the way (real readers sent to the non-reader fallback; the story minute cut short in 6.5% of notes) are being fixed."
  }
 };

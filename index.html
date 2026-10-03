@@ -317,7 +317,7 @@ footer ul{padding-left:20px;display:grid;gap:6px;max-width:80ch}
 
 <section class="block" id="accuracy">
   <h2>How close the AI is to the enumerators</h2>
-  <p class="sub">Real children from the May 2026 Rawalpindi study: the AI's mark against the enumerator's tablet mark for the same child and item. The last-but-one column is how often a QA reviewer, re-listening, agreed with the enumerator: the human floor. A run on every study recording, all grades, is under way and will replace this table.</p>
+  <p class="sub">Every recording from the May 2026 Rawalpindi study: 185 children, Grades 1–5. Each AI mark is compared with the enumerator's tablet mark for the same child and item. The "human floor" column is how often a QA reviewer, re-listening to the same children, agreed with the enumerator.</p>
   <div class="tbl"><table id="realTable"></table></div>
   <p class="note" id="realNote"></p>
   <details class="synth">
@@ -467,7 +467,7 @@ const STEPS = [
    <p class="lead">The AI's marks are saved once and never overwritten. The coach's marks and every change sit beside them, so we can always see who said what.</p>
    ${editsTable()}
    <p class="note">This coach is simulated: it fixes a disagreement with the key 9 times in 10, so its changes match the key. It missed one: English story words, AI ${D.story_child1[1].ai}, key ${D.story_child1[1].key}.</p>
-   ${call('bad','P5','Weaker AI fields, on real children', 'Against the enumerators\' marks on real May children: which words were wrong, precision 0.25; English made-up words 41%; quick sums within 3 only 62%. These arrive empty and the coach marks them. The synthetic children here score far higher, so the real table below is the one to trust.')}` },
+   ${call('bad','P5','Weaker AI fields, on real children', 'On all 185 real May children: English made-up words 49%, no better than marking all wrong; quick sums within 3 only 59% (humans 95%); which words were wrong, precision 0.22. These arrive empty and the coach marks them. The synthetic children here score far higher, so the real table below is the one to trust.')}` },
  { id:'scoring', chat:'check', title:'Behind the scenes: time and cost', body: () => `
    <p class="lead">For roll 8, the bot made ${D.calls.urdu.length + D.calls.english.length + D.calls.maths.length} paid calls. Each part is marked while the coach is already on the next one.</p>
    ${chips([['Urdu', fmt(D.blockSeconds.urdu)+' s'],['English', fmt(D.blockSeconds.english)+' s'],['Maths', fmt(D.blockSeconds.maths)+' s'],['Roll 8', '$'+D.cost_child1.toFixed(3)],['Average child', '$'+D.accuracy.cost_usd_per_child.toFixed(3)]])}
