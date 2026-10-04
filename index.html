@@ -39,7 +39,7 @@
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.6 var(--body);padding-inline:20px}
-.wrap{max-width:1200px;margin-inline:auto}
+.wrap{max-width:1320px;margin-inline:auto}
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
 p{margin:0}
 a{color:var(--accent)}
@@ -127,8 +127,15 @@ section header p{color:var(--muted);max-width:78ch}
 .panel h3{font-size:21px}
 .now{font-size:15px;color:var(--muted)}
 .now b{color:var(--ink)}
-.cardview{display:grid;grid-template-columns:150px minmax(0,1fr);gap:16px;align-items:start}
-.cardimg{width:150px;aspect-ratio:210/297;border-radius:6px;background:var(--ground);box-shadow:var(--shadow);overflow:hidden;position:relative;display:grid;place-items:center;color:var(--faint);font-size:12.5px;text-align:center;padding:8px}
+.cardview{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;align-items:start}
+.cardimg{width:170px;aspect-ratio:210/297;border-radius:6px;background:var(--ground);box-shadow:var(--shadow);overflow:hidden;position:relative;display:grid;place-items:center;color:var(--faint);font-size:12.5px;text-align:center;padding:8px;border:0;font-family:inherit}
+button.cardimg{cursor:zoom-in}
+button.cardimg:hover{outline:2px solid var(--accent);outline-offset:2px}
+.cardimg .zh{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);color:#fff;font:600 11px var(--body);border-radius:5px;padding:2px 6px}
+.coachmini{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--rule);padding-top:10px}
+.coachmini .cardimg{width:64px;padding:0}
+.coachmini .cardimg .zh{display:none}
+.coachmini b{color:var(--ink)}
 .cardimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cardimg .tag{position:absolute;left:6px;right:6px;bottom:6px;background:rgba(0,0,0,.72);color:#fff;font:600 11px var(--body);border-radius:5px;padding:3px 6px;text-align:center}
 .cardcap{font-size:14.5px;color:var(--muted)}
@@ -149,12 +156,15 @@ section header p{color:var(--muted);max-width:78ch}
 .mini{display:grid;gap:6px}
 .mini .tb{background:#d9fdd3;color:#111b21;border-radius:8px;padding:7px 9px;font-size:13px;white-space:pre-wrap}
 .mini .to{font-size:12px;color:var(--faint)}
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.78);display:grid;place-items:center;z-index:50;padding:20px}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.82);display:grid;place-items:center;z-index:50;padding:56px 16px 16px}
 .lightbox[hidden]{display:none}
-.lightbox figure{margin:0;max-width:min(760px,100%);max-height:100%;overflow:auto;background:#000;border-radius:12px}
-.lightbox img{display:block;width:100%;height:auto}
-.lightbox figcaption{color:#fff;font-size:13px;padding:8px 10px}
-.lightbox button{position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:600}
+.lightbox figure{margin:0;max-width:100%;max-height:calc(100vh - 72px);overflow:auto;background:#111;border-radius:10px;display:grid;gap:0}
+.lightbox img{display:block;max-width:100%;max-height:calc(100vh - 110px);width:auto;height:auto;margin-inline:auto;cursor:zoom-in}
+.lightbox.zoomed figure{width:100%;height:calc(100vh - 72px)}
+.lightbox.zoomed img{max-width:none;max-height:none;cursor:zoom-out}
+.lightbox figcaption{color:#fff;font-size:13px;padding:7px 10px;position:sticky;left:0;bottom:0;background:#111}
+.lightbox .lbbar{position:fixed;top:12px;right:16px;display:flex;gap:8px}
+.lightbox .lbbar button{border:0;background:#fff;color:#111;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600}
 
 /* answers etc. */
 .qa{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
@@ -194,7 +204,27 @@ th{font:600 11px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;c
 .sides figcaption b{color:var(--ink)}
 footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
 @media (max-width:900px){ .sim{grid-template-columns:1fr} .phone{position:static;margin-inline:auto} }
+@media (min-width:1240px){ .sim{grid-template-columns:360px minmax(0,1fr) 290px} .tips{position:sticky;top:12px} }
 @media (max-width:440px){ .cardview{grid-template-columns:1fr} .cardimg{width:130px} }
+
+/* tips: the side rail beside the simulator; never over the phone or the table */
+.tips{display:grid;gap:10px;align-content:start;min-width:0}
+.tips .tiphead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.tip{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;display:grid;gap:5px;font-size:14px;color:var(--muted)}
+.tip b.tt{color:var(--ink);font-size:14.5px;line-height:1.35}
+.tip.old{opacity:.55;border-left-color:var(--rule)}
+.tip.new{animation:tipin .35s ease-out}
+@keyframes tipin{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.tip a{font-size:13px}
+.tips[data-off="1"] .tip{display:none}
+@media (prefers-reduced-motion: reduce){.tip.new{animation:none}}
+/* FAQ */
+.faq{display:grid;gap:8px;max-width:900px}
+.faq details{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:0 16px}
+.faq summary{cursor:pointer;padding:12px 0;font-weight:600;list-style-position:outside}
+.faq details[open] summary{border-bottom:1px solid var(--rule)}
+.faq details > div{padding:10px 0 14px;color:var(--muted);display:grid;gap:8px}
+.faq details > div b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -202,7 +232,7 @@ footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
 <header class="masthead">
   <span class="eyebrow">ICT child test · v2 · live on the NIETE sandbox</span>
   <h1>Run a visit yourself</h1>
-  <p class="lede">Tap through a visit the way a coach does. The phone shows <b>the bot's own messages</b> (rendered by the live conversation code), with the real buttons. Beside it, <b>the table</b>: which card the child is holding at that moment, and the exact words to say, with an English translation. The recorder runs fast (8×) so a full child takes about a minute. <b>Real screen</b> opens the real WhatsApp screenshot of that moment.</p>
+  <p class="lede">Tap through a visit the way a coach does. The phone shows <b>the bot's own messages</b> (rendered by the live conversation code), with the real buttons. Beside it, <b>the table</b>: the card the child is holding at that moment (click it to see it full size) and the exact words to say, with an English translation. On a wide screen, a third column explains <b>why</b> each step works the way it does. The recorder runs fast (8×), so a full child takes about a minute. <b>Real screen</b> opens the real WhatsApp screenshot of that moment.</p>
 </header>
 
 <section aria-labelledby="sim-h">
@@ -221,69 +251,67 @@ footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
       <div id="foot"></div>
     </div></div>
     <div class="table" id="table"></div>
-  </div>
-</section>
-
-<section aria-labelledby="qa-h">
-  <header><span class="eyebrow">Your questions</span><h2 id="qa-h">Every question you asked, answered</h2></header>
-  <div class="qa">
-    <article><h3>The coach needs the child's section and class. One grade, or a mix? How do they find the children?</h3><p><b>One grade per visit</b> (Grade 3 or Grade 5, picked by the bot). The list is <b>grouped by classroom</b>, with the class teacher, in the roster's own words: "Grade 3 - A · Teacher: Saima Bibi". From the NIETE roster (924 Grade 3/5 classes, 31,826 children): every child has a full name, 92% of classes have a section letter, 99% a reachable class teacher; two in three visits need only one classroom. One button sends each class teacher only their own room's children, in order.</p></article>
-    <article><h3>Drop roll numbers.</h3><p><b>Done.</b> No roll number in any message, the form or the portal. Two classmates with the same name (2% of children) get the father's name when the roster has it, or "2 in this class" when it doesn't.</p></article>
-    <article><h3>If passages are printed and rotated, how do we know which variant the child has? Variant number on the card? PDF to print, A4? Is that how EGRA does it?</h3><p><b>There is no rotation any more.</b> EGRA gives every child in a round the same form; forms rotate between children only in pilots and group tests. So each coach carries <b>one card set per grade for the whole term</b>, colour-coded (Grade 3 green, Grade 5 blue) with "Set A · Oct–Dec 2026" printed on every side, and the bot names the card in every step. The print pack is <b>A4, laminated, one task per side</b>, as EGRA's are: <a href="https://hyasin270.github.io/egra-step-by-step/#cards-h">pages below</a>, PDF sent to you.</p></article>
-    <article><h3>"First sounds from the coach's copy": what does that mean?</h3><p>EGRA's <b>initial-sound task</b>: the adult says a word ("machhli") and the child says its first sound ("m"). It is a Grade 1–2 task, Pakistan's Grade 3 tests drop it, and our AI could only guess at it. The "coach's copy" was a 5-page paper sheet the bot never mentioned. <b>Both are gone.</b></p></article>
-    <article><h3>The copy should be much simpler. And my language is English: shouldn't the messages be English?</h3><p>Your sandbox account had been switched to Urdu for the first demo recording and never switched back; <b>it is back to English</b>. Every message now follows the coach's language (try both buttons above). Only the words the coach says <i>to the child</i> stay in Urdu, and English for the English story. Each step is now numbered actions: which card, what to say, when to stop, when to send.</p></article>
-    <article><h3>Why did it tell me to give the maths to "the other kid" when Usman was my first child?</h3><p>The old design had the <i>next</i> child write maths while the current child read, to save time; that child wasn't even in the room. <b>Removed.</b> One child at a time, start to finish; maths is spoken, no strip, no photo, no child number.</p></article>
-    <article><h3>Maths: does the coach read the sums, or the child? Two maths pages?</h3><p><b>The child reads</b> the four number pairs and the four sums on <b>one</b> maths card and says the answers; the coach points to each and says "which is bigger?" / "tell me the answer". <b>The coach reads the two word problems aloud</b> with the card face down. Try the maths step above: the table shows both.</p></article>
-    <article><h3>The child wrote sums on the strip while the child before read; if it's my first child, then what? Do both maths pages go to the child?</h3><p>That whole arrangement is gone: no strip, no second page, nothing handed to another child. The child in front of the coach does Urdu, English, maths; then the next child comes.</p></article>
-    <article><h3>Does the coach read the word problem, explain it, or just give the paper?</h3><p><b>Reads it aloud, slowly, once</b>, as EGMA does (EGMA reads word problems to the child so a weak reader isn't marked down in maths; the child may use paper and pencil; no explaining). The two problems are in the maths message and on the coach card.</p></article>
-    <article><h3>The Urdu card had only the story; why did the form ask Urdu comprehension questions? Should Urdu have them?</h3><p><b>Yes</b>: Pakistan's Urdu EGRA asks 5 questions; we ask 3. In EGRA the questions are <b>never on the child's card</b>; the assessor asks them aloud after taking the passage away. The old message never told you to ask them. Now step 4 of the Urdu message lists them, the coach turns the card face down and asks; the table above shows them with translations.</p></article>
-    <article><h3>"This child's key says 56": what is a key? How does the coach count words per minute, in their head?</h3><p><b>They don't count.</b> The "key" was the test child's answer sheet in my demo; real coaches have none. EGRA assessors train 5+ days to mark every word live and still disagree. Here the recording is the score sheet: the AI counts from it, and on the May Rawalpindi children it agreed with the enumerators more often than a second trained person did (Urdu 74% vs 58% within ±5 words). The coach only answers the few things the recording couldn't settle, at the end.</p></article>
-    <article><h3>Doesn't EGRA print the questions and word problems on the card the coach carries?</h3><p><b>Yes</b>: the EGRA/EGMA assessor holds their own sheet (paper or tablet) with the questions and accepted answers and the word problems to read; only the child's card is bare. In v2 the phone message is that sheet, and a <b>printed coach card per grade</b> ("don't show the child": questions with accepted answers, word problems, sum answers) is in the print pack (pages 5 and 7), as the paper backup.</p></article>
-    <article><h3>Coaches go to many schools. Does EGRA/EGMA change the papers from school to school?</h3><p><b>No.</b> In a data-collection round every child in every school reads the same form; that is what makes schools comparable. Forms change between rounds (baseline, endline) using parallel forms checked to be equally hard. So: <b>one set for every school this term</b>, Set B next term. EGRA rounds last weeks, our term three months, so the cards stay with the coach (never left at a school or photographed), the questions are never printed for children, and we can watch for leakage: a passage whose scores climb through the term while letters and words don't.</p></article>
-    <article><h3>The rotation was unclear. With rotation the coach's attention leaves the child; without it we exceed 30 minutes.</h3><p>Two things had been called rotation: two card forms in one visit, and the next child writing maths while the current one read. <b>Both are gone.</b> The time came back from elsewhere: the coach no longer counts or fills a form per child (about 2 minutes each), first sounds, made-up words and the 60-second quick sums are dropped, and maths is one short spoken set. Measured on real WhatsApp: about 5 minutes per child, <b>about 27 minutes for five</b> plus a 1-minute review.</p></article>
+    <aside class="tips" id="tips" aria-live="polite" aria-label="Why it works this way"><div class="tiphead"><span class="eyebrow">Why it works this way</span><button type="button" class="btn" id="tipsoff" aria-pressed="false">Hide tips</button></div></aside>
   </div>
 </section>
 
 <section aria-labelledby="cards-h" id="cards">
   <header><span class="eyebrow">The print pack</span><h2 id="cards-h">Every side of every card, and the coach cards</h2><p>The PDF is 20 A4 pages, printed double-sided (flip on the long edge) and laminated: one set per coach for the term. Each child card is one sheet, front and back; Grade 3 is green, Grade 5 blue; "Set A · Oct–Dec 2026" is on every side, and no child card shows an answer, a question or an item number. The coach card (one per grade, back blank) holds the questions and word problems, as EGRA's assessor sheet does. Click any page to see it full size.</p></header>
   <h3 class="grp">For the coach</h3><div class="pairs"><div class="pair"><h3 class="pt">Coach card · Grade 3 (don't show the child)</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p05.jpg" data-cap="Coach card · Grade 3 (don't show the child), front"><img src="img/print/t05.jpg" alt="Coach card · Grade 3 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · what to say, the 3 Urdu and 3 English questions with the answers that count, the pairs and sums with answers, the 2 word problems to read aloud with answers. The EGRA assessor sheet, simplified; the paper twin of the phone message</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-card-g3.jpg" data-cap="Coach card · Grade 3 (don't show the child), front · print pack, Set A"><img src="img/pack/coach-card-g3-t.jpg" alt="Coach card · Grade 3 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · what to say, the 3 Urdu and 3 English questions with the answers that count, the pairs and sums with answers, the 2 word problems to read aloud with answers. The EGRA assessor sheet, simplified; the paper twin of the phone message</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Coach card · Grade 5 (don't show the child)</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p07.jpg" data-cap="Coach card · Grade 5 (don't show the child), front"><img src="img/print/t07.jpg" alt="Coach card · Grade 5 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · the same for Grade 5</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-card-g5.jpg" data-cap="Coach card · Grade 5 (don't show the child), front"><img src="img/pack/coach-card-g5-t.jpg" alt="Coach card · Grade 5 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · the same for Grade 5</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Coach page</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p03.jpg" data-cap="Coach page, front"><img src="img/print/t03.jpg" alt="Coach page, front" loading="lazy"></button><figcaption><b>Front</b> · English: where to sit, what to bring, five rules</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p04.jpg" data-cap="Coach page, back"><img src="img/print/t04.jpg" alt="Coach page, back" loading="lazy"></button><figcaption><b>Back</b> · the same in Urdu</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-page-en.jpg" data-cap="Coach page, front"><img src="img/pack/coach-page-en-t.jpg" alt="Coach page, front" loading="lazy"></button><figcaption><b>Front</b> · English: where to sit, what to bring, five rules</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/coach-page-ur.jpg" data-cap="Coach page, back"><img src="img/pack/coach-page-ur-t.jpg" alt="Coach page, back" loading="lazy"></button><figcaption><b>Back</b> · the same in Urdu</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Cover</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p01.jpg" data-cap="Cover, front"><img src="img/print/t01.jpg" alt="Cover, front" loading="lazy"></button><figcaption><b>Front</b> · what to print, how many, what to laminate</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p02.jpg" data-cap="Cover, back"><img src="img/print/t02.jpg" alt="Cover, back" loading="lazy"></button><figcaption><b>Back</b> · blank, so the cards start on a fresh sheet</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/cover-front.jpg" data-cap="Cover, front"><img src="img/pack/cover-front-t.jpg" alt="Cover, front" loading="lazy"></button><figcaption><b>Front</b> · what to print, how many, what to laminate</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/cover-back.jpg" data-cap="Cover, back"><img src="img/pack/cover-back-t.jpg" alt="Cover, back" loading="lazy"></button><figcaption><b>Back</b> · blank, so the cards start on a fresh sheet</figcaption></figure>
     </div></div></div>
   <h3 class="grp">Grade 3 child cards (green)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 3 · Urdu</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p09.jpg" data-cap="Grade 3 · Urdu, front"><img src="img/print/t09.jpg" alt="Grade 3 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the story only (May 2026 passage)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p10.jpg" data-cap="Grade 3 · Urdu, back"><img src="img/print/t10.jpg" alt="Grade 3 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · 10 letters, then 10 words: only for a child who can't read the story. Faces up when the card is turned over for the questions</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-urdu-front.jpg" data-cap="Grade 3 · Urdu, front"><img src="img/pack/g3-urdu-front-t.jpg" alt="Grade 3 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the story only (May 2026 passage)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-urdu-back.jpg" data-cap="Grade 3 · Urdu, back"><img src="img/pack/g3-urdu-back-t.jpg" alt="Grade 3 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · 10 letters, then 10 words: only for a child who can't read the story. Faces up when the card is turned over for the questions</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Grade 3 · English</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p11.jpg" data-cap="Grade 3 · English, front"><img src="img/print/t11.jpg" alt="Grade 3 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the story only</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p12.jpg" data-cap="Grade 3 · English, back"><img src="img/print/t12.jpg" alt="Grade 3 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words, the same rule</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-english-front.jpg" data-cap="Grade 3 · English, front"><img src="img/pack/g3-english-front-t.jpg" alt="Grade 3 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the story only</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-english-back.jpg" data-cap="Grade 3 · English, back"><img src="img/pack/g3-english-back-t.jpg" alt="Grade 3 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words, the same rule</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Grade 3 · Maths</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p13.jpg" data-cap="Grade 3 · Maths, front"><img src="img/print/t13.jpg" alt="Grade 3 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four "which is bigger" pairs, four sums</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p14.jpg" data-cap="Grade 3 · Maths, back"><img src="img/print/t14.jpg" alt="Grade 3 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose: when the coach turns it over to read the word problems, the child has nothing to read</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-maths-front.jpg" data-cap="Grade 3 · Maths, front"><img src="img/pack/g3-maths-front-t.jpg" alt="Grade 3 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four "which is bigger" pairs, four sums</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-maths-back.jpg" data-cap="Grade 3 · Maths, back"><img src="img/pack/g3-maths-back-t.jpg" alt="Grade 3 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose: when the coach turns it over to read the word problems, the child has nothing to read</figcaption></figure>
     </div></div></div>
   <h3 class="grp">Grade 5 child cards (blue)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 5 · Urdu</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p15.jpg" data-cap="Grade 5 · Urdu, front"><img src="img/print/t15.jpg" alt="Grade 5 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story (May passage + continuation)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p16.jpg" data-cap="Grade 5 · Urdu, back"><img src="img/print/t16.jpg" alt="Grade 5 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-urdu-front.jpg" data-cap="Grade 5 · Urdu, front"><img src="img/pack/g5-urdu-front-t.jpg" alt="Grade 5 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story (May passage + continuation)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-urdu-back.jpg" data-cap="Grade 5 · Urdu, back"><img src="img/pack/g5-urdu-back-t.jpg" alt="Grade 5 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Grade 5 · English</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p17.jpg" data-cap="Grade 5 · English, front"><img src="img/print/t17.jpg" alt="Grade 5 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p18.jpg" data-cap="Grade 5 · English, back"><img src="img/print/t18.jpg" alt="Grade 5 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-english-front.jpg" data-cap="Grade 5 · English, front"><img src="img/pack/g5-english-front-t.jpg" alt="Grade 5 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-english-back.jpg" data-cap="Grade 5 · English, back"><img src="img/pack/g5-english-back-t.jpg" alt="Grade 5 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
     </div></div><div class="pair"><h3 class="pt">Grade 5 · Maths</h3><div class="sides">
-      <figure><button type="button" class="zoom" data-full="img/print/full/p19.jpg" data-cap="Grade 5 · Maths, front"><img src="img/print/t19.jpg" alt="Grade 5 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four pairs, four harder sums (8 × 9, 72 ÷ 6)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/print/full/p20.jpg" data-cap="Grade 5 · Maths, back"><img src="img/print/t20.jpg" alt="Grade 5 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-maths-front.jpg" data-cap="Grade 5 · Maths, front"><img src="img/pack/g5-maths-front-t.jpg" alt="Grade 5 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four pairs, four harder sums (8 × 9, 72 ÷ 6)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-maths-back.jpg" data-cap="Grade 5 · Maths, back"><img src="img/pack/g5-maths-back-t.jpg" alt="Grade 5 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose</figcaption></figure>
     </div></div></div>
 </section>
 
-<section aria-labelledby="time-h">
-  <header><span class="eyebrow">Fidelity and time</span><h2 id="time-h">What is kept from EGRA/EGMA, and what it costs in minutes</h2><p>Measured on real WhatsApp on 4 Oct: 5.0–5.7 minutes per child, 13–20 seconds between children; about 27 minutes for five plus a 1-minute review (before: 35.4 minutes). A real school adds the walk from the classroom.</p></header>
+<section aria-labelledby="time-h" id="fidelity">
+  <header><span class="eyebrow">Fidelity, time and calibration</span><h2 id="time-h">How close to EGRA/EGMA, and what is missing</h2><p>Time, measured on real WhatsApp on 4 Oct: 5.0–5.7 minutes per child, so about 27 minutes for five plus a 1-minute review (before: 35.4). The items: the Grade 3 stories and all of Set A's maths come word for word from the May 2026 instrument, which 443 Grade 3 and 431 Grade 5 children took. The Grade 5 story continuations and all of Set B were written later, and no child has read them yet.</p></header>
   <div class="tbl"><table>
-    <thead><tr><th>Part</th><th>v2</th><th>EGRA / EGMA</th><th></th></tr></thead>
+    <thead><tr><th>Part</th><th>v2</th><th>EGRA / EGMA</th><th>Tried on children?</th><th></th></tr></thead>
     <tbody>
-      <tr><td>Urdu story, 60 s</td><td>May passage; the AI counts from the recording</td><td>Same; assessor marks live</td><td><span class="v keep">kept</span></td></tr>
-      <tr><td>Urdu questions</td><td>3, asked aloud, card face down</td><td>3–5 (Pakistan 5), passage removed</td><td><span class="v keep">kept</span></td></tr>
-      <tr><td>English story + questions</td><td>May passage; 3 questions</td><td>At least 3</td><td><span class="v keep">kept</span></td></tr>
-      <tr><td>Non-reader path</td><td>Letters and words on the card's back, when the coach switches</td><td>Letters for every child</td><td><span class="v keep">kept</span></td></tr>
-      <tr><td>First sounds · made-up words</td><td>—</td><td>Mostly Grades 1–2 · up to Grade 5 in some studies</td><td><span class="v drop">dropped</span></td></tr>
-      <tr><td>Maths</td><td>4 pairs, 4 sums, 2 word problems read aloud (May instrument)</td><td>Core EGMA: 6 tasks, about 20 min</td><td><span class="v chg">short form</span></td></tr>
-      <tr><td>60-second quick sums</td><td>—</td><td>Timed addition and subtraction</td><td><span class="v drop">dropped</span></td></tr>
+      <tr><td>Grade 3 stories (Set A)</td><td>60 words each, the May text</td><td>About 60 words, 60 s</td><td>Yes, May: 33% (Urdu) and 16% (English) finished inside the minute</td><td><span class="v keep">calibrated</span></td></tr>
+      <tr><td>Grade 5 stories (Set A)</td><td>The May 60 words plus a continuation (Urdu +116, English +106 words)</td><td>Long enough that few finish</td><td>First 60 words only. The lengthening was needed (76% of May Grade 5 finished 60 Urdu words inside a minute) but the new part is untried</td><td><span class="v chg">partly</span></td></tr>
+      <tr><td>Set B (next term), all parts</td><td>Written to match Set A</td><td>Piloted, then equated to the first form</td><td>No</td><td><span class="v drop">not yet</span></td></tr>
+      <tr><td>Questions per story</td><td>3 (Grade 3: 2 literal + 1 inferential)</td><td>3–5, mostly literal; Pakistan asks 5, May asked 6</td><td>Grade 3 Set A: yes (May items)</td><td><span class="v chg">below</span></td></tr>
+      <tr><td>Which questions are asked</td><td>All 3, however far the child read</td><td>Only questions about text the child read; scored out of those asked</td><td>—</td><td><span class="v drop">gap</span></td></tr>
+      <tr><td>Maths: which is bigger</td><td>4 pairs, the same in Grade 3 and 5</td><td>10 pairs, 1–3 digits</td><td>Yes. In Grade 5, 62% got all 4 right (too easy)</td><td><span class="v chg">short form</span></td></tr>
+      <tr><td>Maths: sums</td><td>4. Grade 5 swaps in 8 × 9 and 72 ÷ 6</td><td>5 + 5 items. × and ÷ are not in Core EGMA (built for Grades 1–3)</td><td>Yes. Grade 3 sums 3 and 4 (92 − 41, 85 + 37): 6% right each</td><td><span class="v chg">short form</span></td></tr>
+      <tr><td>Maths: word problems</td><td>2, read aloud by the coach</td><td>6, read aloud</td><td>Yes (May items)</td><td><span class="v keep">kept</span></td></tr>
+      <tr><td>Listening, letter sounds, made-up words</td><td>Letters and words only for a non-reader</td><td>Every child</td><td>—</td><td><span class="v drop">dropped</span></td></tr>
+      <tr><td>Maths overall</td><td>10 items, about 105 s</td><td>6 tasks, 96 items, about 20 min</td><td>—</td><td><span class="v chg">short form</span></td></tr>
     </tbody></table></div>
+  <h3 class="grp">What we are missing, and what it costs</h3>
+  <div class="open">
+    <div><b>1 · Questions past where the child stopped</b>EGRA asks only about the part a child read. The bot asks all three. The Grade 5 Urdu question 3 sits at word 148, which 9% of May Grade 5 children reach in a minute. A slow reader loses marks twice, for speed and again for comprehension. The bank already records each question's line; the bot doesn't use it yet.</div>
+    <div><b>2 · Untried text: Set B and the Grade 5 continuations</b>Until they are piloted and equated, a change from this term to next mixes real learning with a harder or easier card.</div>
+    <div><b>3 · No listening, letter-sound or made-up-word tasks for every child</b>A low English comprehension score can't be split into "can't read" and "doesn't understand spoken English": in May, Grade 3 readers averaged 1 of 6 on English listening. For a slow Urdu reader we can't see whether decoding is the problem.</div>
+    <div><b>4 · Maths at the floor and the ceiling</b>10 of EGMA's 96 items. Grade 3 sums 3–4 are right for 6% of children, so they barely separate anyone; 38% score 0 of 4 sums. The Grade 5 pairs are at the ceiling. Number identification, missing number and timed facts are absent.</div>
+    <div><b>5 · One child's score is rough</b>From the May data: one child's maths score is uncertain by about ±2 of 10, and Grade 3 Urdu comprehension by about ±1 of 3. Read results by class or school, not child by child.</div>
+  </div>
+  <h3 class="grp">The three cheapest fixes</h3>
+  <div class="open">
+    <div><span class="state s-you">Needs a decision</span><b>Ask only what the child reached; 5 questions</b>The bot skips questions past the child's last word and scores out of those asked. Grade 3 Set A takes the May instrument's other questions; the rest need 2 new questions each. About 2 days. Cost: about 50 s more per child, 4 minutes per visit. <i>Changes the coach cards.</i></div>
+    <div><span class="state s-you">Needs a decision</span><b>Re-level maths from May's own results</b>No fieldwork. Grade 3: swap 92 − 41 and 85 + 37 (6% right) for two easier May sums (37% and 33% right). Grade 5: swap the two easiest pairs for May's "what comes next" items. About 1 day. <i>Changes the maths cards and coach cards.</i></div>
+    <div><span class="state s-later">Next term</span><b>One pilot that does two jobs</b>At least 150 children per grade read both Set A and Set B, in alternating order. That equates Set B and tests the Grade 5 continuations in one go: about 60–80 coach-hours, then 2–3 days of analysis.</div>
+  </div>
 </section>
 
 <section aria-labelledby="open-h">
@@ -297,10 +325,31 @@ footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
   </div>
 </section>
 
+<section aria-labelledby="faq-h" id="faq">
+  <header><span class="eyebrow">FAQ</span><h2 id="faq-h">Your questions, answered</h2></header>
+  <div class="faq">
+    <details open><summary>Are the sums, stories and comprehension questions calibrated to EGRA/EGMA? What are we missing?</summary><div><p><b>Partly.</b> The Grade 3 stories and all of Set A's maths are the May 2026 instrument, tried on 874 children, so their difficulty is known. Not calibrated yet: the Grade 5 story continuations and all of Set B (no child has read them), and the way questions are asked (EGRA asks only about what the child read; the bot asks all three).</p><p>What it costs: comprehension that punishes slow readers twice; Grade 3 sums 3–4 that only 6% get right and Grade 5 number pairs most get all right; no listening task, so a low English score can't be split into reading and spoken English; scores rough for one child (maths ±2 of 10). <a href="#fidelity">The full table, and the three cheapest fixes</a>.</p></div></details>
+    <details><summary>The coach needs the child's section and class. One grade, or a mix? How do they find the children?</summary><div><p><b>One grade per visit</b> (Grade 3 or Grade 5, picked by the bot). The list is <b>grouped by classroom</b>, with the class teacher, in the roster's own words: "Grade 3 - A · Teacher: Saima Bibi". From the NIETE roster (924 Grade 3/5 classes, 31,826 children): every child has a full name, 92% of classes have a section letter, 99% a reachable class teacher; two in three visits need only one classroom. One button sends each class teacher only their own room's children, in order.</p></div></details>
+    <details><summary>Drop roll numbers.</summary><div><p><b>Done.</b> No roll number in any message, the form or the portal. Two classmates with the same name (2% of children) get the father's name when the roster has it, or "2 in this class" when it doesn't.</p></div></details>
+    <details><summary>If passages are printed and rotated, how do we know which variant the child has? Variant number on the card? PDF to print, A4? Is that how EGRA does it?</summary><div><p><b>There is no rotation any more.</b> EGRA gives every child in a round the same form; forms rotate between children only in pilots and group tests. So each coach carries <b>one card set per grade for the whole term</b>, colour-coded (Grade 3 green, Grade 5 blue) with "Set A · Oct–Dec 2026" printed on every side, and the bot names the card in every step. The print pack is <b>A4, laminated, one task per side</b>, as EGRA's are: <a href="#cards">the print pack above</a>, PDF sent to you.</p></div></details>
+    <details><summary>"First sounds from the coach's copy": what does that mean?</summary><div><p>EGRA's <b>initial-sound task</b>: the adult says a word ("machhli") and the child says its first sound ("m"). It is a Grade 1–2 task, Pakistan's Grade 3 tests drop it, and our AI could only guess at it. The "coach's copy" was a 5-page paper sheet the bot never mentioned. <b>Both are gone.</b></p></div></details>
+    <details><summary>The copy should be much simpler. And my language is English: shouldn't the messages be English?</summary><div><p>Your sandbox account had been switched to Urdu for the first demo recording and never switched back; <b>it is back to English</b>. Every message now follows the coach's language (try both buttons above). Only the words the coach says <i>to the child</i> stay in Urdu, and English for the English story. Each step is now numbered actions: which card, what to say, when to stop, when to send.</p></div></details>
+    <details><summary>Why did it tell me to give the maths to "the other kid" when Usman was my first child?</summary><div><p>The old design had the <i>next</i> child write maths while the current child read, to save time; that child wasn't even in the room. <b>Removed.</b> One child at a time, start to finish; maths is spoken, no strip, no photo, no child number.</p></div></details>
+    <details><summary>Maths: does the coach read the sums, or the child? Two maths pages?</summary><div><p><b>The child reads</b> the four number pairs and the four sums on <b>one</b> maths card and says the answers; the coach points to each and says "which is bigger?" / "tell me the answer". <b>The coach reads the two word problems aloud</b> with the card face down. Try the maths step above: the table shows both.</p></div></details>
+    <details><summary>The child wrote sums on the strip while the child before read; if it's my first child, then what? Do both maths pages go to the child?</summary><div><p>That whole arrangement is gone: no strip, no second page, nothing handed to another child. The child in front of the coach does Urdu, English, maths; then the next child comes.</p></div></details>
+    <details><summary>Does the coach read the word problem, explain it, or just give the paper?</summary><div><p><b>Reads it aloud, slowly, once</b>, as EGMA does (EGMA reads word problems to the child so a weak reader isn't marked down in maths; the child may use paper and pencil; no explaining). The two problems are in the maths message and on the coach card.</p></div></details>
+    <details><summary>The Urdu card had only the story; why did the form ask Urdu comprehension questions? Should Urdu have them?</summary><div><p><b>Yes</b>: Pakistan's Urdu EGRA asks 5 questions; we ask 3. In EGRA the questions are <b>never on the child's card</b>; the assessor asks them aloud after taking the passage away. The old message never told you to ask them. Now step 4 of the Urdu message lists them, the coach turns the card face down and asks; the table above shows them with translations.</p></div></details>
+    <details><summary>"This child's key says 56": what is a key? How does the coach count words per minute, in their head?</summary><div><p><b>They don't count.</b> The "key" was the test child's answer sheet in my demo; real coaches have none. EGRA assessors train 5+ days to mark every word live and still disagree. Here the recording is the score sheet: the AI counts from it, and on the May Rawalpindi children it agreed with the enumerators more often than a second trained person did (Urdu 74% vs 58% within ±5 words). The coach only answers the few things the recording couldn't settle, at the end.</p></div></details>
+    <details><summary>Doesn't EGRA print the questions and word problems on the card the coach carries?</summary><div><p><b>Yes</b>: the EGRA/EGMA assessor holds their own sheet (paper or tablet) with the questions and accepted answers and the word problems to read; only the child's card is bare. In v2 the phone message is that sheet, and a <b>printed coach card per grade</b> ("don't show the child": questions with accepted answers, word problems, sum answers) is in the print pack (pages 5 and 7), as the paper backup.</p></div></details>
+    <details><summary>Coaches go to many schools. Does EGRA/EGMA change the papers from school to school?</summary><div><p><b>No.</b> In a data-collection round every child in every school reads the same form; that is what makes schools comparable. Forms change between rounds (baseline, endline) using parallel forms checked to be equally hard. So: <b>one set for every school this term</b>, Set B next term. EGRA rounds last weeks, our term three months, so the cards stay with the coach (never left at a school or photographed), the questions are never printed for children, and we can watch for leakage: a passage whose scores climb through the term while letters and words don't.</p></div></details>
+    <details><summary>The rotation was unclear. With rotation the coach's attention leaves the child; without it we exceed 30 minutes.</summary><div><p>Two things had been called rotation: two card forms in one visit, and the next child writing maths while the current one read. <b>Both are gone.</b> The time came back from elsewhere: the coach no longer counts or fills a form per child (about 2 minutes each), first sounds, made-up words and the 60-second quick sums are dropped, and maths is one short spoken set. Measured on real WhatsApp: about 5 minutes per child, <b>about 27 minutes for five</b> plus a 1-minute review.</p></div></details>
+  </div>
+</section>
+
 <footer>The simulator plays the bot's own messages (rendered by the conversation code on the sandbox branch, item bank child-test-items-v2); names, schools and teachers are test data. Real WhatsApp screenshots: NIETE sandbox, 4 Oct 2026. Sources for the answers: EGRA Toolkit 2nd ed. 2016; Core EGMA 2014; Sindh SELECT EGRA 2024; Pakistan Reading Project; NIETE roster (counts only); the May 2026 Rawalpindi study.</footer>
 </div>
 
-<div class="lightbox" id="lb" hidden><button type="button" id="lb-close">Close</button><figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure></div>
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Full size"><div class="lbbar"><button type="button" id="lb-zoom">Zoom in</button><button type="button" id="lb-close">Close</button></div><figure id="lb-fig"><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure></div>
 
 <script src="sim-data.js"></script>
 <script>
@@ -358,14 +407,14 @@ function footRec(block){
 // ---------- the table ----------
 const CARD = {
   none: { img: null, title: 'Nothing on the table yet', cap: 'The cards are in the coach\'s folder.' },
-  urF: { img: 'img/print/p05.jpg', title: 'Grade 3 Urdu card · story side up', cap: 'The child reads the story. Nothing else is printed on it.', tag: 'Face up' },
-  urB: { img: 'img/print/p06.jpg', title: 'Urdu card turned over', cap: 'The story is hidden; the questions are asked aloud. (The back shows letters and words: they don\'t give away any answer.)', tag: 'Turned over' },
-  urL: { img: 'img/print/p06.jpg', title: 'Urdu card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
-  enF: { img: 'img/print/p07.jpg', title: 'Grade 3 English card · story side up', cap: 'The child reads the English story.', tag: 'Face up' },
-  enB: { img: 'img/print/p08.jpg', title: 'English card turned over', cap: 'The story is hidden; the questions are asked aloud.', tag: 'Turned over' },
-  enL: { img: 'img/print/p08.jpg', title: 'English card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
-  maF: { img: 'img/print/p09.jpg', title: 'Grade 3 maths card · face up', cap: 'Pairs A–D and sums 1–4. The child reads them and says the answers; paper and pencil beside it.', tag: 'Face up' },
-  maB: { img: 'img/print/p10.jpg', title: 'Maths card turned over', cap: 'Nothing for the child to read: the coach reads the word problems aloud.', tag: 'Turned over' },
+  urF: { img: 'g3-urdu-front', title: 'Grade 3 Urdu card · story side up', cap: 'The child reads the story. Nothing else is printed on it.', tag: 'Face up' },
+  urB: { img: 'g3-urdu-back', title: 'Urdu card turned over', cap: 'The story is hidden; the questions are asked aloud. (The back shows letters and words: they don\'t give away any answer.)', tag: 'Turned over' },
+  urL: { img: 'g3-urdu-back', title: 'Urdu card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
+  enF: { img: 'g3-english-front', title: 'Grade 3 English card · story side up', cap: 'The child reads the English story.', tag: 'Face up' },
+  enB: { img: 'g3-english-back', title: 'English card turned over', cap: 'The story is hidden; the questions are asked aloud.', tag: 'Turned over' },
+  enL: { img: 'g3-english-back', title: 'English card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
+  maF: { img: 'g3-maths-front', title: 'Grade 3 maths card · face up', cap: 'Pairs A–D and sums 1–4. The child reads them and says the answers; paper and pencil beside it.', tag: 'Face up' },
+  maB: { img: 'g3-maths-back', title: 'Maths card turned over', cap: 'Nothing for the child to read: the coach reads the word problems aloud.', tag: 'Turned over' },
 };
 const SC = () => S.script;
 const GL = {
@@ -380,21 +429,21 @@ const PH = {
     { at: 0, key: 'start', label: 'Start', card: 'urF', title: 'Say the start line', lines: [line(SC().urdu.start, GL.urdu.start)], hint: 'Then stay quiet.' },
     { at: 5, key: 'story', label: 'Story (1 minute)', card: 'urF', title: 'The child reads', lines: [line(SC().urdu.go_on, GL.urdu.go_on + ' Only if the child is stuck for 3 seconds: point to the next word and say this.')], hint: '<b>You don\'t count anything.</b> The recording is the score sheet.', fb: true },
     { at: 70, key: 'stop', label: 'Stop at 1:10', card: 'urB', title: 'Stop, and turn the card over', lines: [line(SC().urdu.stop, GL.urdu.stop)], hint: 'Then turn the card <b>face down</b>.' },
-    { at: 74, key: 'q', label: '3 questions', card: 'urB', title: 'Ask the 3 questions aloud', lines: [line(SC().urdu.questions_intro, GL.urdu.questions_intro)].concat(SC().urduQ.map((q,i)=>line(q.q, (i+1)+'. '+GL.urduQ[i], 'Right if the child says: '+q.accept.join(' / ')+' ('+GL.urduA[i]+')'))), hint: 'Ask each once and wait. Don\'t say "right" or "wrong". The questions and answers are also on the printed <b>coach card</b>.' },
+    { at: 74, key: 'q', label: '3 questions', card: 'urB', coach: true, title: 'Ask the 3 questions aloud', lines: [line(SC().urdu.questions_intro, GL.urdu.questions_intro)].concat(SC().urduQ.map((q,i)=>line(q.q, (i+1)+'. '+GL.urduQ[i], 'Right if the child says: '+q.accept.join(' / ')+' ('+GL.urduA[i]+')'))), hint: 'Ask each once and wait. Don\'t say "right" or "wrong". The questions and answers are also on the printed <b>coach card</b>.' },
     { at: 112, key: 'send', label: 'Send', card: 'urB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
   ],
   english: () => [
     { at: 0, key: 'start', label: 'Start', card: 'enF', title: 'Say the start line', lines: [line(null, SC().english.start)], hint: 'Then stay quiet.' },
     { at: 5, key: 'story', label: 'Story (1 minute)', card: 'enF', title: 'The child reads', lines: [line(null, SC().english.go_on + '  (only if stuck for 3 seconds: point to the next word)')], hint: '<b>You don\'t count anything.</b>', fb: true },
     { at: 70, key: 'stop', label: 'Stop at 1:10', card: 'enB', title: 'Stop, and turn the card over', lines: [line(null, SC().english.stop)], hint: 'Then turn the card <b>face down</b>.' },
-    { at: 74, key: 'q', label: '3 questions', card: 'enB', title: 'Ask the 3 questions aloud', lines: [line(null, SC().english.questions_intro)].concat(SC().englishQ.map((q,i)=>line(null, (i+1)+'. '+q.q, 'Right if: '+q.accept.join(' / ')))), hint: 'The child may answer in Urdu or English. Also on the printed <b>coach card</b>.' },
+    { at: 74, key: 'q', label: '3 questions', card: 'enB', coach: true, title: 'Ask the 3 questions aloud', lines: [line(null, SC().english.questions_intro)].concat(SC().englishQ.map((q,i)=>line(null, (i+1)+'. '+q.q, 'Right if: '+q.accept.join(' / ')))), hint: 'The child may answer in Urdu or English. Also on the printed <b>coach card</b>.' },
     { at: 112, key: 'send', label: 'Send', card: 'enB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
   ],
   maths: () => [
     { at: 0, key: 'start', label: 'Start', card: 'maF', title: 'Say the start line', lines: [line(SC().maths.start, GL.maths.start)] },
-    { at: 3, key: 'pairs', label: 'Pairs A–D', card: 'maF', title: 'Point to each pair, A to D', lines: [line(SC().maths.compare, GL.maths.compare)].concat(SC().compare.map(c=>line(null, c.label+':  '+c.a+'  or  '+c.b, 'Right: '+c.answer))) },
-    { at: 23, key: 'sums', label: 'Sums 1–4', card: 'maF', title: 'Point to each sum, 1 to 4', lines: [line(SC().maths.sum, GL.maths.sum)].concat(SC().sums.map(s=>line(null, s.label+':  '+s.prompt+' =', 'Right: '+s.answer))).concat([line(SC().maths.next, GL.maths.next+'  (no answer after a slow count of 5)')]), hint: 'The child may use the paper.' },
-    { at: 63, key: 'wp', label: '2 word problems', card: 'maB', title: 'Card face down. Read each problem aloud', lines: [line(SC().maths.wp_intro, GL.maths.wp_intro)].concat(SC().wps.map((w,i)=>line(w.prompt_ur, (i+1)+'. '+w.prompt_en, 'Right: '+w.answer))), hint: 'Read slowly, once. Don\'t explain. Both problems and answers are also on the printed <b>coach card</b>.' },
+    { at: 3, key: 'pairs', label: 'Pairs A–D', card: 'maF', coach: true, title: 'Point to each pair, A to D', lines: [line(SC().maths.compare, GL.maths.compare)].concat(SC().compare.map(c=>line(null, c.label+':  '+c.a+'  or  '+c.b, 'Right: '+c.answer))) },
+    { at: 23, key: 'sums', label: 'Sums 1–4', card: 'maF', coach: true, title: 'Point to each sum, 1 to 4', lines: [line(SC().maths.sum, GL.maths.sum)].concat(SC().sums.map(s=>line(null, s.label+':  '+s.prompt+' =', 'Right: '+s.answer))).concat([line(SC().maths.next, GL.maths.next+'  (no answer after a slow count of 5)')]), hint: 'The child may use the paper.' },
+    { at: 63, key: 'wp', label: '2 word problems', card: 'maB', coach: true, title: 'Card face down. Read each problem aloud', lines: [line(SC().maths.wp_intro, GL.maths.wp_intro)].concat(SC().wps.map((w,i)=>line(w.prompt_ur, (i+1)+'. '+w.prompt_en, 'Right: '+w.answer))), hint: 'Read slowly, once. Don\'t explain. Both problems and answers are also on the printed <b>coach card</b>.' },
     { at: 100, key: 'stop', label: 'Stop', card: 'maB', title: 'Stop', lines: [line(SC().maths.stop, GL.maths.stop)] },
     { at: 103, key: 'send', label: 'Send', card: 'maB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
   ],
@@ -404,10 +453,14 @@ const FB = {
   english: () => ({ key: 'fb', label: 'Non-reader', card: 'enL', title: 'The child can\'t read the first line', lines: [line(null, SC().english.fallback)], hint: 'Turn the card over. Letters, then words. <b>Skip the questions</b>, then send.' }),
   maths: () => null,
 };
-function cardHTML(k){ const c = CARD[k]; return `<div class="cardview"><div class="cardimg">${c.img?`<img src="${c.img}" alt="${esc(c.title)}">`:'No card'}${c.tag?`<span class="tag">${c.tag}</span>`:''}</div><div class="cardcap"><b>${esc(c.title)}</b>${esc(c.cap)}</div></div>`; }
+function cardHTML(k, coach){ const c = CARD[k];
+  const pic = c.img ? `<button type="button" class="cardimg" data-full="img/pack/${c.img}.jpg" data-cap="${esc(c.title)} · print pack, Set A" aria-label="${esc(c.title)}: see it full size"><img src="img/pack/${c.img}-t.jpg" alt="">${c.tag?`<span class="tag">${c.tag}</span>`:''}<span class="zh">⤢ Zoom</span></button>` : '<div class="cardimg">No card</div>';
+  return `<div class="cardview">${pic}<div class="cardcap"><b>${esc(c.title)}</b>${esc(c.cap)}</div></div>` + (coach ? COACH_MINI : ''); }
+const COACH_MINI = `<div class="coachmini"><button type="button" class="cardimg" data-full="img/pack/coach-card-g3.jpg" data-cap="Coach card · Grade 3, in the coach's hand, never shown to the child · print pack, Set A" aria-label="Coach card, Grade 3: see it full size"><img src="img/pack/coach-card-g3-t.jpg" alt=""></button><span><b>In the coach's hand:</b> the coach card, with these lines and the answers that count. Click it to read it.</span></div>`;
 function linesHTML(lines){ return `<div class="say">${lines.map((l)=>`<div class="line">${l.ur?`<span class="ur">«${esc(l.ur)}»</span>`:''}<span class="${l.ur?'en':'en'}" style="${l.ur?'':'color:var(--ink);font-size:15.5px'}">${l.ur?'':'«'}${esc(l.en)}${l.ur?'':'»'}</span>${l.extra?`<span class="acc">${esc(l.extra)}</span>`:''}</div>`).join('')}</div>`; }
 function drawTable(p, block, ph, jump, onFallback){
-  table.innerHTML = `<div class="panel"><span class="eyebrow">On the table now</span>${cardHTML(p.card)}</div>
+  tip(TIPMAP[block + ':' + p.key]);
+  table.innerHTML = `<div class="panel"><span class="eyebrow">On the table now</span>${cardHTML(p.card, p.coach)}</div>
     <div class="panel"><span class="eyebrow">${{urdu:'1 of 3 · Urdu story',english:'2 of 3 · English story',maths:'3 of 3 · Maths'}[block]} · recording</span>
       <div class="phases">${ph.map(x=>`<button type="button" data-k="${x.key}" class="${x.key===p.key?'on':''}">${x.label}</button>`).join('')}${FB[block]()?`<button type="button" data-fb="1" class="${p.key==='fb'?'on':''}">Can't read? (non-reader)</button>`:''}</div>
       <h3>${esc(p.title)}</h3>${p.lines.length?`<span class="eyebrow" style="font-size:11px">Say this</span>`+linesHTML(p.lines):''}${p.hint?`<p class="hint">${p.hint}</p>`:''}</div>`;
@@ -419,15 +472,53 @@ function panel(card, eyebrow, title, body, acts=[]){
   table.querySelectorAll('.acts button').forEach(b=>b.addEventListener('click',()=>acts[+b.dataset.i].act()));
 }
 
+// ---------- tips: the side rail ----------
+const TIPS = {
+  egra: ['Built for a coach with no EGRA training', 'Every step comes from the phone: which card, what to say, when to stop, when to send. The coach never counts or marks anything live.'],
+  school: ['One grade per visit', 'The bot picks Grade 3 or Grade 5 for the visit; the children come one at a time.'],
+  list: ['No roll numbers', 'Full name, the class the way the school writes it, and the class teacher. In the NIETE roster every child has a full name, 92% of classes have a section letter and 99% a reachable class teacher. Two classmates with the same name (2%) get the father\'s name.', 1],
+  teachers: ['The teachers send the children', 'Each class teacher gets only their own room\'s children, in order, so the coach stays seated.'],
+  setup: ['The only picture, before any recording', 'Opening a picture can stop a locked voice note, so the one picture comes before the first child. Every step after this is plain text.'],
+  presence: ['Nobody is picked by hand', 'The server draws the children. If one is absent or unwilling, the next child on the list comes in: a random sample, as in EGRA.'],
+  noRotation: ['One card set, every school, all term', 'EGRA gives every child in a round the same form; that is what makes schools comparable. So there is no rotation: one set per grade for the term (Set A now, Set B next term), and the message names the card.', 1],
+  step: ['Why the step message has no buttons', 'Plain text stays the last thing in the chat, right above the recorder, so the coach can read the next line while recording.'],
+  dontCount: ['The coach never counts', 'EGRA assessors train for 5+ days to mark every word live, and still disagree. Here the AI counts from the recording: on the May Rawalpindi children it agreed with the enumerators more often than a second trained person did (Urdu: 74% vs 58% within ±5 words).', 1],
+  stop: ['The story goes away before the questions', 'EGRA removes the passage before asking about it, so the child answers from memory, not by finding the line. Turning the card face down does the same.'],
+  questions: ['The questions are never on the child\'s card', 'EGRA asks them aloud from the assessor\'s sheet; here they are in the phone message and on the printed coach card. Pakistan asks 5; we ask 3. One gap: EGRA asks only about the part the child read, and the bot still asks all three.', 1],
+  fb: ['EGRA\'s stop rule', 'A child who can\'t read any word of the first line stops the story there. The card\'s back has 10 letters and 10 words, so the visit still says something about a non-reader.'],
+  english: ['English, the same three steps', 'Same card layout, same timing, same rules: start line, one minute, stop, card face down, three questions.'],
+  enQ: ['Answers in Urdu count', 'The child may answer the English questions in Urdu or English: this tests reading, not spoken English.'],
+  mathsStep: ['The child reads the numbers; the coach reads the stories', 'EGMA reads word problems aloud so a weak reader isn\'t marked down in maths. One maths card, no strip, nothing written down for later.', 1],
+  pairs: ['A short form of EGMA', 'EGMA\'s core battery has 6 tasks and takes about 20 minutes per child. We keep three of them, at 4, 4 and 2 items, to fit five children in 30 minutes.', 1],
+  sums: ['Two of these sums are too hard', 'From the May results: 6% of Grade 3 children got sum 3 (92 − 41) right, and 6% sum 4 (85 + 37). Swapping in two easier May sums is one of the cheap fixes.', 1],
+  wp: ['Read once, don\'t explain', 'As in EGMA: read slowly, once. The child may use paper and pencil. The card is face down, so there is nothing to read.'],
+  nudge: ['If the recording stops', 'WhatsApp can stop a locked voice note when the coach opens something else. If no note arrives for 4 minutes, the bot sends this.'],
+  next: ['The old "rotation" is gone', 'No second child writing maths, no form between children: one child at a time, start to finish. Measured on real WhatsApp: about 5 minutes per child, about 27 minutes for five, plus a 1-minute review.', 1],
+  review: ['Only what the recording couldn\'t settle', 'Counts are never asked. The coach marks only the answers the AI was unsure about: 7 for five children in the test run.'],
+  saved: ['Both marks are kept', 'The AI\'s mark and the coach\'s answer are saved side by side, so a disagreement can be checked later.'],
+};
+const TIPMAP = { 'urdu:start': 'step', 'urdu:story': 'dontCount', 'urdu:stop': 'stop', 'urdu:q': 'questions', 'urdu:fb': 'fb', 'english:q': 'enQ', 'english:fb': 'fb', 'maths:pairs': 'pairs', 'maths:sums': 'sums', 'maths:wp': 'wp' };
+const tipsEl = $('#tips'); let lastTip = null;
+function tip(k){
+  const t = TIPS[k]; if (!t || k === lastTip) return; lastTip = k;
+  tipsEl.querySelectorAll('.tip').forEach((x) => { x.classList.remove('new'); x.classList.add('old'); });
+  const d = document.createElement('div'); d.className = 'tip new';
+  d.innerHTML = `<b class="tt">${esc(t[0])}</b><span>${esc(t[1])}</span>` + (t[2] ? '<a href="#faq">More in the FAQ</a>' : '');
+  tipsEl.querySelector('.tiphead').after(d);
+  [...tipsEl.querySelectorAll('.tip')].slice(2).forEach((x) => x.remove());
+}
+function clearTips(){ tipsEl.querySelectorAll('.tip').forEach((x) => x.remove()); lastTip = null; }
+$('#tipsoff').onclick = (e) => { const off = tipsEl.dataset.off !== '1'; tipsEl.dataset.off = off ? '1' : '0'; e.currentTarget.textContent = off ? 'Show tips' : 'Hide tips'; e.currentTarget.setAttribute('aria-pressed', String(off)); };
+
 // ---------- the visit ----------
 function start(){
   run++; clearInterval(timer); clock = 9*60+2; child = 'Ayesha Khan'; chat.innerHTML = '<div class="day">TODAY</div>'; screen='00-school';
   wa.querySelector('.sheet')?.remove();
-  footEgra();
+  footEgra(); clearTips(); tip('egra');
   panel('none', 'Step 1', 'Open the test', `<p class="hint">The coach types <b>/egra</b>. Tap <b>➤</b> on the phone.</p>`);
 }
 function pickSchool(){
-  screen='00-school'; const P = D().pick;
+  screen='00-school'; const P = D().pick; tip('school');
   bubble(md(P.body)); buttons([{ label: '☰ ' + P.button, next: true, act: () => openList(P) }]);
   panel('none', 'Step 1', 'Pick the school', `<p class="hint">Asked only when the coach visits more than one school. Tap <b>${esc(P.button)}</b>.</p>`);
 }
@@ -439,23 +530,23 @@ function openList(P){
   sh.querySelector('.sf button').onclick = () => { const i = +sh.querySelector('input:checked').value; sh.remove(); me(P.rows[i].title); bot(list); };
 }
 function list(){
-  screen='01-list'; const L = D().list;
+  screen='01-list'; const L = D().list; tip('list');
   bubble(md(L.body)); buttons([{ label: L.buttons[0], next: true, act: () => { me(L.buttons[0]); bot(setup); } }, { label: L.buttons[1], act: () => { me(L.buttons[1]); bot(teachers); } }]);
   panel('none', 'Step 2', "Today's children, by classroom", `<p class="hint"><b>No roll numbers.</b> Full name, the class the way the school writes it, and the class teacher. <b>${esc(L.buttons[1])}</b> sends each teacher only their own room's children. Then tap <b>${esc(L.buttons[0])}</b>.</p>`);
 }
 function teachers(){
-  const T = D(); bubble(md(T.sentTeachers));
+  const T = D(); bubble(md(T.sentTeachers)); tip('teachers');
   const L = D().list; buttons([{ label: L.buttons[0], next: true, act: () => { me(L.buttons[0]); bot(setup); } }]);
   panel('none', 'What each class teacher receives', 'One message per room', `<div class="mini">${T.teachers.map(x=>`<div class="to">To ${esc(x.to)}</div><div class="tb" dir="auto">${esc(x.body)}</div>`).join('')}</div><p class="hint">Each teacher sends their children one at a time. Now tap <b>${esc(L.buttons[0])}</b>.</p>`);
 }
 function setup(){
-  screen='02-setup'; const U = D().setup;
+  screen='02-setup'; const U = D().setup; tip('setup');
   bubble(`<img src="img/setup-${lang}.jpg" alt="Where to sit: away from the class, card flat in front of the child, phone screen away from the child"><div class="cap">${md(U.body)}</div>`, false, 'img');
   buttons([{ label: U.button, next: true, act: () => { me(U.button); bot(presence); } }]);
   panel('none', 'Step 3 · once per visit', 'Before the first child', `<p class="hint">The only picture in the visit, sent before anything is recording: opening a picture can stop a locked voice note.</p>`);
 }
 function presence(){
-  screen='03-presence'; const P = D().presence;
+  screen='03-presence'; const P = D().presence; tip('presence');
   bubble(md(sub(P.body)));
   buttons([{ label: P.buttons[0], next: true, act: () => { me(P.buttons[0]); bot(urduStep); } }, { label: P.buttons[1], act: () => { me(P.buttons[1]); bot(absent); } }, { label: P.buttons[2], act: () => { me(P.buttons[2]); bot(absent); } }]);
   panel('none', 'Step 4', 'Is the child here?', `<p class="hint">The coach greets the child with the line shown (in Urdu), then taps <b>${esc(P.buttons[0])}</b>. Absent or unwilling: the next child on the server's list comes in; nobody is picked by hand.</p>`);
@@ -465,11 +556,11 @@ function absent(){
   bot(() => { bubble(md(A.next.body)); buttons([{ label: A.next.buttons[0], next: true, act: () => { me(A.next.buttons[0]); bot(urduStep); } }]); }, 500);
 }
 function stepMsg(body, block, scr){
-  screen = scr; bubble(md(sub(body)));
+  screen = scr; bubble(md(sub(body))); tip({urdu:'noRotation',english:'english',maths:'mathsStep'}[block]);
   footIdle(() => footRec(block));
   const p = PH[block]()[0];
   panel(p.card, {urdu:'1 of 3 · Urdu story',english:'2 of 3 · English story',maths:'3 of 3 · Maths'}[block], 'The step message', `<p class="hint">Plain text, <b>no buttons</b>, so it stays the last thing in the chat, right above the recorder. Scroll it on the phone: the words to say are in «quotes», the ${block==='maths'?'word problems':'questions'} are in it.</p><p class="hint">Tap the <b>🎤</b> on the phone to start recording.</p>`,
-    [{ label: 'What if the recording stops?', act: () => { bubble(md(sub(D().nudge))); screen='08-nudge-and-next'; } }]);
+    [{ label: 'What if the recording stops?', act: () => { bubble(md(sub(D().nudge))); screen='08-nudge-and-next'; tip('nudge'); } }]);
 }
 const urduStep = () => stepMsg(D().urduStep, 'urdu', 'msg-urdu');
 const NEXT = {
@@ -478,7 +569,7 @@ const NEXT = {
   maths: () => bot(doneNext, 900),
 };
 function doneNext(){
-  screen='08-nudge-and-next'; const N = D().doneNext;
+  screen='08-nudge-and-next'; const N = D().doneNext; tip('next');
   let body = N.body;
   if (child !== 'Ayesha Khan') {
     // Ayesha was absent, so Bilal was child 1: the next child is Hamza (3-B, Tariq Mehmood).
@@ -495,7 +586,7 @@ function fastForward(){
   bot(() => { bubble(md(D().lastDone)); bot(() => { bubble(md(D().visitEnd)); bot(reviewMsg, 900); }, 500); }, 600);
 }
 function reviewMsg(){
-  screen='09-end-of-visit'; const R = D().review;
+  screen='09-end-of-visit'; const R = D().review; tip('review');
   bubble(md(R.body)); buttons([{ label: '▣ ' + R.button, next: true, act: openReview }]);
   panel('none', 'End of the visit', 'One message: results, and what needs your ear', `<p class="hint">Each child's results (words per minute, answers right, maths out of 10). Then only the answers the recording could not settle: <b>${R.items.length}</b> for five children. <b>Counts are never asked.</b> Tap <b>${esc(R.button)}</b>.</p>`);
 }
@@ -507,7 +598,7 @@ function openReview(){
   const save = sh.querySelector('.sf button');
   sh.addEventListener('change', () => { save.disabled = sh.querySelectorAll('input:checked').length < R.items.length; });
   sh.querySelector('.sh button').onclick = () => sh.remove();
-  save.onclick = () => { sh.remove(); me('▣ ' + R.button + '\nResponse sent'); bot(() => { screen='12-saved'; bubble(md(R.saved)); panel('none', 'Done', 'The visit is complete', `<p class="hint">Every part of every child is saved: the AI's marks, and beside them the coach's answers with any change. Tap <b>Restart</b> to run it again, or switch the coach's language.</p>`); }); };
+  save.onclick = () => { sh.remove(); me('▣ ' + R.button + '\nResponse sent'); bot(() => { screen='12-saved'; bubble(md(R.saved)); tip('saved'); panel('none', 'Done', 'The visit is complete', `<p class="hint">Every part of every child is saved: the AI's marks, and beside them the coach's answers with any change. Tap <b>Restart</b> to run it again, or switch the coach's language.</p>`); }); };
   panel('none', 'The review', 'Mark only what the recording did not settle', `<p class="hint">Each item names the child and the part, shows the question and what the recording heard. Tap <b>Right</b>, <b>Wrong</b> or <b>Didn't answer</b> for each, then <b>Save</b>.</p>`);
 }
 
@@ -518,11 +609,21 @@ $('#sp-1').onclick = () => { speed = 1; $('#sp-1').setAttribute('aria-pressed','
 $('#sp-8').onclick = () => { speed = 8; $('#sp-8').setAttribute('aria-pressed','true'); $('#sp-1').setAttribute('aria-pressed','false'); };
 $('#restart').onclick = start;
 const SHOTS = { '00-school':'img/v2/00-school.jpg', '01-list':'img/v2/01-list.jpg', '02-setup':'img/v2/02-setup.jpg', '03-presence':'img/v2/03-presence.jpg', 'msg-urdu':'img/v2/msg-urdu.jpg', 'msg-english':'img/v2/msg-english.jpg', 'msg-maths':'img/v2/msg-maths.jpg', '08-nudge-and-next':'img/v2/08-nudge-and-next.jpg', '09-end-of-visit':'img/v2/09-end-of-visit.jpg', '10-review-form':'img/v2/10-review-form.jpg', '12-saved':'img/v2/12-saved.jpg' };
-$('#realscreen').onclick = () => { $('#lb-img').src = SHOTS[screen] || SHOTS['01-list']; $('#lb-cap').textContent = 'Real WhatsApp, NIETE sandbox, 4 Oct 2026 (coach in English; test children).'; $('#lb').hidden = false; };
-$('#lb-close').onclick = () => { $('#lb').hidden = true; };
-$('#lb').addEventListener('click', (e) => { if (e.target.id === 'lb') $('#lb').hidden = true; });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#lb').hidden = true; });
-document.querySelectorAll('.zoom').forEach(z => z.addEventListener('click', () => { $('#lb-img').src = z.dataset.full; $('#lb-cap').textContent = z.dataset.cap + ' (print pack, Set A)'; $('#lb').hidden = false; }));
+const lb = $('#lb'), lbImg = $('#lb-img'), lbFig = $('#lb-fig'), lbZoom = $('#lb-zoom');
+function setZoom(on, fx = 0.5, fy = 0.2){
+  lb.classList.toggle('zoomed', on); lbZoom.textContent = on ? 'Fit to screen' : 'Zoom in';
+  if (on) requestAnimationFrame(() => { lbFig.scrollLeft = fx * lbImg.scrollWidth - lbFig.clientWidth / 2; lbFig.scrollTop = fy * lbImg.scrollHeight - lbFig.clientHeight / 2; });
+}
+function openLB(src, cap){ setZoom(false); lbImg.src = src; $('#lb-cap').textContent = cap + ' · Click the page to zoom in.'; lb.hidden = false; lbZoom.focus(); }
+function closeLB(){ lb.hidden = true; setZoom(false); }
+lbImg.addEventListener('click', (e) => { const r = lbImg.getBoundingClientRect(); setZoom(!lb.classList.contains('zoomed'), (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height); });
+lbZoom.onclick = () => setZoom(!lb.classList.contains('zoomed'));
+$('#lb-close').onclick = closeLB;
+lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lb.hidden) closeLB(); });
+// Every zoomable picture (the card on the table, the coach card, the print pack) carries data-full.
+document.addEventListener('click', (e) => { const z = e.target.closest('[data-full]'); if (z) openLB(z.dataset.full, z.dataset.cap); });
+$('#realscreen').onclick = () => openLB(SHOTS[screen] || SHOTS['01-list'], 'Real WhatsApp, NIETE sandbox, 4 Oct 2026 (coach in English; test children)');
 start();
 })();
 </script>
