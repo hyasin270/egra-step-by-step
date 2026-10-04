@@ -4,17 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>/egra, Step by Step</title>
-<meta name="description" content="The ICT child reading and maths test, recorded on real WhatsApp against the NIETE sandbox: every screen the coach sees, the printed card the child reads from, and what is still open.">
+<meta name="description" content="The ICT child test, v2: a coach with no assessment training gives the test; the recording scores it. Every screen recorded on real WhatsApp against the NIETE sandbox on 4 Oct 2026.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
 <style>
+/* Layout: masthead, your questions answered, then one real WhatsApp screen at a time with notes beside it, then the printed cards, the "rotation", the time, and what is still open. */
 :root{
   --ground:#f2f4f1; --surface:#ffffff; --ink:#16201c; --muted:#56655f; --faint:#7d8b85; --rule:#d5dcd7;
   --accent:#1c6a4b; --accent-ink:#ffffff; --accent-soft:#e1efe8;
   --warn:#8f5400; --warn-soft:#fbefd9; --bad:#a8261d; --bad-soft:#fbe4e1;
-  --seg-bot:#1c6a4b; --seg-speak:#9cc7b1; --seg-check:#d29a2f; --target:#a8261d;
-  --bezel:#1d2522; --screen:#0b141a; --paper:#fffdf7;
+  --old:#c98a2a; --new:#1c6a4b; --bezel:#1d2522; --screen:#0b141a;
   --shadow:0 18px 40px -18px rgba(18,32,26,.35);
   --display:"Newsreader", Georgia, "Times New Roman", serif;
   --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -26,379 +26,272 @@
     --ground:#0f1513; --surface:#17201c; --ink:#e3e9e5; --muted:#9aaaa3; --faint:#7a8a83; --rule:#2a3631;
     --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
     --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916;
-    --seg-bot:#5ec29a; --seg-speak:#2f6b52; --seg-check:#d29a2f; --target:#f08a80;
-    --bezel:#05080a; --paper:#f4f1e8; --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --old:#e0a64a; --new:#5ec29a; --bezel:#05080a; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
     --ground:#0f1513; --surface:#17201c; --ink:#e3e9e5; --muted:#9aaaa3; --faint:#7a8a83; --rule:#2a3631;
     --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
     --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916;
-    --seg-bot:#5ec29a; --seg-speak:#2f6b52; --seg-check:#d29a2f; --target:#f08a80;
-    --bezel:#05080a; --paper:#f4f1e8; --shadow:0 18px 40px -18px rgba(0,0,0,.7);
+    --old:#e0a64a; --new:#5ec29a; --bezel:#05080a; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.6 var(--body);padding-inline:20px}
-.wrap{max-width:1240px;margin-inline:auto}
-a{color:var(--accent)}
-code{font:500 .86em var(--mono);background:var(--accent-soft);padding:.05em .35em;border-radius:4px;overflow-wrap:anywhere}
+.wrap{max-width:1180px;margin-inline:auto}
 h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent)}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-.ur{font-family:var(--urdu);direction:rtl;line-height:2}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
-
-.masthead{padding-block:40px 18px;display:grid;gap:14px}
 .eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.masthead{padding-block:40px 8px;display:grid;gap:14px}
 .masthead h1{font-size:clamp(34px,5vw,52px);letter-spacing:-.01em}
-.masthead h1 .cmd{font-family:var(--mono);font-weight:600;font-size:.82em;color:var(--accent)}
-.lede{max-width:72ch;color:var(--muted);font-size:17px;margin:0}
-.facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.lede{max-width:74ch;color:var(--muted);font-size:17px}
+.lede b{color:var(--ink)}
+.facts{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:6px;font-size:13px;padding:4px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--surface);color:var(--muted)}
 .chip b{color:var(--ink);font-weight:600}
 .chip.ok{border-color:transparent;background:var(--accent-soft);color:var(--ink)}
 .chip.ok::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
-
-.rail{display:flex;gap:6px;overflow-x:auto;padding:6px 2px 12px;margin-top:14px;scrollbar-width:thin}
+section{padding-block:34px 8px;display:grid;gap:18px}
+section > header{display:grid;gap:6px}
+section h2{font-size:clamp(26px,3.2vw,34px)}
+section header p{color:var(--muted);max-width:76ch}
+.qa{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.qa article{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;display:grid;gap:8px;align-content:start;min-width:0}
+.qa h3{font:600 15px/1.4 var(--body)}
+.qa h3::before{content:"You asked";display:block;font:600 11px/1.4 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.qa p{font-size:15px;color:var(--muted)}
+.qa p b{color:var(--ink)}
+.rail{display:flex;gap:6px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:thin}
 .rail button{flex:0 0 auto;display:flex;align-items:center;gap:8px;border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:5px 12px 5px 5px;cursor:pointer;font-size:13px;color:var(--muted);white-space:nowrap}
 .rail button .n{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--ground);font:600 12px var(--mono);color:var(--ink)}
-.rail button.done .n{background:var(--accent-soft)}
 .rail button[aria-current="step"]{border-color:var(--accent);color:var(--ink);font-weight:600}
 .rail button[aria-current="step"] .n{background:var(--accent);color:var(--accent-ink)}
-.rail button.bug .n{background:var(--bad-soft);color:var(--bad)}
-
-.stage{display:grid;grid-template-columns:auto 1fr;gap:36px;align-items:start;padding-bottom:28px}
-.devices{position:sticky;top:16px;display:flex;gap:16px;align-items:flex-start}
-.phone{width:340px;height:760px;border-radius:44px;background:var(--bezel);padding:10px;box-shadow:var(--shadow);flex:0 0 auto}
-.screen{height:100%;border-radius:35px;overflow:hidden;background:var(--screen)}
-.screen img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;cursor:zoom-in}
-.devlabel{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-align:center;margin-top:8px}
-.paper{width:210px;flex:0 0 auto;display:none}
-.paper.show{display:block}
-.paper .sheet{background:var(--paper);border-radius:6px;padding:8px;box-shadow:var(--shadow);transform:rotate(-1.5deg)}
-.paper img{display:block;width:100%;border-radius:3px;cursor:zoom-in}
-
-.panel{background:var(--surface);border:1px solid var(--rule);border-radius:16px;padding:26px 28px 22px;min-height:560px;display:flex;flex-direction:column}
-.kicker{font:600 12px var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
-.panel h2{font-size:clamp(26px,3vw,34px);margin:6px 0 12px}
-.panel .body{flex:1;display:grid;gap:14px;align-content:start}
-.panel .body > p{margin:0;max-width:66ch}
-.panel .lead{font-size:17.5px}
-.says{border:1px solid var(--rule);border-radius:12px;padding:12px 14px;display:grid;gap:6px;background:var(--ground)}
-.says .ur{font-size:15px;text-align:right}
-.says .en{font-size:14.5px;color:var(--muted)}
-.says .lbl{font:600 11px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
-.call{border-left:4px solid var(--warn);background:var(--warn-soft);border-radius:4px 10px 10px 4px;padding:10px 14px;display:grid;gap:4px}
-.call.bad{border-left-color:var(--bad);background:var(--bad-soft)}
-.call.ok{border-left-color:var(--accent);background:var(--accent-soft)}
-.call .ct{font-weight:600;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
-.call .tag{font:600 11px var(--mono);padding:1px 6px;border-radius:4px;background:var(--surface);color:var(--ink);text-decoration:none}
-.call p{margin:0;font-size:15px}
-.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:16px;border-top:1px solid var(--rule)}
-.nav button{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:8px 18px;cursor:pointer;font-weight:600}
-.nav button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.nav button:disabled{opacity:.4;cursor:default}
-.nav .hint{font-size:12.5px;color:var(--faint);text-align:center}
-.note{font-size:13.5px;color:var(--muted)}
-
-section.block{padding-block:40px;border-top:1px solid var(--rule)}
-section.block > h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:8px}
-section.block > p.sub{color:var(--muted);max-width:72ch;margin:0 0 20px}
-.tbl{overflow-x:auto;border:1px solid var(--rule);border-radius:10px;background:var(--surface)}
-table{border-collapse:collapse;width:100%;font-size:14px}
+.stage{display:grid;grid-template-columns:auto minmax(0,1fr);gap:34px;align-items:start}
+.phone{width:340px;max-width:100%;border-radius:40px;background:var(--bezel);padding:10px;box-shadow:var(--shadow)}
+.screen{border-radius:31px;overflow-y:auto;background:var(--screen);max-height:min(700px, calc(100vh - 60px));scrollbar-width:none}
+.screen::-webkit-scrollbar{display:none}
+.screen img{display:block;width:100%;height:auto}
+.notes{display:grid;gap:14px;align-content:start;min-width:0;max-width:62ch}
+.notes h3{font-size:26px}
+.notes .row{display:grid;grid-template-columns:110px minmax(0,1fr);gap:10px;font-size:15px}
+.notes .row .k{font:600 11px/1.9 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--faint)}
+.notes .why{border-left:3px solid var(--accent);padding:2px 0 2px 14px;color:var(--muted);font-size:15px}
+.notes .why b{color:var(--ink)}
+.navbtns{display:flex;gap:8px}
+.navbtns button{border:1px solid var(--rule);background:var(--surface);border-radius:8px;padding:7px 14px;cursor:pointer;font-size:14px}
+.navbtns button:disabled{opacity:.4;cursor:default}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:16px}
+.cards figure{margin:0;display:grid;gap:6px;align-content:start}
+.cards img{width:100%;height:auto;border-radius:4px;box-shadow:var(--shadow);background:#fff}
+figcaption{font-size:13.5px;color:var(--muted)}
+.figure{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:18px;overflow-x:auto}
+.figure svg{display:block;width:100%;min-width:640px;height:auto}
+.figure svg text{fill:var(--ink);font-family:var(--body)}
+.figure svg .mut{fill:var(--muted)}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
 th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
-th{font:600 12px var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--ground)}
-tr:last-child td{border-bottom:0}
-.verdict{display:inline-block;font:600 11px var(--body);padding:2px 8px;border-radius:999px}
-.v-ok{background:var(--accent-soft);color:var(--accent)}
-.v-part{background:var(--warn-soft);color:var(--warn)}
-.v-no{background:var(--bad-soft);color:var(--bad)}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:22px}
-.stat{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px}
-.stat .v{font:600 26px var(--mono);font-variant-numeric:tabular-nums}
-.stat .v.bad{color:var(--bad)}
-.stat .l{font-size:13px;color:var(--muted)}
-.chartbox{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 16px 10px;overflow-x:auto}
-.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:13px;color:var(--muted);margin-bottom:8px}
-.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-svg text{fill:currentColor}
-.chart{color:var(--ink);display:block;min-width:560px;width:100%;height:auto}
-.issues h3{font-size:20px;margin:26px 0 10px}
-.issues tr:target td{background:var(--warn-soft)}
-.issues td:first-child{font:600 13px var(--mono);white-space:nowrap}
-footer{padding-block:30px 50px;border-top:1px solid var(--rule);color:var(--muted);font-size:14px}
-footer ul{padding-left:20px;display:grid;gap:6px;max-width:84ch}
-.lightbox{position:fixed;inset:0;background:rgba(8,12,10,.88);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;cursor:zoom-out}
-.lightbox.open{display:flex}
-.lightbox img{max-width:100%;max-height:100%;border-radius:8px}
-
-@media (max-width: 1000px){
-  .stage{grid-template-columns:1fr;gap:20px}
-  .devices{position:static;justify-content:center;flex-wrap:wrap}
-  .panel{min-height:0;padding:20px 18px}
-}
-@media (max-width: 520px){
-  .phone{width:min(340px,100%);height:700px}
-  .paper{width:min(210px,70%)}
-}
+th{font:600 11px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+.v{display:inline-block;font:600 11.5px var(--body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.v.keep{background:var(--accent-soft);color:var(--ink)}
+.v.chg{background:var(--warn-soft);color:var(--ink)}
+.v.drop{background:var(--bad-soft);color:var(--ink)}
+.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.open div{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--muted);min-width:0}
+.open b{display:block;color:var(--ink);margin-bottom:4px}
+.state{display:inline-block;font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.s-work{background:var(--warn-soft);color:var(--ink)}
+.s-you{background:var(--bad-soft);color:var(--ink)}
+.s-later{background:var(--accent-soft);color:var(--ink)}
+footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:86ch}
+@media (max-width:860px){ .stage{grid-template-columns:1fr} .phone{margin-inline:auto} }
+@media (max-width:420px){ .notes .row{grid-template-columns:1fr;gap:0} }
 </style>
 </head>
 <body>
 <div class="wrap">
 <header class="masthead">
-  <div class="eyebrow">ICT child test (EGRA/EGMA-derived) · NIETE sandbox · real WhatsApp</div>
-  <h1><span class="cmd">/egra</span>, step by step</h1>
-  <p class="lede">Every screen below is a real WhatsApp screenshot, recorded on 3 Oct 2026 against the NIETE sandbox bot: one coach tests one child from <code>/egra</code> to a saved check. The child reads from a printed card, shown beside the phone; WhatsApp only records. The child is synthetic: a generated voice, an invented name, a rendered strip with a known answer key.</p>
-  <div class="facts" id="facts"></div>
+  <span class="eyebrow">ICT child test · v2 · recorded on real WhatsApp · 4 Oct 2026</span>
+  <h1>The coach gives the test. The recording scores it.</h1>
+  <p class="lede">Built for a coach who has <b>never seen EGRA or EGMA</b>. One child at a time; each step is one WhatsApp message with the card to use and the exact words to say; the coach records and never counts anything. One set of cards per grade for the whole term. Children are found by name, class and class teacher, never by roll number. Every screen below is real WhatsApp on the NIETE sandbox, with the operator's account set to English and five test children voiced from scripts.</p>
+  <div class="facts">
+    <span class="chip ok"><b>Live on sandbox</b> · commit 126088f1</span>
+    <span class="chip">Five children in <b>≈27 min</b> (before: 35.4)</span>
+    <span class="chip"><b>0</b> counts asked of the coach</span>
+    <span class="chip"><b>1</b> card set per grade per term</span>
+    <span class="chip">No roll numbers</span>
+  </div>
 </header>
 
-<nav class="rail" id="rail" aria-label="Steps"></nav>
-
-<main class="stage">
-  <div class="devices">
-    <div>
-      <div class="phone" aria-label="The coach's WhatsApp"><div class="screen"><img id="shot" alt="" src="img/real/01-egra-school.jpg"></div></div>
-      <div class="devlabel">Coach's phone · WhatsApp</div>
-    </div>
-    <div class="paper" id="paper">
-      <div class="sheet"><img id="paperImg" alt="" src="img/card/G3-A-1.png"></div>
-      <div class="devlabel" id="paperLabel">In the child's hands · printed card</div>
-    </div>
+<section aria-labelledby="qa-h">
+  <header><span class="eyebrow">Your questions</span><h2 id="qa-h">What each confusing line meant, and what replaced it</h2></header>
+  <div class="qa">
+    <article><h3>How does the coach find the children? One grade, or a mix?</h3><p><b>One grade per visit</b> (3 or 5). The list is grouped by classroom with the class teacher, in the roster's own words: "Grade 3 - A · Teacher: …". Two in three visits need one classroom. Each teacher can get only their own room's children on WhatsApp.</p></article>
+    <article><h3>Drop roll numbers?</h3><p><b>Gone</b> from every message, the form and the portal. The roster has every child's full name, the section (92% of classes) and a class teacher (99%). Two classmates with the same name get the father's name when the roster has it.</p></article>
+    <article><h3>Printed passages "rotated": which variant is in the child's hands?</h3><p><b>No rotation.</b> In EGRA every child in a round reads the same form. Each coach carries <b>one set per grade for the whole term</b>, colour-coded (Grade 3 green, Grade 5 blue), "Set A · Oct–Dec 2026" on every card. Next term's set comes next term.</p></article>
+    <article><h3>A4 PDF to print? Is that how EGRA does it?</h3><p>Yes: <b>A4, laminated, one task per side</b>; the child sees only the story. The print pack is ready: 6 cards and one coach page, 16 pages per coach.</p></article>
+    <article><h3>"First sounds from the coach's copy"?</h3><p>EGRA's "initial sound" task (the adult says a word, the child gives its first sound), mainly for Grades 1–2; and a 5-page paper sheet the bot never mentioned. <b>Both gone.</b></p></article>
+    <article><h3>Interstitials in Urdu though my language is English?</h3><p>Your sandbox account had been switched to Urdu for the first demo recording and not switched back. <b>Back to English</b>; every screen below is in English. Only the words said <i>to the child</i> are in Urdu (and English for the English story).</p></article>
+    <article><h3>"Give the maths strip to the other child", but this was my first child?</h3><p>The old design had the next child write maths while the current child read. <b>Removed.</b> Maths is oral, one child at a time: no strip, no photo, no child number.</p></article>
+    <article><h3>Who reads the sums? Two maths pages?</h3><p><b>The child</b> reads the pairs and sums on one maths card and says the answers; the coach points. <b>The coach reads the two word problems aloud</b>, as EGMA does; the words are in the message.</p></article>
+    <article><h3>Why did the form ask Urdu questions the card didn't show?</h3><p>Urdu EGRA asks questions (Pakistan's version 5; we ask 3). The coach asks them <b>aloud after turning the card face down</b>; they are never printed for the child. They are now in the step message itself.</p></article>
+    <article><h3>"This child's key says 56". How does the coach count words per minute?</h3><p><b>They don't.</b> The "key" was the test child's answer sheet. The AI counts from the recording; on the May children it agreed with the enumerators more often than a second trained person did (Urdu 74% vs 58% within ±5 words).</p></article>
   </div>
+</section>
 
-  <article class="panel" aria-live="polite">
-    <div class="kicker" id="kicker"></div>
-    <h2 id="ptitle"></h2>
-    <div class="body" id="pbody"></div>
-    <div class="nav">
-      <button id="prev">← Back</button>
-      <span class="hint">← → keys work too · tap a screen to enlarge</span>
-      <button id="next" class="primary">Next →</button>
-    </div>
-  </article>
-</main>
+<section aria-labelledby="walk-h">
+  <header><span class="eyebrow">Real WhatsApp, step by step</span><h2 id="walk-h">One visit, five children</h2><p>The operator's linked WhatsApp Web and the NIETE sandbox bot, 4 Oct 2026, 01:38–02:11 PKT. The children are test children voiced from scripts written exactly as the steps say: a fluent, an average, a struggling, a skipping and a non-reading Grade 3 child. Arrow keys move between steps.</p></header>
+  <nav class="rail" id="rail" aria-label="Steps"></nav>
+  <div class="stage">
+    <div class="phone"><div class="screen" id="screen"><img id="shot" alt=""></div></div>
+    <div class="notes" id="notes"></div>
+  </div>
+</section>
 
-<section class="block" id="standards">
-  <h2>Is this how EGRA and EGMA are run?</h2>
-  <p class="sub">Checked against the RTI EGRA Toolkit (2016), the Core EGMA instrument (2014), USAID's Sindh and Uzbekistan studies and ASER. The reading follows EGRA closely. The maths borrows from EGMA but is our own short form. The full batteries take 15–20 minutes each, so this is an <b>EGRA/EGMA-derived check</b>, not EGRA scores.</p>
+<section aria-labelledby="cards-h">
+  <header><span class="eyebrow">What the child holds</span><h2 id="cards-h">The print pack: three laminated cards per grade, one coach page</h2><p>Pages from the print-ready PDF (A4, colour, double-sided). No child card shows an answer, a question or an item number.</p></header>
+  <div class="cards">
+    <figure><img src="img/print/p05.jpg" alt="Grade 3 Urdu card, front: the story only" loading="lazy"><figcaption>Grade 3 · Urdu, front: the May 2026 passage, nothing else.</figcaption></figure>
+    <figure><img src="img/print/p06.jpg" alt="Grade 3 Urdu card, back: letters and words" loading="lazy"><figcaption>Back: letters, then words, only for a child who can't read the story.</figcaption></figure>
+    <figure><img src="img/print/p07.jpg" alt="Grade 3 English card" loading="lazy"><figcaption>Grade 3 · English, front.</figcaption></figure>
+    <figure><img src="img/print/p09.jpg" alt="Grade 3 maths card" loading="lazy"><figcaption>Grade 3 · Maths: four "which is bigger" pairs, four sums (May instrument).</figcaption></figure>
+    <figure><img src="img/print/p11.jpg" alt="Grade 5 Urdu card" loading="lazy"><figcaption>Grade 5 · Urdu (blue): the longer story.</figcaption></figure>
+    <figure><img src="img/print/p15.jpg" alt="Grade 5 maths card" loading="lazy"><figcaption>Grade 5 · Maths: harder sums.</figcaption></figure>
+    <figure><img src="img/print/p03.jpg" alt="The coach page" loading="lazy"><figcaption>The coach page: where to sit, what to bring, five rules.</figcaption></figure>
+  </div>
+</section>
+
+<section aria-labelledby="rot-h">
+  <header><span class="eyebrow">The "rotation"</span><h2 id="rot-h">What it was, and why it's gone</h2><p>Two different things were called rotation; both gave the coach a second job at the same moment.</p></header>
+  <div class="figure">
+    <svg viewBox="0 0 980 300" role="img" aria-label="Before: while child 1 reads, child 2 writes a maths strip and a returning child needs a different card. Now: one child at a time, the same card set for everyone.">
+      <text x="0" y="22" font-size="15" font-weight="700">Before</text>
+      <text x="0" y="56" font-size="12.5" class="mut">Coach listens</text>
+      <rect x="130" y="40" width="250" height="26" rx="5" fill="var(--old)"/><text x="140" y="58" font-size="12.5" font-weight="600" fill="#fff">Child 1 reads · card A</text>
+      <rect x="390" y="40" width="250" height="26" rx="5" fill="var(--old)"/><text x="400" y="58" font-size="12.5" font-weight="600" fill="#fff">Child 2 reads · card A</text>
+      <rect x="650" y="40" width="250" height="26" rx="5" fill="var(--bad)"/><text x="660" y="58" font-size="12.5" font-weight="600" fill="#fff">Returning child · card B</text>
+      <text x="0" y="96" font-size="12.5" class="mut">Next child</text>
+      <rect x="130" y="80" width="250" height="26" rx="5" fill="none" stroke="var(--old)" stroke-width="2" stroke-dasharray="5 4"/><text x="140" y="98" font-size="12.5">Child 2 writes the maths strip</text>
+      <rect x="390" y="80" width="250" height="26" rx="5" fill="none" stroke="var(--old)" stroke-width="2" stroke-dasharray="5 4"/><text x="400" y="98" font-size="12.5">Child 3 writes the strip</text>
+      <text x="130" y="128" font-size="12.5" class="mut">Two children at once · the next child not in the room yet · two card sets · a photo per strip, matched by a number</text>
+      <line x1="0" y1="150" x2="980" y2="150" stroke="var(--rule)"/>
+      <text x="0" y="182" font-size="15" font-weight="700">Now</text>
+      <text x="0" y="216" font-size="12.5" class="mut">Coach + 1 child</text>
+      <g font-size="12" font-weight="600" fill="#fff">
+        <rect x="130" y="200" width="70" height="26" rx="5" fill="var(--new)"/><text x="138" y="218">Urdu</text>
+        <rect x="203" y="200" width="66" height="26" rx="5" fill="var(--new)" opacity=".8"/><text x="211" y="218">English</text>
+        <rect x="272" y="200" width="60" height="26" rx="5" fill="var(--new)" opacity=".62"/><text x="280" y="218">Maths</text>
+        <rect x="342" y="200" width="70" height="26" rx="5" fill="var(--new)"/><text x="350" y="218">Urdu</text>
+        <rect x="415" y="200" width="66" height="26" rx="5" fill="var(--new)" opacity=".8"/><text x="423" y="218">English</text>
+        <rect x="484" y="200" width="60" height="26" rx="5" fill="var(--new)" opacity=".62"/><text x="492" y="218">Maths</text>
+        <rect x="554" y="200" width="70" height="26" rx="5" fill="var(--new)"/><text x="562" y="218">Urdu</text>
+        <rect x="627" y="200" width="66" height="26" rx="5" fill="var(--new)" opacity=".8"/><text x="635" y="218">English</text>
+        <rect x="696" y="200" width="60" height="26" rx="5" fill="var(--new)" opacity=".62"/><text x="704" y="218">Maths</text>
+      </g>
+      <text x="130" y="246" font-size="12.5" class="mut">Child 1</text><text x="342" y="246" font-size="12.5" class="mut">Child 2</text><text x="554" y="246" font-size="12.5" class="mut">Child 3 …</text>
+      <text x="130" y="276" font-size="12.5" class="mut">One child, one card set for everyone this term, three voice notes, then the next child. Nothing to hand out, photograph or match.</text>
+    </svg>
+  </div>
+</section>
+
+<section aria-labelledby="time-h">
+  <header><span class="eyebrow">The 30-minute bound</span><h2 id="time-h">Measured on this recording</h2><p>Per child, from "Here, start" to the third note: 5.0, 5.0, 5.7, 5.0 and 5.0 minutes (the first child's maths recording stalled in the browser for 3½ minutes and is counted at its clean length), with 13–20 seconds between children. A real school adds the walk from the classroom; the class teacher sends the children one at a time.</p></header>
+  <div class="figure">
+    <svg viewBox="0 0 980 200" role="img" aria-label="Minutes for five children: before, 35.4 including about 9.5 minutes of check forms; v2 measured about 27 plus 1 for the review; the bound is 30.">
+      <g font-size="12" class="mut"><text x="150" y="20">0</text><text x="330" y="20">10</text><text x="510" y="20">20</text><text x="690" y="20">30 min</text><text x="868" y="20">40</text></g>
+      <g stroke="var(--rule)"><line x1="154" y1="28" x2="154" y2="170"/><line x1="334" y1="28" x2="334" y2="170"/><line x1="514" y1="28" x2="514" y2="170"/><line x1="874" y1="28" x2="874" y2="170"/></g>
+      <text x="0" y="68" font-size="13.5" font-weight="700">Before</text><text x="0" y="86" font-size="12" class="mut">3 Oct, real speed</text>
+      <rect x="154" y="52" width="466" height="34" fill="var(--old)" opacity=".8"/><text x="164" y="74" font-size="12.5" font-weight="600" fill="#fff">Test 25.9 min</text>
+      <rect x="620" y="52" width="171" height="34" fill="var(--bad)" opacity=".85"/><text x="628" y="74" font-size="12.5" font-weight="600" fill="#fff">Check forms 9.5</text>
+      <text x="800" y="74" font-size="13" font-weight="700" class="num">35.4</text>
+      <text x="0" y="128" font-size="13.5" font-weight="700">v2</text><text x="0" y="146" font-size="12" class="mut">4 Oct, measured</text>
+      <rect x="154" y="112" width="485" height="34" fill="var(--new)"/><text x="164" y="134" font-size="12.5" font-weight="600" fill="#fff">5 children ≈ 27 min</text>
+      <rect x="639" y="112" width="18" height="34" fill="var(--new)" opacity=".5"/>
+      <text x="666" y="134" font-size="13" font-weight="700" class="num">+1 review</text>
+      <line x1="694" y1="36" x2="694" y2="176" stroke="var(--bad)" stroke-width="2" stroke-dasharray="4 4"/><text x="700" y="190" font-size="12" fill="var(--bad)">your bound</text>
+    </svg>
+  </div>
   <div class="tbl"><table>
-    <thead><tr><th>Question</th><th>How the standard does it</th><th>Ours</th><th>Verdict</th></tr></thead>
+    <thead><tr><th>Part</th><th>v2</th><th>EGRA / EGMA</th><th></th></tr></thead>
     <tbody>
-      <tr><td>Reading passage</td><td>About 60 words, grade level, from the national textbooks</td><td>Grade 3: the May 2026 Rawalpindi passage, word for word (60 words)</td><td><span class="verdict v-ok">matches</span></td></tr>
-      <tr><td>One passage or one per grade</td><td>The toolkit is silent. Sindh 2014: the same Grade 2 passage for Grades 3 and 5, plus a harder Grade 4 passage for Grade 5</td><td>Grade 5: the May passage plus a written continuation (longer, not shown to be harder)</td><td><span class="verdict v-part">check difficulty</span></td></tr>
-      <tr><td>Item order</td><td>Randomised once at design; every child reads the same sheet; never shuffled per child</td><td>Fixed per form; only the children are drawn at random</td><td><span class="verdict v-ok">matches</span></td></tr>
-      <tr><td>No drift</td><td>A printed, fixed instrument</td><td>Pre-generated, frozen and versioned; nothing generated at test time</td><td><span class="verdict v-ok">matches</span></td></tr>
-      <tr><td>Comprehension</td><td>3–5 questions; the passage is removed before questioning (2016 core)</td><td>Urdu 3, English 2; the card is not turned over</td><td><span class="verdict v-part">add 1 English question; decide on the card</span></td></tr>
-      <tr><td>Retest form</td><td>Built, piloted and equated before comparing a child's two scores</td><td>Form B matched on text measures, not piloted</td><td><span class="verdict v-part">pilot-equate first</span></td></tr>
-      <tr><td>Fact fluency</td><td>Two separate 60-second runs, addition and subtraction, 20 items each, answers spoken</td><td>One mixed 60-second run (Grade 5 adds × and ÷)</td><td><span class="verdict v-no">variant</span></td></tr>
-      <tr><td>Two-digit sums</td><td>5 + 5, oral, paper optional</td><td>4 written on the strip</td><td><span class="verdict v-no">variant (ASER-style)</span></td></tr>
-      <tr><td>Word problems</td><td>6, read aloud by the assessor</td><td>1, read aloud by the coach</td><td><span class="verdict v-part">too few for a score</span></td></tr>
-      <tr><td>The May Rawalpindi maths</td><td>A levelled ladder (14+1 … 72 ÷ 6), item by item</td><td>None of its items</td><td><span class="verdict v-no">not comparable</span></td></tr>
-      <tr><td>Showing the passage</td><td>A printed, large-font sheet in front of the child</td><td>The printed card; WhatsApp only records</td><td><span class="verdict v-ok">matches</span></td></tr>
-    </tbody>
-  </table></div>
-  <p class="note">Open decisions for the operator, Sabeena and Sameer: maths (keep and label, move toward Core EGMA, or use the May levelled items), a third English question, the card face-down before questions, the Grade 5 passage, and Form B equating. See D2 in the register below.</p>
+      <tr><td>Urdu story, 60 s</td><td>May passage; the AI counts from the recording</td><td>Same; assessor marks live</td><td><span class="v keep">kept</span></td></tr>
+      <tr><td>Urdu questions</td><td>3, asked aloud, card face down</td><td>3–5 (Pakistan 5), passage removed</td><td><span class="v keep">kept</span></td></tr>
+      <tr><td>English story + questions</td><td>May passage; <b>3</b> questions (was 2)</td><td>At least 3</td><td><span class="v keep">raised to the minimum</span></td></tr>
+      <tr><td>Non-reader fallback</td><td>Letters and words on the card's back, when the coach switches</td><td>Letters for every child; stop if nothing in line 1</td><td><span class="v keep">kept</span></td></tr>
+      <tr><td>First sounds</td><td>—</td><td>Mostly Grades 1–2</td><td><span class="v drop">dropped</span></td></tr>
+      <tr><td>Made-up words</td><td>—</td><td>Up to Grade 5 in some studies</td><td><span class="v drop">dropped</span></td></tr>
+      <tr><td>Maths</td><td>4 "which is bigger", 4 sums, 2 word problems read aloud; May instrument</td><td>Core EGMA: 6 tasks, about 20 min, oral</td><td><span class="v chg">short form</span></td></tr>
+      <tr><td>60-second quick sums</td><td>—</td><td>Timed addition and subtraction</td><td><span class="v drop">dropped</span></td></tr>
+    </tbody></table></div>
 </section>
 
-<section class="block" id="accuracy">
-  <h2>How close the AI is to the enumerators</h2>
-  <p class="sub">Every recording from the May 2026 Rawalpindi study: 185 children, Grades 1–5. Each AI mark is compared with the enumerator's tablet mark for the same child and item. The human floor is how often a QA reviewer, re-listening to the same children, agreed with the enumerator.</p>
-  <div class="tbl"><table id="realTable"></table></div>
-  <p class="note" id="realNote"></p>
-</section>
-
-<section class="block" id="clock-sec">
-  <h2>Five children on the clock</h2>
-  <p class="sub">The target is about five minutes a child, 25–30 for five. Each bar is one child from the five-child sandbox run: the bot's own time, the child's speaking time, and the coach's check.</p>
-  <div class="stats" id="clockStats"></div>
-  <div class="chartbox">
-    <div class="legend"><span><i style="background:var(--seg-bot)"></i>Bot</span><span><i style="background:var(--seg-speak)"></i>Child speaking</span><span><i style="background:var(--seg-check)"></i>Coach's check</span><span><i style="background:var(--target)"></i>Five-minute target</span></div>
-    <svg class="chart" id="clockChart" role="img"></svg>
+<section aria-labelledby="open-h">
+  <header><span class="eyebrow">Still open</span><h2 id="open-h">Before a real classroom</h2></header>
+  <div class="open">
+    <div><span class="state s-work">Fixing now</span><b>A struggling reader shown as a non-reader</b>In this recording the struggling child's English was counted right (6 words) but reported as "letters 0 of 10", because the scorer still guesses when to switch. Fix: switch only when the coach said the switch line.</div>
+    <div><span class="state s-you">Needs you</span><b>A 15-minute test on a real phone</b>Lock a voice note in the sandbox chat and count aloud; then scroll, leave the phone untouched for 2.5 minutes, and let a message arrive. Did it keep recording each time?</div>
+    <div><span class="state s-you">Needs a decision</span><b>Consent before any real child is recorded</b>Who agrees, how parents are told, how long audio is kept.</div>
+    <div><span class="state s-later">Next</span><b>Oral maths on real children</b>89–91% of items scored right on test voices; real children's audio not yet tested.</div>
+    <div><span class="state s-later">Next</span><b>Quality without coach counting</b>A trained person re-scores a sample of recordings (EGRA asks for at least 150 children).</div>
+    <div><span class="state s-later">Next term</span><b>Set B checked against Set A</b>Before comparing a child's two terms.</div>
   </div>
-  <p class="note">That run sent the voice notes back to back, which added about 4 minutes of pacing and polling for five children that a real visit does not have (L22). At real speed the projection is 35.4 minutes. Not in the bars: the coach's spoken cues, handing over the card, walking children in and out.</p>
 </section>
 
-<section class="block issues" id="issues">
-  <h2>Open issues and decisions</h2>
-  <p class="sub">The register the team works from. Steps above link here where an issue shows up.</p>
-  <div id="issueTables"></div>
-</section>
-
-<footer>
-  <b>How these screens were made</b>
-  <ul>
-    <li>Real WhatsApp (WhatsApp Web, linked to the operator's account) messaging the NIETE sandbox number on 3 Oct 2026, with sandbox drops 5 and 6 live. Only the sandbox chat is shown.</li>
-    <li>For the recording, the coach account was set up as a coach at the synthetic SIM school. The class list carries invented names; one child (Abdullah Tariq) was given no roll on purpose, to show the fix.</li>
-    <li>The three voice notes are real WhatsApp voice notes. A synthetic child's recordings were fed to the browser's microphone, and WhatsApp's own recorder made the notes in real time (1:44, 1:34, 1:25).</li>
-    <li>The strip photo is a rendered test strip with "1" written in its Child no. box. The check was filled from the synthetic child's answer key, as a coach who listened would fill it.</li>
-    <li>No real child's voice, photo or name is on this page.</li>
-  </ul>
-</footer>
+<footer>Sources: the real-WhatsApp recording above (NIETE sandbox, commit 126088f1, 4 Oct 2026); the May 2026 Rawalpindi study (185 children, AI against the enumerators); EGRA Toolkit 2nd ed. 2016; Core EGMA 2014; Sindh SELECT EGRA 2024; Pakistan Reading Project; Meta WhatsApp Flows 7.3. Names are test children and test teachers on the sandbox, not real people.</footer>
 </div>
 
-<div class="lightbox" id="lightbox"><img alt="" id="lbImg"></div>
-
-<script src="data.js"></script>
 <script>
-(function(){
-'use strict';
-const D = window.DEMO;
-const $ = (s) => document.querySelector(s);
-const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const md = s => esc(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/`([^`]+)`/g,'<code>$1</code>');
-const mins = s => (s/60).toFixed(1);
-const R = 'img/real/';
-const CARD = { ur: ['img/card/G3-A-1.png', 'Printed card, form A, Urdu page'], en: ['img/card/G3-A-2.png', 'Printed card, form A, English page'], ma: ['img/card/G3-A-3.png', 'Printed card, form A, maths page'], strip: ['img/card/G3-A-5.png', 'The maths strip the next child writes on'] };
-const says = (ur, en) => `<div class="says"><div class="lbl">On screen</div><div class="ur">${ur}</div><div class="en">${en}</div></div>`;
-const call = (kind, tag, title, text) => `<div class="call ${kind}"><div class="ct">${tag ? `<a class="tag" href="#${tag}">${tag}</a>` : ''}${title}</div><p>${text}</p></div>`;
-
 const STEPS = [
- { shot: '01-egra-school', title: 'The coach sends /egra', body: () => `
-   <p class="lead">The coach types <code>/egra</code>. The test is separate from the observation (operator's call, 3 Oct): <code>/egra</code> is the only way in.</p>
-   ${says('آج کس اسکول میں ٹیسٹ کرنا ہے؟', 'Which school are you testing at today? [Schools]')}
-   <p>This coach is linked to two schools, so Rumi asks which one. A coach with one school goes straight to the list.</p>` },
- { shot: '02-school-list', title: 'Pick the school', body: () => `
-   <p class="lead">A WhatsApp list: the coach taps the school.</p>
-   <p class="note">On a phone this list slides up from the bottom; on WhatsApp Web it opens as a box.</p>` },
- { shot: '03-list-message', title: 'Today\'s five, by name', body: () => `
-   <p class="lead">The server has drawn five children for this class this quarter. The coach cannot swap them.</p>
-   ${says('کلاس ٹیچر سے یہ بچے ایک ایک کر کے اسی ترتیب سے بلوائیں: Usman Ghani · رول ۸، Laiba Shakeel · رول ۲۵، Noor Fatima · رول ۱۵، Abdullah Tariq، Fatima Zahra · رول ۳', 'Ask the class teacher for these children, one at a time, in this order. Full name first, roll only as a hint.')}
-   ${says('SIM — Teacher 3A اس جماعت کے کلاس ٹیچر ہیں۔ آج کے بچوں کی ترتیب انہیں بھیج دیں؟ [SIM کو بھیجیں]', 'SIM — Teacher 3A is this class\'s class teacher. Send them today\'s order? [Send to SIM]')}
-   ${call('ok','', 'Fixed today', 'Children are named by full name, because rolls renumber monthly. Abdullah Tariq has no roll and is named alone; before, a child without a roll broke /egra. "Send to teacher" now works without an observation, using the drawn class\'s own teacher.')}` },
- { shot: '04-children-list', title: 'Today\'s children', body: () => `
-   <p class="lead">Tapping "آج کے بچے" opens the list: five children, then two alternates used only if a child is absent or refuses.</p>
-   <p>Each row shows the full name, then "roll 8 · new". The coach taps Usman Ghani.</p>` },
- { shot: '05-presence', title: 'Is the child here?', body: () => `
-   ${says('بچہ ۱ از ۵ · Usman Ghani · رول ۸ · کیا بچہ موجود ہے اور پڑھنے پر آمادہ ہے؟', 'Child 1 of 5 · Usman Ghani · roll 8 · Is the child here and willing to read? [Present · Absent · Refused]')}
-   <p>Absent or refused moves the coach to an alternate. The coach taps Present.</p>` },
- { shot: '06-urdu-prompt', paper: 'ur', title: 'The Urdu page', body: () => `
-   ${says('اردو ۱/۳ · فارم A کارڈ، اردو صفحہ · «اب شروع کریں» کہیں · ایک لاک وائس نوٹ، صفحے پلٹیں، ریکارڈنگ نہ روکیں۔ انتظار کے دوران Laiba Shakeel · رول ۲۵ کو ریاضی کی پٹی دیں؛ پہلے «بچہ نمبر» کے خانے میں ۲ لکھیں۔', 'Urdu 1/3 · printed card form A, Urdu page · say "start now" · one locked voice note; turn the pages, do not stop recording. While you wait, give Laiba Shakeel the maths strip; first write 2 in its Child no. box.')}
-   <p><b>The passage is on paper</b>, in the child's hands (shown beside the phone). The phone shows only the instructions, then records. Nothing needs to be shown full screen.</p>` },
- { shot: '07-recording-urdu', paper: 'ur', title: 'One locked voice note', body: () => `
-   <p class="lead">The coach locks the recorder and sets the phone between them. The child reads the story for a minute, then the made-up words; the coach asks the questions and first sounds from the coach's copy. It is all one note.</p>
-   <p class="note">Here the "child" is a synthetic voice played into the microphone. WhatsApp's own recorder made the note; this frame is 0:23 into 1:44.</p>` },
- { shot: '08-urdu-sent-english-prompt', paper: 'en', title: 'Urdu in; English next', body: () => `
-   ${says('🎧 ملا · اردو', 'Got it · Urdu')}
-   <p>The note is saved in a few seconds and the English prompt follows at once. Marking runs in the background; the coach never waits for it. The child turns to the English page.</p>` },
- { shot: '09-english-sent-maths-prompt', paper: 'ma', title: 'English in; maths next', body: () => `
-   <p class="lead">Same pattern. The maths prompt: read the eight numbers, then "start the sums" and 60 seconds of spoken quick sums, all in one note.</p>` },
- { shot: '10-maths-sent-strip-ask', paper: 'strip', title: 'Maths in; the strip', body: () => `
-   ${says('Usman Ghani · رول ۸ کی پٹی (بچہ نمبر ۱): لکھ لی جائے تو تصویر بھیجیں، یا آخر میں سب پٹیاں ایک ساتھ۔', 'Usman Ghani\'s strip (Child no. 1): send a photo once it is written, or send all the strips together at the end.')}
-   <p>The child wrote four sums and a word problem on the strip while the child before them read. The list comes again, ready for the next child.</p>` },
- { shot: '11-strip-preview', paper: 'strip', title: 'Photograph the strip', body: () => `
-   <p class="lead">The strip carries "1" in its Child no. box. The coach wrote it when handing the strip over.</p>
-   ${call('ok','', 'Fixed today', 'The box used to ask for a roll number that nothing ever read, and strips were matched by order, so a batch sent out of order went to the wrong children. Now a quick read of the number sends each strip to its child, in any order. No names go to the model.')}` },
- { shot: '12-strip-saved', title: 'Strip saved, to the right child', body: () => `
-   ${says('📷 پٹی نمبر ۱، Usman Ghani · رول ۸ کے لیے محفوظ۔ ✅ تینوں حصے مل گئے۔', 'Strip no. 1 saved for Usman Ghani · roll 8. All three parts are in; the check comes once marking is done.')}` },
- { shot: '13-check-message', title: 'The check arrives', body: () => `
-   ${says('بھرے ہوئے: انگریزی ۵۸ الفاظ۔ آپ خود بھریں: اردو: کہانی کی گنتی، ۵ پہلی آوازیں، ۲ بے معنی الفاظ؛ انگریزی: ۸ بے معنی الفاظ؛ حساب: ۱ نمبر، فوری سوالوں کی گنتی۔ تقریباً دو منٹ۔', 'Filled in: English 58 words. You fill in: Urdu story count, 5 first sounds, 2 made-up words; 8 English made-up words; 1 number, quick-sums count. About two minutes.')}
-   ${call('ok','', 'Fixed today', 'The message used to state numbers the form left empty and promise "about a minute". It now says only what the form fills, lists what the coach fills, and gives the measured time.')}` },
- { shot: '14-check-urdu-top', title: 'The check, inside WhatsApp', body: () => `
-   <p class="lead">"جانچ کریں" opens a WhatsApp Flow with one screen each for Urdu, English and maths. The coach confirms or corrects the AI's marks.</p>
-   <p>The Urdu story count arrives empty on purpose: on real children the AI's confidence for it ranks the wrong way, so it is never pre-filled. The questions arrive filled.</p>` },
- { shot: '16-BUG-phone-validation', bug: true, title: 'A bug only real WhatsApp could show', body: () => `
-   ${says('Enter a valid phone number', 'WhatsApp\'s own message under the count "60"; the save button stayed disabled.')}
-   ${call('bad','', 'Found during this recording', 'The count boxes were "phone" type, a workaround that got the Flow published. WhatsApp then checked every count as a phone number, so no coach could ever save a check. Every earlier test sent marks straight to our server and never met this check.')}
-   ${call('ok','', 'Fixed the same evening', 'Counts are now plain text boxes of up to 3 characters, and the server reads 58, ۵۸ or ٥٨. Republished on the sandbox WhatsApp account and verified in the next step.')}` },
- { shot: '17-check-urdu-fixed', title: 'After the fix', body: () => `
-   <p class="lead">"58" and "۶۰" (typed in Urdu digits) are accepted. The coach marks the first sounds and the two unclear made-up words, and saves the screen.</p>
-   ${call('','P14', 'One catch for rollout', 'A check message delivered before a fix keeps the old form, even after reloading WhatsApp. Tapping the child in the list sends a fresh check with the new form.')}` },
- { shot: '18-check-english', title: 'English: the coach corrects the AI', body: () => `
-   <p class="lead">The AI pre-filled 58 words; this child's key says 56. The coach changes it to 56. The AI's 58 stays on record, and the coach's 56 and the change are saved beside it.</p>` },
- { shot: '19-check-maths', title: 'Maths: the strip, read', body: () => `
-   <p class="lead">From the photo: 34 + 28 = 62 and 56 + 27 = 83 are right; 52 − 17 written as 36 and 73 − 48 written as 52 are wrong; the word problem's 9 is right. Exactly what the child wrote.</p>
-   <p>The quick-sums count is never pre-filled (the AI is within 3 for only 59% of real children), so the coach types 30 and 30.</p>` },
- { shot: '20-check-done', title: 'Saved', body: () => `
-   ${says('محفوظ ہو گیا · Usman Ghani · رول ۸ کے نمبر محفوظ ہو گئے۔', 'Saved · Usman Ghani · roll 8\'s marks are saved.')}` },
- { shot: '21-saved-chat', title: 'Back in the chat', body: () => `
-   ${says('✓ Usman Ghani · رول ۸ کے نمبر محفوظ ہو گئے۔', 'Usman Ghani · roll 8\'s marks are saved.')}
-   <p>Stored on the sandbox: Urdu 58 of 60, English 56 of 60, quick sums 30 of 30, with each change the coach made recorded beside the AI's mark. Next: Laiba Shakeel, whose strip is already written.</p>` },
+ { img:'00-school', label:'School', title:'Open the test', coach:'Types /egra and picks the school (asked only when the coach has more than one).', child:'—',
+   why:'Nothing to remember: the bot knows which schools the coach visits.' },
+ { img:'01-list', label:'List', title:"Today's children, by classroom", coach:'Reads which classroom and teacher each child is with.', child:'—',
+   why:'<b>No roll numbers.</b> Full name, the class the way the school writes it, the class teacher. "Only if someone is absent" names the replacements. <b>Send to the teachers</b> gives each class teacher only their own room\'s children (not tapped here: the test teachers\' numbers are not real phones).' },
+ { img:'02-setup', label:'Set up', title:'Before the first child (once per visit)', coach:'Sits where other children can\'t hear; puts the green Grade 3 cards and paper on the table.', child:'—',
+   why:'The <b>only picture</b> in the visit comes before anything is recording, because opening a picture can stop a locked voice note.' },
+ { img:'03-presence', label:'Here?', title:'Is the child here?', coach:'Greets the child with the line shown, then taps "Here, start".', child:'Sits down.',
+   why:'One child at a time. Absent or unwilling: the next replacement takes the place, chosen by the server, never by hand.' },
+ { img:'04-urdu-step', label:'Urdu', title:'1 of 3 · Urdu story', coach:'Reads the numbered steps.', child:'Has the green Urdu card in front of them.',
+   why:'Each line the coach says sits on its <b>own line</b>, in «quotes». The three questions are in the message; the coach asks them aloud after turning the card face down.' },
+ { img:'05-urdu-recording', label:'Recording', title:'The step stays readable while recording', coach:'Records one voice note, reading the steps from the screen (0:45 here); stops the story at 1:10.', child:'Reads the story, then answers the questions with the card face down.',
+   why:'The step has <b>no buttons</b>, so it stays the last message, right above the recorder. <b>The recorder\'s clock is the stopwatch</b>; the AI measures exactly 60 seconds from the first word, so the coach never times or counts.' },
+ { img:'06-english-step', label:'English', title:'2 of 3 · English story', coach:'Second voice note, the same way.', child:'Reads the English story; answers in Urdu or English (both count).',
+   why:'Same pattern as Urdu, so by the second child the coach barely needs to read it.' },
+ { img:'07-maths-step', label:'Maths', title:'3 of 3 · Maths', coach:'Points to each pair and each sum; reads the two word problems aloud.', child:'Says the bigger number and each answer (may use paper); answers the word problems.',
+   why:'<b>The child reads the sums; the coach reads the word problems</b>, as EGMA does, so a weak reader is not marked down in maths. No strip, no photo.' },
+ { img:'08-nudge-and-next', label:'Next', title:'If a recording stalls, and the next child', coach:'Sends the unsent note (or records again); then greets the next child.', child:'—',
+   why:'This recording really stalled (the browser\'s microphone hung). After 4 minutes the bot asked once: <i>"Did the recording stop? Look for an unsent voice note…"</i>. After the third note the next child\'s prompt follows at once: no list to reopen, no form between children.' },
+ { img:'09-end-of-visit', label:'End', title:'End of the visit', coach:'Reads the results; taps "Check answers".', child:'—',
+   why:'One message: each child\'s results (words per minute, answers right, maths out of 10) and how many answers need the coach\'s ear. "30 min" here includes the 3½ minutes lost to the stalled recording.' },
+ { img:'10-review-form', label:'Review', title:'Only the answers the recording did not settle', coach:'For each: recalls what the child said, taps Right, Wrong or Didn\'t answer.', child:'—',
+   why:'7 answers for five children, about a minute. <b>Counts are never asked</b>, and a non-reader\'s skipped questions never appear.' },
+ { img:'11-review-filled', label:'Marked', title:'Marked', coach:'Taps Save.', child:'—',
+   why:'What the AI scored stays on record; the coach\'s answer is saved beside it, with the change.' },
+ { img:'12-saved', label:'Saved', title:'Saved', coach:'Thanks the teachers. Done.', child:'—',
+   why:'Every part of every child is marked as checked. The visit is complete.' },
 ];
-
-let cur = 0;
-$('#rail').innerHTML = STEPS.map((s,i) => `<button type="button" data-i="${i}" class="${s.bug?'bug':''}"><span class="n">${i+1}</span>${esc(s.title)}</button>`).join('');
-$('#rail').onclick = e => { const b = e.target.closest('button'); if (b) go(+b.dataset.i); };
-STEPS.forEach(s => { const im = new Image(); im.src = R + s.shot + '.jpg'; });
-function go(i){
-  cur = Math.max(0, Math.min(STEPS.length - 1, i));
-  const s = STEPS[cur];
-  $('#kicker').textContent = `Step ${cur+1} of ${STEPS.length}`;
-  $('#ptitle').textContent = s.title;
-  $('#pbody').innerHTML = s.body();
-  const shot = $('#shot'); shot.src = R + s.shot + '.jpg'; shot.alt = s.title + ' (real WhatsApp screenshot)';
-  const p = $('#paper');
-  if (s.paper){ p.classList.add('show'); $('#paperImg').src = CARD[s.paper][0]; $('#paperImg').alt = CARD[s.paper][1]; $('#paperLabel').textContent = 'In the child\'s hands · ' + (s.paper === 'strip' ? 'maths strip' : 'printed card'); }
-  else p.classList.remove('show');
-  document.querySelectorAll('#rail button').forEach((b,j) => { if (j === cur) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); b.classList.toggle('done', j < cur); });
-  const rb = $('#rail').children[cur]; rb && rb.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
-  $('#prev').disabled = cur === 0;
-  $('#next').textContent = cur === STEPS.length - 1 ? 'To the evidence ↓' : 'Next →';
-  try { history.replaceState(null, '', '#step-' + (cur+1)); } catch(_){}
+const rail=document.getElementById('rail'), shot=document.getElementById('shot'), screen=document.getElementById('screen'), notes=document.getElementById('notes');
+let cur=0;
+STEPS.forEach((s,i)=>{ const b=document.createElement('button'); b.type='button'; b.id='step-'+i; b.innerHTML=`<span class="n">${i+1}</span>${s.label}`; b.addEventListener('click',()=>show(i)); rail.appendChild(b); });
+function show(i){
+  cur=i; const s=STEPS[i];
+  const top=/^1[01]-/.test(s.img);
+  shot.onload=()=>{ screen.scrollTop = top ? 0 : screen.scrollHeight; };
+  shot.src='img/v2/'+s.img+'.jpg'; shot.alt=s.title+' (real WhatsApp screenshot)';
+  [...rail.children].forEach((b,j)=>{ if(j===i) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current'); });
+  notes.innerHTML=`<span class="eyebrow">Step ${i+1} of ${STEPS.length}</span><h3>${s.title}</h3>
+    <div class="row"><span class="k">Coach does</span><span>${s.coach}</span></div><div class="row"><span class="k">Child does</span><span>${s.child}</span></div>
+    <p class="why">${s.why}</p>
+    <div class="navbtns"><button type="button" id="prev" ${i===0?'disabled':''}>← Back</button><button type="button" id="next" ${i===STEPS.length-1?'disabled':''}>Next →</button></div>`;
+  document.getElementById('prev').onclick=()=>show(Math.max(0,cur-1));
+  document.getElementById('next').onclick=()=>show(Math.min(STEPS.length-1,cur+1));
+  const btn=rail.children[i]; if(btn){ const l=btn.offsetLeft-rail.offsetLeft, r=l+btn.offsetWidth; if(l<rail.scrollLeft) rail.scrollLeft=l-8; else if(r>rail.scrollLeft+rail.clientWidth) rail.scrollLeft=r-rail.clientWidth+8; }
 }
-$('#prev').onclick = () => go(cur - 1);
-$('#next').onclick = () => { if (cur === STEPS.length - 1) $('#standards').scrollIntoView({behavior:'smooth'}); else go(cur + 1); };
-document.addEventListener('keydown', e => {
-  if (e.metaKey || e.ctrlKey || e.altKey) return;
-  if (e.key === 'ArrowRight') go(cur + 1);
-  if (e.key === 'ArrowLeft') go(cur - 1);
-  if (e.key === 'Escape') $('#lightbox').classList.remove('open');
-});
-function lightbox(src){ $('#lbImg').src = src; $('#lightbox').classList.add('open'); }
-$('#lightbox').onclick = () => $('#lightbox').classList.remove('open');
-$('#shot').onclick = () => lightbox($('#shot').src);
-$('#paperImg').onclick = () => lightbox($('#paperImg').src);
-
-$('#facts').innerHTML = [
-  `<span class="chip ok">Recorded on <b>real WhatsApp</b> · NIETE sandbox · 3 Oct</span>`,
-  `<span class="chip ok">Separate from the observation · <b>/egra</b> only</span>`,
-  `<span class="chip">Synthetic child, invented names</span>`,
-  `<span class="chip">Not on staging or production</span>`,
-].join('');
-
-(function(){
-  const Rr = D.real; if (!Rr) return;
-  $('#realTable').innerHTML = `<thead><tr><th>Field</th><th>AI vs enumerator</th><th>Human floor</th><th>On the check form</th></tr></thead><tbody>${Rr.rows.map(r => `<tr><td>${esc(r[0])}</td><td class="num">${esc(r[1])}</td><td class="num">${esc(r[2])}</td><td>${esc(r[3])}</td></tr>`).join('')}</tbody>`;
-  $('#realNote').textContent = Rr.source + '. ' + Rr.not_real;
-})();
-
-(function(){
-  const F = D.five, V = D.visit;
-  const minT = Math.min(...F.map(f=>f.total)), maxT = Math.max(...F.map(f=>f.total));
-  $('#clockStats').innerHTML = [
-    [`${mins(V.five_child_total_s)} min`, 'five children in the run (target 25–30); about 35.4 at real speed', true],
-    [`${mins(minT)}–${mins(maxT)} min`, 'per child, against about 5', true],
-    [`${Math.round(Math.min(...F.map(f=>f.bot)))}–${Math.round(Math.max(...F.map(f=>f.bot)))} s`, 'of that is the bot', false],
-    [`${mins(Math.min(...F.map(f=>f.speak)))}–${mins(Math.max(...F.map(f=>f.speak)))} min`, 'is the child speaking', false],
-  ].map(([v,l,b]) => `<div class="stat"><div class="v${b?' bad':''}">${v}</div><div class="l">${l}</div></div>`).join('');
-  const LBL = {fluent:'reads fluently', average:'average reader', struggling:'struggling reader', nonreader:'non-reader', skipper:'skips items'};
-  const W = 700, L = 168, Rm = 74, rowH = 40, top = 12, maxS = 540, sx = s => L + s * (W - L - Rm) / maxS;
-  const H = top + F.length * rowH + 34;
-  let g = '';
-  for (let s = 0; s <= maxS; s += 60){ const x = sx(s); g += `<line x1="${x}" y1="${top-4}" x2="${x}" y2="${top + F.length*rowH}" stroke="currentColor" stroke-opacity=".12"/><text x="${x}" y="${H-12}" font-size="11.5" text-anchor="middle" opacity=".7">${s ? s/60 + ' min' : '0'}</text>`; }
-  F.forEach((f,i) => {
-    const y = top + i*rowH + 8, h = 20; let x = L;
-    const seg = (w, col) => { const ww = w * (W - L - Rm) / maxS; const r = `<rect x="${x}" y="${y}" width="${ww}" height="${h}" fill="${col}"/>`; x += ww; return r; };
-    g += `<text x="0" y="${y+14}" font-size="13" font-weight="600">Child ${i+1}</text><text x="56" y="${y+14}" font-size="12.5" opacity=".75">${LBL[f.child]||f.child}</text>`;
-    g += seg(f.bot, 'var(--seg-bot)') + seg(f.speak, 'var(--seg-speak)') + seg(f.check, 'var(--seg-check)');
-    g += `<text x="${x+6}" y="${y+14}" font-size="12.5" font-family="JetBrains Mono, monospace">${mins(f.total)} min</text>`;
-  });
-  const tx = sx(300);
-  g += `<line x1="${tx}" y1="${top-6}" x2="${tx}" y2="${top + F.length*rowH}" stroke="var(--target)" stroke-width="2" stroke-dasharray="5 4"/><text x="${tx+4}" y="${top+2}" font-size="11.5" style="fill:var(--target)">5 min</text>`;
-  const svg = $('#clockChart'); svg.setAttribute('viewBox', `0 0 ${W} ${H}`); svg.setAttribute('aria-label', `Per-child time for five children: between ${mins(minT)} and ${mins(maxT)} minutes against a five-minute target; the child's speaking time is the largest part.`); svg.innerHTML = g;
-})();
-
-(function(){
-  $('#issueTables').innerHTML = D.issues.map(sec => {
-    const head = sec.head.map(h => `<th>${md(h)}</th>`).join('');
-    const rows = sec.rows.map(r => { const id = (r[0].match(/^(D\d+|P\d+)$/) || [])[1]; return `<tr${id?` id="${id}"`:''}>${r.map(c => `<td${/^bd-[\w.]+$/.test(c)?' class="num" style="white-space:nowrap"':''}>${md(c)}</td>`).join('')}</tr>`; }).join('');
-    return `<h3>${md(sec.title)}</h3><div class="tbl"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
-  }).join('');
-})();
-
-const m = location.hash.match(/^#step-(\d+)$/);
-go(m ? +m[1] - 1 : 0);
-})();
+show(0);
+document.addEventListener('keydown',e=>{ if(e.target.closest('input,textarea')) return; if(e.key==='ArrowRight') show(Math.min(STEPS.length-1,cur+1)); if(e.key==='ArrowLeft') show(Math.max(0,cur-1)); });
 </script>
 </body>
 </html>
