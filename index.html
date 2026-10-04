@@ -151,7 +151,7 @@ section header p{color:var(--muted);max-width:78ch}
 .mini .to{font-size:12px;color:var(--faint)}
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.78);display:grid;place-items:center;z-index:50;padding:20px}
 .lightbox[hidden]{display:none}
-.lightbox figure{margin:0;max-width:min(460px,100%);max-height:100%;overflow:auto;background:#000;border-radius:12px}
+.lightbox figure{margin:0;max-width:min(760px,100%);max-height:100%;overflow:auto;background:#000;border-radius:12px}
 .lightbox img{display:block;width:100%;height:auto}
 .lightbox figcaption{color:#fff;font-size:13px;padding:8px 10px}
 .lightbox button{position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:999px;padding:6px 12px;cursor:pointer;font-weight:600}
@@ -182,6 +182,16 @@ th{font:600 11px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;c
 .open b{display:block;color:var(--ink);margin-bottom:4px}
 .state{display:inline-block;font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:6px}
 .s-work{background:var(--warn-soft)} .s-you{background:var(--bad-soft)} .s-later{background:var(--accent-soft)}
+.grp{font:600 13px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.pair{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px;display:grid;gap:10px;min-width:0;align-content:start}
+.pt{font-size:19px}
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sides figure{margin:0;display:grid;gap:6px;align-content:start;min-width:0}
+.zoom{border:0;padding:0;background:none;cursor:zoom-in;display:block}
+.zoom img{width:100%;height:auto;border-radius:4px;box-shadow:var(--shadow);background:#fff;display:block}
+.sides figcaption{font-size:13px;color:var(--muted)}
+.sides figcaption b{color:var(--ink)}
 footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
 @media (max-width:900px){ .sim{grid-template-columns:1fr} .phone{position:static;margin-inline:auto} }
 @media (max-width:440px){ .cardview{grid-template-columns:1fr} .cardimg{width:130px} }
@@ -235,16 +245,34 @@ footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
 </section>
 
 <section aria-labelledby="cards-h" id="cards">
-  <header><span class="eyebrow">What the child holds</span><h2 id="cards-h">The print pack: three laminated cards per grade, one coach page</h2><p>A4, colour, double-sided. No child card shows an answer, a question or an item number. The coach card with the questions is being added.</p></header>
-  <div class="cards">
-    <figure><img src="img/print/p05.jpg" alt="Grade 3 Urdu card, front" loading="lazy"><figcaption>Grade 3 · Urdu, front: the story only.</figcaption></figure>
-    <figure><img src="img/print/p06.jpg" alt="Grade 3 Urdu card, back" loading="lazy"><figcaption>Back: letters, then words, for a child who can't read the story. Also what faces up when the card is turned over.</figcaption></figure>
-    <figure><img src="img/print/p07.jpg" alt="Grade 3 English card" loading="lazy"><figcaption>Grade 3 · English, front.</figcaption></figure>
-    <figure><img src="img/print/p09.jpg" alt="Grade 3 maths card" loading="lazy"><figcaption>Grade 3 · Maths: four pairs, four sums.</figcaption></figure>
-    <figure><img src="img/print/p11.jpg" alt="Grade 5 Urdu card" loading="lazy"><figcaption>Grade 5 · Urdu (blue).</figcaption></figure>
-    <figure><img src="img/print/p15.jpg" alt="Grade 5 maths card" loading="lazy"><figcaption>Grade 5 · Maths.</figcaption></figure>
-    <figure><img src="img/print/p03.jpg" alt="Coach page" loading="lazy"><figcaption>The coach page: where to sit, five rules.</figcaption></figure>
-  </div>
+  <header><span class="eyebrow">The print pack</span><h2 id="cards-h">Every side of every card</h2><p>The PDF is 16 A4 pages, printed double-sided (flip on the long edge) and laminated: one set per coach for the term. Each card is one sheet, front and back. Grade 3 is green, Grade 5 blue; "Set A · Oct–Dec 2026" is on every side. No child card shows an answer, a question or an item number. Click any page to see it full size. A coach card with the questions and word problems is being added.</p></header>
+  <h3 class="grp">Grade 3 (green)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 3 · Urdu</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p05.jpg" data-cap="Grade 3 · Urdu, front"><img src="img/print/t05.jpg" alt="Grade 3 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the story only (May 2026 passage)</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p06.jpg" data-cap="Grade 3 · Urdu, back"><img src="img/print/t06.jpg" alt="Grade 3 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · 10 letters, then 10 words: only for a child who can't read the story. Faces up when the card is turned over for the questions</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 3 · English</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p07.jpg" data-cap="Grade 3 · English, front"><img src="img/print/t07.jpg" alt="Grade 3 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the story only</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p08.jpg" data-cap="Grade 3 · English, back"><img src="img/print/t08.jpg" alt="Grade 3 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words, the same rule</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 3 · Maths</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p09.jpg" data-cap="Grade 3 · Maths, front"><img src="img/print/t09.jpg" alt="Grade 3 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four "which is bigger" pairs, four sums</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p10.jpg" data-cap="Grade 3 · Maths, back"><img src="img/print/t10.jpg" alt="Grade 3 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose: when the coach turns it over to read the word problems, the child has nothing to read</figcaption></figure>
+    </div></div></div>
+  <h3 class="grp">Grade 5 (blue)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 5 · Urdu</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p11.jpg" data-cap="Grade 5 · Urdu, front"><img src="img/print/t11.jpg" alt="Grade 5 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story (May passage + continuation)</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p12.jpg" data-cap="Grade 5 · Urdu, back"><img src="img/print/t12.jpg" alt="Grade 5 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 5 · English</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p13.jpg" data-cap="Grade 5 · English, front"><img src="img/print/t13.jpg" alt="Grade 5 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p14.jpg" data-cap="Grade 5 · English, back"><img src="img/print/t14.jpg" alt="Grade 5 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 5 · Maths</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p15.jpg" data-cap="Grade 5 · Maths, front"><img src="img/print/t15.jpg" alt="Grade 5 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four pairs, four harder sums (8 × 9, 72 ÷ 6)</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p16.jpg" data-cap="Grade 5 · Maths, back"><img src="img/print/t16.jpg" alt="Grade 5 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose</figcaption></figure>
+    </div></div></div>
+  <h3 class="grp">For the coach</h3><div class="pairs"><div class="pair"><h3 class="pt">Coach page (not for the child)</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p03.jpg" data-cap="Coach page (not for the child), front"><img src="img/print/t03.jpg" alt="Coach page (not for the child), front" loading="lazy"></button><figcaption><b>Front</b> · English: where to sit, what to bring, five rules</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p04.jpg" data-cap="Coach page (not for the child), back"><img src="img/print/t04.jpg" alt="Coach page (not for the child), back" loading="lazy"></button><figcaption><b>Back</b> · the same in Urdu</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Cover</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/print/full/p01.jpg" data-cap="Cover, front"><img src="img/print/t01.jpg" alt="Cover, front" loading="lazy"></button><figcaption><b>Front</b> · what to print, how many, what to laminate</figcaption></figure>
+      <figure><button type="button" class="zoom" data-full="img/print/full/p02.jpg" data-cap="Cover, back"><img src="img/print/t02.jpg" alt="Cover, back" loading="lazy"></button><figcaption><b>Back</b> · blank (so the cards start on a fresh sheet)</figcaption></figure>
+    </div></div></div>
 </section>
 
 <section aria-labelledby="time-h">
@@ -498,6 +526,7 @@ $('#realscreen').onclick = () => { $('#lb-img').src = SHOTS[screen] || SHOTS['01
 $('#lb-close').onclick = () => { $('#lb').hidden = true; };
 $('#lb').addEventListener('click', (e) => { if (e.target.id === 'lb') $('#lb').hidden = true; });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') $('#lb').hidden = true; });
+document.querySelectorAll('.zoom').forEach(z => z.addEventListener('click', () => { $('#lb-img').src = z.dataset.full; $('#lb-cap').textContent = z.dataset.cap + ' (print pack, Set A)'; $('#lb').hidden = false; }));
 start();
 })();
 </script>
