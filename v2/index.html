@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>/egra, Step by Step</title>
+<meta name="description" content="The ICT child test, v2, as a coach sees it: tap through a real visit on a WhatsApp mockup built from the bot's own messages, with the card the child holds at every moment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* Layout: masthead; the simulator (a WhatsApp phone you can tap, beside "the table": the card the child holds and the words to say); then your questions answered, the print pack, the rotation, the time, what is open. */
+:root{
+  --ground:#f2f4f1; --surface:#ffffff; --ink:#16201c; --muted:#56655f; --faint:#7d8b85; --rule:#d5dcd7;
+  --accent:#1c6a4b; --accent-ink:#ffffff; --accent-soft:#e1efe8;
+  --warn:#8f5400; --warn-soft:#fbefd9; --bad:#a8261d; --bad-soft:#fbe4e1; --hl:#fff3c4;
+  --old:#c98a2a; --new:#1c6a4b; --bezel:#1d2522;
+  --wa-bg:#efeae2; --wa-in:#ffffff; --wa-out:#d9fdd3; --wa-ink:#111b21; --wa-meta:#667781; --wa-link:#027eb5; --wa-head:#f0f2f5; --wa-green:#00a884; --wa-rec:#f15c6d;
+  --shadow:0 18px 40px -18px rgba(18,32,26,.35);
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --body:"Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --urdu:"Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Noto Naskh Arabic", serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0f1513; --surface:#17201c; --ink:#e3e9e5; --muted:#9aaaa3; --faint:#7a8a83; --rule:#2a3631;
+    --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
+    --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916; --hl:#3a3315;
+    --old:#e0a64a; --new:#5ec29a; --bezel:#05080a; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+    --ground:#0f1513; --surface:#17201c; --ink:#e3e9e5; --muted:#9aaaa3; --faint:#7a8a83; --rule:#2a3631;
+    --accent:#5ec29a; --accent-ink:#0b1310; --accent-soft:#1b3328;
+    --warn:#e9b25a; --warn-soft:#33270f; --bad:#f08a80; --bad-soft:#3a1916; --hl:#3a3315;
+    --old:#e0a64a; --new:#5ec29a; --bezel:#05080a; --shadow:0 18px 40px -18px rgba(0,0,0,.7); color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font:400 16px/1.6 var(--body);padding-inline:20px}
+.wrap{max-width:1320px;margin-inline:auto}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.15;text-wrap:balance;margin:0}
+p{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ur{font-family:var(--urdu);direction:rtl;unicode-bidi:isolate;line-height:2.2}
+.eyebrow{font:600 12px/1.4 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.masthead{padding-block:36px 6px;display:grid;gap:12px}
+.masthead h1{font-size:clamp(32px,4.6vw,50px);letter-spacing:-.01em}
+.lede{max-width:76ch;color:var(--muted);font-size:17px}
+.lede b{color:var(--ink)}
+section{padding-block:30px 8px;display:grid;gap:16px}
+section > header{display:grid;gap:6px}
+section h2{font-size:clamp(25px,3vw,33px)}
+section header p{color:var(--muted);max-width:78ch}
+
+/* ---------- simulator ---------- */
+.sim{display:grid;grid-template-columns:360px minmax(0,1fr);gap:28px;align-items:start}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:6px 14px;cursor:pointer;font-size:13.5px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:6px 14px;cursor:pointer;font-size:13.5px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600}
+.phone{width:360px;max-width:100%;border-radius:42px;background:var(--bezel);padding:10px;box-shadow:var(--shadow);position:sticky;top:12px}
+.wa{height:min(720px, calc(100vh - 40px));border-radius:33px;overflow:hidden;background:var(--wa-bg);display:flex;flex-direction:column;color:var(--wa-ink);font:400 14px/1.42 var(--body);position:relative}
+.wa-head{background:var(--wa-head);display:flex;align-items:center;gap:10px;padding:26px 14px 10px;border-bottom:1px solid #e9edef}
+.wa-av{width:34px;height:34px;border-radius:50%;background:var(--wa-green);display:grid;place-items:center;font:700 14px var(--body);color:#fff;flex:0 0 auto}
+.wa-name{font-weight:600;font-size:15px;line-height:1.2}
+.wa-sub{font-size:12px;color:var(--wa-meta)}
+.chat{flex:1;overflow-y:auto;padding:10px 10px 6px;display:flex;flex-direction:column;gap:5px;scroll-behavior:smooth}
+.day{align-self:center;background:#fff;color:var(--wa-meta);font-size:12px;padding:3px 10px;border-radius:7px;margin:4px 0}
+.b{max-width:88%;padding:6px 8px 4px;border-radius:8px;background:var(--wa-in);align-self:flex-start;box-shadow:0 1px .5px rgba(11,20,26,.13);overflow-wrap:anywhere}
+.b.me{background:var(--wa-out);align-self:flex-end}
+.b .ln{white-space:pre-wrap;min-height:1.2em}
+.b .ln:lang(ur), .b .ln[dir="rtl"]{font-family:var(--urdu)}
+.b .t{font-size:11px;color:var(--wa-meta);text-align:right;margin-top:1px}
+.b.img{padding:3px}
+.b.img img{display:block;width:100%;border-radius:6px}
+.b.img .cap{padding:4px 5px 0}
+.b.sys{align-self:center;background:#fff7d6;color:#54656f;font-size:12.5px;max-width:92%;text-align:center}
+.voice{display:flex;align-items:center;gap:8px;min-width:210px;padding:4px 2px}
+.voice .play{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#e4f5e8;color:#3b4a54;font-size:12px}
+.voice .wave{flex:1;height:16px;background:repeating-linear-gradient(90deg,#8696a0 0 2px,transparent 2px 5px);opacity:.6;border-radius:2px}
+.btns{align-self:flex-start;width:88%;display:grid;gap:3px;margin-top:-2px}
+.btns button{display:block;width:100%;text-align:center;background:var(--wa-in);color:var(--wa-link);border:0;border-radius:8px;padding:8px 4px;font-weight:500;font-size:14px;cursor:pointer;box-shadow:0 1px .5px rgba(11,20,26,.13)}
+.btns button:disabled{color:#9aa7ae;cursor:default}
+.btns button.next{outline:2px solid var(--wa-green);outline-offset:-2px;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{outline-color:transparent}}
+.typing{align-self:flex-start;background:#fff;border-radius:8px;padding:8px 12px;font-size:13px;color:var(--wa-meta)}
+.foot{background:var(--wa-head);padding:8px 10px 14px;display:flex;align-items:center;gap:8px}
+.inp{flex:1;background:#fff;border-radius:20px;padding:9px 14px;color:var(--wa-meta);font-size:14px;min-height:38px}
+.inp.filled{color:var(--wa-ink)}
+.round{width:40px;height:40px;border-radius:50%;background:var(--wa-green);display:grid;place-items:center;border:0;cursor:pointer;flex:0 0 auto}
+.round.hint{animation:pulse2 1.4s infinite}
+@keyframes pulse2{50%{box-shadow:0 0 0 6px rgba(0,168,132,.25)}}
+.rec{background:var(--wa-head);padding:10px 12px 14px;display:grid;gap:8px}
+.rec .top{display:flex;align-items:center;gap:10px;font:600 15px var(--mono)}
+.rec .dot{width:10px;height:10px;border-radius:50%;background:var(--wa-rec);animation:blink 1.1s infinite}
+.rec .wv{flex:1;height:18px;background:repeating-linear-gradient(90deg,#54656f 0 2px,transparent 2px 5px);opacity:.55;animation:scroll 1s linear infinite}
+@keyframes scroll{to{background-position:10px 0}}
+@keyframes blink{50%{opacity:.2}}
+.rec .ctl{display:flex;justify-content:space-between;align-items:center;color:var(--wa-meta);font-size:12.5px}
+@media (prefers-reduced-motion: reduce){.rec .dot,.rec .wv,.btns button.next,.round.hint{animation:none}}
+.sheet{position:absolute;inset:56px 0 0 0;background:#fff;border-radius:16px 16px 0 0;display:flex;flex-direction:column;box-shadow:0 -6px 30px rgba(0,0,0,.25);z-index:5}
+.sheet .sh{padding:12px 16px 8px;border-bottom:1px solid #e9edef;display:flex;justify-content:space-between;align-items:center;font-weight:600}
+.sheet .sh button{border:0;background:none;font-size:18px;cursor:pointer;color:#54656f}
+.sheet .sb{padding:10px 16px;overflow-y:auto;flex:1;display:grid;gap:14px;align-content:start;font-size:13.5px}
+.sheet .item{display:grid;gap:4px;padding-bottom:12px;border-bottom:1px solid #eef1f2}
+.sheet .who{font-weight:700;font-size:14px}
+.sheet .q{font-size:13.5px}
+.sheet .heard{color:#3b4a54;font-size:12.5px}
+.sheet label{display:flex;justify-content:space-between;align-items:center;padding:5px 0;cursor:pointer;font-size:13.5px}
+.sheet .row{display:flex;gap:10px;align-items:center}
+.sheet .sf{padding:10px 16px 16px}
+.sheet .sf button{width:100%;border:0;background:var(--wa-green);color:#fff;border-radius:20px;padding:10px;font-weight:600;cursor:pointer}
+.sheet .sf button:disabled{background:#c5cbd0;cursor:default}
+.sheet .opt{display:grid;gap:0}
+.sheet .rows{max-height:none}
+
+/* the table */
+.table{display:grid;gap:16px;min-width:0}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:16px 18px;display:grid;gap:10px;min-width:0}
+.panel h3{font-size:21px}
+.now{font-size:15px;color:var(--muted)}
+.now b{color:var(--ink)}
+.cardview{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px;align-items:start}
+.cardimg{width:170px;aspect-ratio:210/297;border-radius:6px;background:var(--ground);box-shadow:var(--shadow);overflow:hidden;position:relative;display:grid;place-items:center;color:var(--faint);font-size:12.5px;text-align:center;padding:8px;border:0;font-family:inherit}
+button.cardimg{cursor:zoom-in}
+button.cardimg:hover{outline:2px solid var(--accent);outline-offset:2px}
+.cardimg .zh{position:absolute;top:6px;right:6px;background:rgba(0,0,0,.72);color:#fff;font:600 11px var(--body);border-radius:5px;padding:2px 6px}
+.coachmini{display:flex;gap:10px;align-items:center;font-size:13.5px;color:var(--muted);border-top:1px dashed var(--rule);padding-top:10px}
+.coachmini .cardimg{width:64px;padding:0}
+.coachmini .cardimg .zh{display:none}
+.coachmini b{color:var(--ink)}
+.cardimg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cardimg .tag{position:absolute;left:6px;right:6px;bottom:6px;background:rgba(0,0,0,.72);color:#fff;font:600 11px var(--body);border-radius:5px;padding:3px 6px;text-align:center}
+.cardcap{font-size:14.5px;color:var(--muted)}
+.cardcap b{color:var(--ink);display:block;font-size:15.5px;margin-bottom:2px}
+.phases{display:flex;flex-wrap:wrap;gap:6px}
+.phases button{border:1px solid var(--rule);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:12.5px;cursor:pointer;color:var(--muted)}
+.phases button.on{border-color:var(--accent);background:var(--accent-soft);color:var(--ink);font-weight:600}
+.say{display:grid;gap:8px}
+.say .line{border-left:3px solid var(--rule);padding:4px 0 4px 12px;display:grid;gap:1px}
+.say .line.cur{border-left-color:var(--accent);background:var(--hl);border-radius:0 8px 8px 0}
+.say .ur{font-size:19px;line-height:2.1;color:var(--ink)}
+.say .en{font-size:14px;color:var(--muted)}
+.say .acc{font-size:13px;color:var(--faint)}
+.say .k{font:600 11px/1.6 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.hint{font-size:14px;color:var(--muted)}
+.hint b{color:var(--ink)}
+.acts{display:flex;flex-wrap:wrap;gap:8px}
+.mini{display:grid;gap:6px}
+.mini .tb{background:#d9fdd3;color:#111b21;border-radius:8px;padding:7px 9px;font-size:13px;white-space:pre-wrap}
+.mini .to{font-size:12px;color:var(--faint)}
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,.82);display:grid;place-items:center;z-index:50;padding:56px 16px 16px}
+.lightbox[hidden]{display:none}
+.lightbox figure{margin:0;max-width:100%;max-height:calc(100vh - 72px);overflow:auto;background:#111;border-radius:10px;display:grid;gap:0}
+.lightbox img{display:block;max-width:100%;max-height:calc(100vh - 110px);width:auto;height:auto;margin-inline:auto;cursor:zoom-in}
+.lightbox.zoomed figure{width:100%;height:calc(100vh - 72px)}
+.lightbox.zoomed img{max-width:none;max-height:none;cursor:zoom-out}
+.lightbox figcaption{color:#fff;font-size:13px;padding:7px 10px;position:sticky;left:0;bottom:0;background:#111}
+.lightbox .lbbar{position:fixed;top:12px;right:16px;display:flex;gap:8px}
+.lightbox .lbbar button{border:0;background:#fff;color:#111;border-radius:999px;padding:6px 14px;cursor:pointer;font-weight:600}
+
+/* answers etc. */
+.qa{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.qa article{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;display:grid;gap:8px;align-content:start;min-width:0}
+.qa h3{font:600 15px/1.4 var(--body)}
+.qa h3::before{content:"You asked";display:block;font:600 11px/1.4 var(--body);letter-spacing:.09em;text-transform:uppercase;color:var(--faint);margin-bottom:2px}
+.qa p{font-size:15px;color:var(--muted)}
+.qa p b{color:var(--ink)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
+.cards figure{margin:0;display:grid;gap:6px;align-content:start}
+.cards img{width:100%;height:auto;border-radius:4px;box-shadow:var(--shadow);background:#fff}
+figcaption{font-size:13.5px;color:var(--muted)}
+.figure{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:18px;overflow-x:auto}
+.figure svg{display:block;width:100%;min-width:640px;height:auto}
+.figure svg text{fill:var(--ink);font-family:var(--body)}
+.figure svg .mut{fill:var(--muted)}
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 11px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.v{display:inline-block;font:600 11.5px var(--body);padding:2px 8px;border-radius:999px;white-space:nowrap}
+.v.keep{background:var(--accent-soft)} .v.chg{background:var(--warn-soft)} .v.drop{background:var(--bad-soft)}
+.open{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.open div{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;font-size:14.5px;color:var(--muted);min-width:0}
+.open b{display:block;color:var(--ink);margin-bottom:4px}
+.state{display:inline-block;font:600 11px var(--body);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:999px;margin-bottom:6px}
+.s-work{background:var(--warn-soft)} .s-you{background:var(--bad-soft)} .s-later{background:var(--accent-soft)}
+.grp{font:600 13px/1.4 var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:6px}
+.pairs{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.pair{background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:14px;display:grid;gap:10px;min-width:0;align-content:start}
+.pt{font-size:19px}
+.sides{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sides figure{margin:0;display:grid;gap:6px;align-content:start;min-width:0}
+.zoom{border:0;padding:0;background:none;cursor:zoom-in;display:block}
+.zoom img{width:100%;height:auto;border-radius:4px;box-shadow:var(--shadow);background:#fff;display:block}
+.sides figcaption{font-size:13px;color:var(--muted)}
+.sides figcaption b{color:var(--ink)}
+footer{padding-block:34px 48px;color:var(--faint);font-size:13px;max-width:88ch}
+@media (max-width:900px){ .sim{grid-template-columns:1fr} .phone{position:static;margin-inline:auto} }
+@media (min-width:1240px){ .sim{grid-template-columns:360px minmax(0,1fr) 290px} .tips{position:sticky;top:12px} }
+@media (max-width:440px){ .cardview{grid-template-columns:1fr} .cardimg{width:130px} }
+
+/* tips: the side rail beside the simulator; never over the phone or the table */
+.tips{display:grid;gap:10px;align-content:start;min-width:0}
+.tips .tiphead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.tip{background:var(--surface);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;display:grid;gap:5px;font-size:14px;color:var(--muted)}
+.tip b.tt{color:var(--ink);font-size:14.5px;line-height:1.35}
+.tip.old{opacity:.55;border-left-color:var(--rule)}
+.tip.new{animation:tipin .35s ease-out}
+@keyframes tipin{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.tip a{font-size:13px}
+.tips[data-off="1"] .tip{display:none}
+@media (prefers-reduced-motion: reduce){.tip.new{animation:none}}
+/* FAQ */
+.faq{display:grid;gap:8px;max-width:900px}
+.faq details{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:0 16px}
+.faq summary{cursor:pointer;padding:12px 0;font-weight:600;list-style-position:outside}
+.faq details[open] summary{border-bottom:1px solid var(--rule)}
+.faq details > div{padding:10px 0 14px;color:var(--muted);display:grid;gap:8px}
+.faq details > div b{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="masthead">
+  <span class="eyebrow">ICT child test · v2 · live on the NIETE sandbox</span>
+  <h1>Run a visit yourself</h1>
+  <p class="lede">Tap through a visit the way a coach does. The phone shows <b>the bot's own messages</b> (rendered by the live conversation code), with the real buttons. Beside it, <b>the table</b>: the card the child is holding at that moment (click it to see it full size) and the exact words to say, with an English translation. On a wide screen, a third column explains <b>why</b> each step works the way it does. The recorder runs fast (8×), so a full child takes about a minute. <b>Real screen</b> opens the real WhatsApp screenshot of that moment.</p>
+</header>
+
+<section aria-labelledby="sim-h">
+  <header><h2 id="sim-h" class="eyebrow" style="font-family:var(--body)">The simulator</h2>
+    <div class="controls">
+      <span class="seg" role="group" aria-label="Coach's language"><button type="button" id="lang-en" aria-pressed="true">Coach in English</button><button type="button" id="lang-ur" aria-pressed="false">Coach in Urdu</button></span>
+      <span class="seg" role="group" aria-label="Recorder speed"><button type="button" id="sp-1" aria-pressed="false">1× real time</button><button type="button" id="sp-8" aria-pressed="true">8× fast</button></span>
+      <button type="button" class="btn" id="restart">Restart</button>
+      <button type="button" class="btn" id="realscreen">Real screen</button>
+    </div>
+  </header>
+  <div class="sim">
+    <div class="phone"><div class="wa" id="wa">
+      <div class="wa-head"><div class="wa-av">N</div><div><div class="wa-name">NIETE Teaching Assistant</div><div class="wa-sub">business account</div></div></div>
+      <div class="chat" id="chat" aria-live="polite"></div>
+      <div id="foot"></div>
+    </div></div>
+    <div class="table" id="table"></div>
+    <aside class="tips" id="tips" aria-live="polite" aria-label="Why it works this way"><div class="tiphead"><span class="eyebrow">Why it works this way</span><button type="button" class="btn" id="tipsoff" aria-pressed="false">Hide tips</button></div></aside>
+  </div>
+</section>
+
+<section aria-labelledby="cards-h" id="cards">
+  <header><span class="eyebrow">The print pack</span><h2 id="cards-h">Every side of every card, and the coach cards</h2><p>The PDF is 20 A4 pages, printed double-sided (flip on the long edge) and laminated: one set per coach for the term. Each child card is one sheet, front and back; Grade 3 is green, Grade 5 blue; "Set A · Oct–Dec 2026" is on every side, and no child card shows an answer, a question or an item number. The coach card (one per grade, back blank) holds the questions and word problems, as EGRA's assessor sheet does. Click any page to see it full size.</p></header>
+  <h3 class="grp">For the coach</h3><div class="pairs"><div class="pair"><h3 class="pt">Coach card · Grade 3 (don't show the child)</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-card-g3.jpg" data-cap="Coach card · Grade 3 (don't show the child), front · print pack, Set A"><img src="img/pack/coach-card-g3-t.jpg" alt="Coach card · Grade 3 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · what to say, the 3 Urdu and 3 English questions with the answers that count, the pairs and sums with answers, the 2 word problems to read aloud with answers. The EGRA assessor sheet, simplified; the paper twin of the phone message</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Coach card · Grade 5 (don't show the child)</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-card-g5.jpg" data-cap="Coach card · Grade 5 (don't show the child), front"><img src="img/pack/coach-card-g5-t.jpg" alt="Coach card · Grade 5 (don't show the child), front" loading="lazy"></button><figcaption><b>Front</b> · the same for Grade 5</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Coach page</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/coach-page-en.jpg" data-cap="Coach page, front"><img src="img/pack/coach-page-en-t.jpg" alt="Coach page, front" loading="lazy"></button><figcaption><b>Front</b> · English: where to sit, what to bring, five rules</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/coach-page-ur.jpg" data-cap="Coach page, back"><img src="img/pack/coach-page-ur-t.jpg" alt="Coach page, back" loading="lazy"></button><figcaption><b>Back</b> · the same in Urdu</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Cover</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/cover-front.jpg" data-cap="Cover, front"><img src="img/pack/cover-front-t.jpg" alt="Cover, front" loading="lazy"></button><figcaption><b>Front</b> · what to print, how many, what to laminate</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/cover-back.jpg" data-cap="Cover, back"><img src="img/pack/cover-back-t.jpg" alt="Cover, back" loading="lazy"></button><figcaption><b>Back</b> · blank, so the cards start on a fresh sheet</figcaption></figure>
+    </div></div></div>
+  <h3 class="grp">Grade 3 child cards (green)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 3 · Urdu</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-urdu-front.jpg" data-cap="Grade 3 · Urdu, front"><img src="img/pack/g3-urdu-front-t.jpg" alt="Grade 3 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the story only (May 2026 passage)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-urdu-back.jpg" data-cap="Grade 3 · Urdu, back"><img src="img/pack/g3-urdu-back-t.jpg" alt="Grade 3 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · 10 letters, then 10 words: only for a child who can't read the story. Faces up when the card is turned over for the questions</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 3 · English</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-english-front.jpg" data-cap="Grade 3 · English, front"><img src="img/pack/g3-english-front-t.jpg" alt="Grade 3 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the story only</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-english-back.jpg" data-cap="Grade 3 · English, back"><img src="img/pack/g3-english-back-t.jpg" alt="Grade 3 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words, the same rule</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 3 · Maths</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g3-maths-front.jpg" data-cap="Grade 3 · Maths, front"><img src="img/pack/g3-maths-front-t.jpg" alt="Grade 3 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four "which is bigger" pairs, four sums</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g3-maths-back.jpg" data-cap="Grade 3 · Maths, back"><img src="img/pack/g3-maths-back-t.jpg" alt="Grade 3 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose: when the coach turns it over to read the word problems, the child has nothing to read</figcaption></figure>
+    </div></div></div>
+  <h3 class="grp">Grade 5 child cards (blue)</h3><div class="pairs"><div class="pair"><h3 class="pt">Grade 5 · Urdu</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-urdu-front.jpg" data-cap="Grade 5 · Urdu, front"><img src="img/pack/g5-urdu-front-t.jpg" alt="Grade 5 · Urdu, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story (May passage + continuation)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-urdu-back.jpg" data-cap="Grade 5 · Urdu, back"><img src="img/pack/g5-urdu-back-t.jpg" alt="Grade 5 · Urdu, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 5 · English</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-english-front.jpg" data-cap="Grade 5 · English, front"><img src="img/pack/g5-english-front-t.jpg" alt="Grade 5 · English, front" loading="lazy"></button><figcaption><b>Front</b> · the longer story</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-english-back.jpg" data-cap="Grade 5 · English, back"><img src="img/pack/g5-english-back-t.jpg" alt="Grade 5 · English, back" loading="lazy"></button><figcaption><b>Back</b> · letters and words</figcaption></figure>
+    </div></div><div class="pair"><h3 class="pt">Grade 5 · Maths</h3><div class="sides">
+      <figure><button type="button" class="zoom" data-full="img/pack/g5-maths-front.jpg" data-cap="Grade 5 · Maths, front"><img src="img/pack/g5-maths-front-t.jpg" alt="Grade 5 · Maths, front" loading="lazy"></button><figcaption><b>Front</b> · four pairs, four harder sums (8 × 9, 72 ÷ 6)</figcaption></figure><figure><button type="button" class="zoom" data-full="img/pack/g5-maths-back.jpg" data-cap="Grade 5 · Maths, back"><img src="img/pack/g5-maths-back-t.jpg" alt="Grade 5 · Maths, back" loading="lazy"></button><figcaption><b>Back</b> · blank on purpose</figcaption></figure>
+    </div></div></div>
+</section>
+
+<section aria-labelledby="time-h" id="fidelity">
+  <header><span class="eyebrow">Fidelity, time and calibration</span><h2 id="time-h">How close to EGRA/EGMA, and what is missing</h2><p>Time, measured on real WhatsApp on 4 Oct: 5.0–5.7 minutes per child, so about 27 minutes for five plus a 1-minute review (before: 35.4). The items: the Grade 3 stories and all of Set A's maths come word for word from the May 2026 instrument, which 443 Grade 3 and 431 Grade 5 children took. The Grade 5 story continuations and all of Set B were written later, and no child has read them yet.</p></header>
+  <div class="tbl"><table>
+    <thead><tr><th>Part</th><th>v2</th><th>EGRA / EGMA</th><th>Tried on children?</th><th></th></tr></thead>
+    <tbody>
+      <tr><td>Grade 3 stories (Set A)</td><td>60 words each, the May text</td><td>About 60 words, 60 s</td><td>Yes, May: 33% (Urdu) and 16% (English) finished inside the minute</td><td><span class="v keep">calibrated</span></td></tr>
+      <tr><td>Grade 5 stories (Set A)</td><td>The May 60 words plus a continuation (Urdu +116, English +106 words)</td><td>Long enough that few finish</td><td>First 60 words only. The lengthening was needed (76% of May Grade 5 finished 60 Urdu words inside a minute) but the new part is untried</td><td><span class="v chg">partly</span></td></tr>
+      <tr><td>Set B (next term), all parts</td><td>Written to match Set A</td><td>Piloted, then equated to the first form</td><td>No</td><td><span class="v drop">not yet</span></td></tr>
+      <tr><td>Questions per story</td><td>3 (Grade 3: 2 literal + 1 inferential)</td><td>3–5, mostly literal; Pakistan asks 5, May asked 6</td><td>Grade 3 Set A: yes (May items)</td><td><span class="v chg">below</span></td></tr>
+      <tr><td>Which questions are asked</td><td>All 3, however far the child read</td><td>Only questions about text the child read; scored out of those asked</td><td>—</td><td><span class="v drop">gap</span></td></tr>
+      <tr><td>Maths: which is bigger</td><td>4 pairs, the same in Grade 3 and 5</td><td>10 pairs, 1–3 digits</td><td>Yes. In Grade 5, 62% got all 4 right (too easy)</td><td><span class="v chg">short form</span></td></tr>
+      <tr><td>Maths: sums</td><td>4. Grade 5 swaps in 8 × 9 and 72 ÷ 6</td><td>5 + 5 items. × and ÷ are not in Core EGMA (built for Grades 1–3)</td><td>Yes. Grade 3 sums 3 and 4 (92 − 41, 85 + 37): 6% right each</td><td><span class="v chg">short form</span></td></tr>
+      <tr><td>Maths: word problems</td><td>2, read aloud by the coach</td><td>6, read aloud</td><td>Yes (May items)</td><td><span class="v keep">kept</span></td></tr>
+      <tr><td>Listening, letter sounds, made-up words</td><td>Letters and words only for a non-reader</td><td>Every child</td><td>—</td><td><span class="v drop">dropped</span></td></tr>
+      <tr><td>Maths overall</td><td>10 items, about 105 s</td><td>6 tasks, 96 items, about 20 min</td><td>—</td><td><span class="v chg">short form</span></td></tr>
+    </tbody></table></div>
+  <h3 class="grp">What we are missing, and what it costs</h3>
+  <div class="open">
+    <div><b>1 · Questions past where the child stopped</b>EGRA asks only about the part a child read. The bot asks all three. The Grade 5 Urdu question 3 sits at word 148, which 9% of May Grade 5 children reach in a minute. A slow reader loses marks twice, for speed and again for comprehension. The bank already records each question's line; the bot doesn't use it yet.</div>
+    <div><b>2 · Untried text: Set B and the Grade 5 continuations</b>Until they are piloted and equated, a change from this term to next mixes real learning with a harder or easier card.</div>
+    <div><b>3 · No listening, letter-sound or made-up-word tasks for every child</b>A low English comprehension score can't be split into "can't read" and "doesn't understand spoken English": in May, Grade 3 readers averaged 1 of 6 on English listening. For a slow Urdu reader we can't see whether decoding is the problem.</div>
+    <div><b>4 · Maths at the floor and the ceiling</b>10 of EGMA's 96 items. Grade 3 sums 3–4 are right for 6% of children, so they barely separate anyone; 38% score 0 of 4 sums. The Grade 5 pairs are at the ceiling. Number identification, missing number and timed facts are absent.</div>
+    <div><b>5 · One child's score is rough</b>From the May data: one child's maths score is uncertain by about ±2 of 10, and Grade 3 Urdu comprehension by about ±1 of 3. Read results by class or school, not child by child.</div>
+  </div>
+  <h3 class="grp">The three cheapest fixes</h3>
+  <div class="open">
+    <div><span class="state s-you">Needs a decision</span><b>Ask only what the child reached; 5 questions</b>The bot skips questions past the child's last word and scores out of those asked. Grade 3 Set A takes the May instrument's other questions; the rest need 2 new questions each. About 2 days. Cost: about 50 s more per child, 4 minutes per visit. <i>Changes the coach cards.</i></div>
+    <div><span class="state s-you">Needs a decision</span><b>Re-level maths from May's own results</b>No fieldwork. Grade 3: swap 92 − 41 and 85 + 37 (6% right) for two easier May sums (37% and 33% right). Grade 5: swap the two easiest pairs for May's "what comes next" items. About 1 day. <i>Changes the maths cards and coach cards.</i></div>
+    <div><span class="state s-later">Next term</span><b>One pilot that does two jobs</b>At least 150 children per grade read both Set A and Set B, in alternating order. That equates Set B and tests the Grade 5 continuations in one go: about 60–80 coach-hours, then 2–3 days of analysis.</div>
+  </div>
+</section>
+
+<section aria-labelledby="open-h">
+  <header><span class="eyebrow">Still open</span><h2 id="open-h">Before a real classroom</h2></header>
+  <div class="open">
+    <div><span class="state s-later">Done</span><b>Printed coach card</b>One A4 side per grade with the questions, accepted answers, word problems and sum answers: in the print pack (pages 5 and 7).</div>
+    <div><span class="state s-you">Needs you</span><b>A 15-minute test on a real phone</b>Lock a voice note and count aloud; then scroll, leave the phone 2.5 minutes, let a message arrive. Did it keep recording?</div>
+    <div><span class="state s-you">Needs a decision</span><b>Consent before any real child is recorded</b>Who agrees, how parents are told, how long audio is kept.</div>
+    <div><span class="state s-later">Next</span><b>Oral maths on real children</b>89–91% right on test voices; real audio not yet tested.</div>
+    <div><span class="state s-later">Next</span><b>Quality without coach counting</b>A trained person re-scores a sample of recordings.</div>
+  </div>
+</section>
+
+<section aria-labelledby="faq-h" id="faq">
+  <header><span class="eyebrow">FAQ</span><h2 id="faq-h">Your questions, answered</h2></header>
+  <div class="faq">
+    <details open><summary>Are the sums, stories and comprehension questions calibrated to EGRA/EGMA? What are we missing?</summary><div><p><b>Partly.</b> The Grade 3 stories and all of Set A's maths are the May 2026 instrument, tried on 874 children, so their difficulty is known. Not calibrated yet: the Grade 5 story continuations and all of Set B (no child has read them), and the way questions are asked (EGRA asks only about what the child read; the bot asks all three).</p><p>What it costs: comprehension that punishes slow readers twice; Grade 3 sums 3–4 that only 6% get right and Grade 5 number pairs most get all right; no listening task, so a low English score can't be split into reading and spoken English; scores rough for one child (maths ±2 of 10). <a href="#fidelity">The full table, and the three cheapest fixes</a>.</p></div></details>
+    <details><summary>The coach needs the child's section and class. One grade, or a mix? How do they find the children?</summary><div><p><b>One grade per visit</b> (Grade 3 or Grade 5, picked by the bot). The list is <b>grouped by classroom</b>, with the class teacher, in the roster's own words: "Grade 3 - A · Teacher: Saima Bibi". From the NIETE roster (924 Grade 3/5 classes, 31,826 children): every child has a full name, 92% of classes have a section letter, 99% a reachable class teacher; two in three visits need only one classroom. One button sends each class teacher only their own room's children, in order.</p></div></details>
+    <details><summary>Drop roll numbers.</summary><div><p><b>Done.</b> No roll number in any message, the form or the portal. Two classmates with the same name (2% of children) get the father's name when the roster has it, or "2 in this class" when it doesn't.</p></div></details>
+    <details><summary>If passages are printed and rotated, how do we know which variant the child has? Variant number on the card? PDF to print, A4? Is that how EGRA does it?</summary><div><p><b>There is no rotation any more.</b> EGRA gives every child in a round the same form; forms rotate between children only in pilots and group tests. So each coach carries <b>one card set per grade for the whole term</b>, colour-coded (Grade 3 green, Grade 5 blue) with "Set A · Oct–Dec 2026" printed on every side, and the bot names the card in every step. The print pack is <b>A4, laminated, one task per side</b>, as EGRA's are: <a href="#cards">the print pack above</a>, PDF sent to you.</p></div></details>
+    <details><summary>"First sounds from the coach's copy": what does that mean?</summary><div><p>EGRA's <b>initial-sound task</b>: the adult says a word ("machhli") and the child says its first sound ("m"). It is a Grade 1–2 task, Pakistan's Grade 3 tests drop it, and our AI could only guess at it. The "coach's copy" was a 5-page paper sheet the bot never mentioned. <b>Both are gone.</b></p></div></details>
+    <details><summary>The copy should be much simpler. And my language is English: shouldn't the messages be English?</summary><div><p>Your sandbox account had been switched to Urdu for the first demo recording and never switched back; <b>it is back to English</b>. Every message now follows the coach's language (try both buttons above). Only the words the coach says <i>to the child</i> stay in Urdu, and English for the English story. Each step is now numbered actions: which card, what to say, when to stop, when to send.</p></div></details>
+    <details><summary>Why did it tell me to give the maths to "the other kid" when Usman was my first child?</summary><div><p>The old design had the <i>next</i> child write maths while the current child read, to save time; that child wasn't even in the room. <b>Removed.</b> One child at a time, start to finish; maths is spoken, no strip, no photo, no child number.</p></div></details>
+    <details><summary>Maths: does the coach read the sums, or the child? Two maths pages?</summary><div><p><b>The child reads</b> the four number pairs and the four sums on <b>one</b> maths card and says the answers; the coach points to each and says "which is bigger?" / "tell me the answer". <b>The coach reads the two word problems aloud</b> with the card face down. Try the maths step above: the table shows both.</p></div></details>
+    <details><summary>The child wrote sums on the strip while the child before read; if it's my first child, then what? Do both maths pages go to the child?</summary><div><p>That whole arrangement is gone: no strip, no second page, nothing handed to another child. The child in front of the coach does Urdu, English, maths; then the next child comes.</p></div></details>
+    <details><summary>Does the coach read the word problem, explain it, or just give the paper?</summary><div><p><b>Reads it aloud, slowly, once</b>, as EGMA does (EGMA reads word problems to the child so a weak reader isn't marked down in maths; the child may use paper and pencil; no explaining). The two problems are in the maths message and on the coach card.</p></div></details>
+    <details><summary>The Urdu card had only the story; why did the form ask Urdu comprehension questions? Should Urdu have them?</summary><div><p><b>Yes</b>: Pakistan's Urdu EGRA asks 5 questions; we ask 3. In EGRA the questions are <b>never on the child's card</b>; the assessor asks them aloud after taking the passage away. The old message never told you to ask them. Now step 4 of the Urdu message lists them, the coach turns the card face down and asks; the table above shows them with translations.</p></div></details>
+    <details><summary>"This child's key says 56": what is a key? How does the coach count words per minute, in their head?</summary><div><p><b>They don't count.</b> The "key" was the test child's answer sheet in my demo; real coaches have none. EGRA assessors train 5+ days to mark every word live and still disagree. Here the recording is the score sheet: the AI counts from it, and on the May Rawalpindi children it agreed with the enumerators more often than a second trained person did (Urdu 74% vs 58% within ±5 words). The coach only answers the few things the recording couldn't settle, at the end.</p></div></details>
+    <details><summary>Doesn't EGRA print the questions and word problems on the card the coach carries?</summary><div><p><b>Yes</b>: the EGRA/EGMA assessor holds their own sheet (paper or tablet) with the questions and accepted answers and the word problems to read; only the child's card is bare. In v2 the phone message is that sheet, and a <b>printed coach card per grade</b> ("don't show the child": questions with accepted answers, word problems, sum answers) is in the print pack (pages 5 and 7), as the paper backup.</p></div></details>
+    <details><summary>Coaches go to many schools. Does EGRA/EGMA change the papers from school to school?</summary><div><p><b>No.</b> In a data-collection round every child in every school reads the same form; that is what makes schools comparable. Forms change between rounds (baseline, endline) using parallel forms checked to be equally hard. So: <b>one set for every school this term</b>, Set B next term. EGRA rounds last weeks, our term three months, so the cards stay with the coach (never left at a school or photographed), the questions are never printed for children, and we can watch for leakage: a passage whose scores climb through the term while letters and words don't.</p></div></details>
+    <details><summary>The rotation was unclear. With rotation the coach's attention leaves the child; without it we exceed 30 minutes.</summary><div><p>Two things had been called rotation: two card forms in one visit, and the next child writing maths while the current one read. <b>Both are gone.</b> The time came back from elsewhere: the coach no longer counts or fills a form per child (about 2 minutes each), first sounds, made-up words and the 60-second quick sums are dropped, and maths is one short spoken set. Measured on real WhatsApp: about 5 minutes per child, <b>about 27 minutes for five</b> plus a 1-minute review.</p></div></details>
+  </div>
+</section>
+
+<footer>The simulator plays the bot's own messages (rendered by the conversation code on the sandbox branch, item bank child-test-items-v2); names, schools and teachers are test data. Real WhatsApp screenshots: NIETE sandbox, 4 Oct 2026. Sources for the answers: EGRA Toolkit 2nd ed. 2016; Core EGMA 2014; Sindh SELECT EGRA 2024; Pakistan Reading Project; NIETE roster (counts only); the May 2026 Rawalpindi study.</footer>
+</div>
+
+<div class="lightbox" id="lb" hidden role="dialog" aria-modal="true" aria-label="Full size"><div class="lbbar"><button type="button" id="lb-zoom">Zoom in</button><button type="button" id="lb-close">Close</button></div><figure id="lb-fig"><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure></div>
+
+<script src="sim-data.js"></script>
+<script>
+(() => {
+const S = window.SIM;
+const $ = (s) => document.querySelector(s);
+const chat = $('#chat'), foot = $('#foot'), table = $('#table'), wa = $('#wa');
+let lang = 'en', speed = 8, clock = 9 * 60 + 2, child = 'Ayesha Khan', run = 0, screen = '00-school', timer = null;
+const D = () => S[lang];
+const esc = (s) => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+function md(text){
+  return String(text).split('\n').map((line) => {
+    let h = esc(line).replace(/\*([^*\n]+)\*/g,'<strong>$1</strong>').replace(/(^|\s)_([^_\n]+)_(?=\s|$|[.,!?])/g,'$1<em>$2</em>');
+    return `<div class="ln" dir="auto">${h || '&nbsp;'}</div>`;
+  }).join('');
+}
+const tick = () => { clock += 1; const h = Math.floor(clock/60)%24, m = clock%60; return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'); };
+const sub = (s) => child === 'Ayesha Khan' ? s : s.split('Ayesha Khan').join(child);
+function scrollEnd(){ chat.scrollTop = chat.scrollHeight; }
+function add(el){ chat.appendChild(el); scrollEnd(); return el; }
+function bubble(html, me=false, extra=''){ const d=document.createElement('div'); d.className='b'+(me?' me':'')+(extra?' '+extra:''); d.innerHTML = html + `<div class="t">${tick()}${me?' ✓✓':''}</div>`; return add(d); }
+function buttons(list){
+  const wrap=document.createElement('div'); wrap.className='btns';
+  list.forEach((b) => { const x=document.createElement('button'); x.type='button'; x.textContent=b.label; x.dir='auto'; if (b.next) x.classList.add('next'); if (!b.act) x.disabled=true;
+    x.addEventListener('click', () => { if (x.disabled) return; [...wrap.children].forEach(y=>{ y.disabled=true; y.classList.remove('next'); }); b.act(); }); wrap.appendChild(x); });
+  return add(wrap);
+}
+function bot(fn, delay=650){ const my=run; const ty=document.createElement('div'); ty.className='typing'; ty.textContent='typing…'; add(ty);
+  setTimeout(() => { if (my!==run) return; ty.remove(); fn(); }, delay); }
+function me(text){ bubble(md(text), true); }
+function voiceNote(sec){ const m=Math.floor(sec/60), s=Math.round(sec%60); bubble(`<div class="voice"><span class="play">▶</span><span class="wave"></span><span>${m}:${String(s).padStart(2,'0')}</span></div>`, true); }
+
+// ---------- composer ----------
+function footIdle(onMic){
+  foot.innerHTML = `<div class="foot"><div class="inp">Message</div><button type="button" class="round ${onMic?'hint':''}" id="mic" aria-label="Record a voice note"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v6a3 3 0 0 0 3 3zm5-3a5 5 0 0 1-10 0H5a7 7 0 0 0 6 6.9V22h2v-3.1A7 7 0 0 0 19 12h-2z"/></svg></button></div>`;
+  const mic=$('#mic'); if (onMic) mic.addEventListener('click', onMic); else mic.style.opacity='.5';
+}
+function footEgra(){
+  foot.innerHTML = `<div class="foot"><div class="inp filled">/egra</div><button type="button" class="round hint" id="send" aria-label="Send /egra"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button></div>`;
+  $('#send').addEventListener('click', () => { me('/egra'); footIdle(null); bot(pickSchool); });
+}
+function footRec(block){
+  let sec = 0; const ph = PH[block](); let fallback = false;
+  foot.innerHTML = `<div class="rec"><div class="top"><span class="dot"></span><span id="rt">0:00</span><span class="wv"></span><span style="font:500 12px var(--body);color:#667781">🔒 locked</span></div><div class="ctl"><span>🗑</span><span>⏸</span><button type="button" class="round hint" id="recsend" aria-label="Send voice note"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg></button></div></div>`;
+  const rt = $('#rt');
+  const phaseAt = (t) => { let cur = ph[0]; for (const p of ph) if (t >= p.at) cur = p; return cur; };
+  let last = null;
+  const render = () => { rt.textContent = Math.floor(sec/60)+':'+String(Math.floor(sec%60)).padStart(2,'0'); const p = fallback ? FB[block]() : phaseAt(sec); if (p !== last) { last = p; drawTable(p, block, ph, (k)=>{ const q=ph.find(x=>x.key===k); if(q){ sec=q.at; fallback=false; render(); } }, () => { fallback = true; render(); }); } };
+  render();
+  clearInterval(timer); const my=run;
+  timer = setInterval(() => { if (my!==run) return clearInterval(timer); sec += 0.25*speed; render(); }, 250);
+  $('#recsend').addEventListener('click', () => { clearInterval(timer); voiceNote(Math.max(sec, 3)); footIdle(null); NEXT[block](); });
+}
+
+// ---------- the table ----------
+const CARD = {
+  none: { img: null, title: 'Nothing on the table yet', cap: 'The cards are in the coach\'s folder.' },
+  urF: { img: 'g3-urdu-front', title: 'Grade 3 Urdu card · story side up', cap: 'The child reads the story. Nothing else is printed on it.', tag: 'Face up' },
+  urB: { img: 'g3-urdu-back', title: 'Urdu card turned over', cap: 'The story is hidden; the questions are asked aloud. (The back shows letters and words: they don\'t give away any answer.)', tag: 'Turned over' },
+  urL: { img: 'g3-urdu-back', title: 'Urdu card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
+  enF: { img: 'g3-english-front', title: 'Grade 3 English card · story side up', cap: 'The child reads the English story.', tag: 'Face up' },
+  enB: { img: 'g3-english-back', title: 'English card turned over', cap: 'The story is hidden; the questions are asked aloud.', tag: 'Turned over' },
+  enL: { img: 'g3-english-back', title: 'English card, back: letters and words', cap: 'Only for a child who can\'t read any word of the first line.', tag: 'Back · non-reader' },
+  maF: { img: 'g3-maths-front', title: 'Grade 3 maths card · face up', cap: 'Pairs A–D and sums 1–4. The child reads them and says the answers; paper and pencil beside it.', tag: 'Face up' },
+  maB: { img: 'g3-maths-back', title: 'Maths card turned over', cap: 'Nothing for the child to read: the coach reads the word problems aloud.', tag: 'Turned over' },
+};
+const SC = () => S.script;
+const GL = {
+  urdu: { start: 'Read this story aloud. Now begin.', go_on: 'Keep reading.', stop: 'Stop, thank you.', questions_intro: 'Now listen to some questions about the story.', fallback: "That's okay. Now read these letters, then these words." },
+  urduQ: ['Who did Bilal go to the Jhelum river with?', 'What did Bilal see moving?', 'Why was Bilal happy?'],
+  urduA: ['with his father / with his dad', 'a boat', 'because of the trip to the river / collecting stones'],
+  maths: { start: "Let's begin.", compare: 'Which of these two numbers is bigger?', sum: 'Tell me the answer.', next: 'Next.', wp_intro: 'Now listen carefully to two story problems.', stop: 'Stop, thank you.' },
+};
+const line = (ur, en, extra='') => ({ ur, en, extra });
+const PH = {
+  urdu: () => [
+    { at: 0, key: 'start', label: 'Start', card: 'urF', title: 'Say the start line', lines: [line(SC().urdu.start, GL.urdu.start)], hint: 'Then stay quiet.' },
+    { at: 5, key: 'story', label: 'Story (1 minute)', card: 'urF', title: 'The child reads', lines: [line(SC().urdu.go_on, GL.urdu.go_on + ' Only if the child is stuck for 3 seconds: point to the next word and say this.')], hint: '<b>You don\'t count anything.</b> The recording is the score sheet.', fb: true },
+    { at: 70, key: 'stop', label: 'Stop at 1:10', card: 'urB', title: 'Stop, and turn the card over', lines: [line(SC().urdu.stop, GL.urdu.stop)], hint: 'Then turn the card <b>face down</b>.' },
+    { at: 74, key: 'q', label: '3 questions', card: 'urB', coach: true, title: 'Ask the 3 questions aloud', lines: [line(SC().urdu.questions_intro, GL.urdu.questions_intro)].concat(SC().urduQ.map((q,i)=>line(q.q, (i+1)+'. '+GL.urduQ[i], 'Right if the child says: '+q.accept.join(' / ')+' ('+GL.urduA[i]+')'))), hint: 'Ask each once and wait. Don\'t say "right" or "wrong". The questions and answers are also on the printed <b>coach card</b>.' },
+    { at: 112, key: 'send', label: 'Send', card: 'urB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
+  ],
+  english: () => [
+    { at: 0, key: 'start', label: 'Start', card: 'enF', title: 'Say the start line', lines: [line(null, SC().english.start)], hint: 'Then stay quiet.' },
+    { at: 5, key: 'story', label: 'Story (1 minute)', card: 'enF', title: 'The child reads', lines: [line(null, SC().english.go_on + '  (only if stuck for 3 seconds: point to the next word)')], hint: '<b>You don\'t count anything.</b>', fb: true },
+    { at: 70, key: 'stop', label: 'Stop at 1:10', card: 'enB', title: 'Stop, and turn the card over', lines: [line(null, SC().english.stop)], hint: 'Then turn the card <b>face down</b>.' },
+    { at: 74, key: 'q', label: '3 questions', card: 'enB', coach: true, title: 'Ask the 3 questions aloud', lines: [line(null, SC().english.questions_intro)].concat(SC().englishQ.map((q,i)=>line(null, (i+1)+'. '+q.q, 'Right if: '+q.accept.join(' / ')))), hint: 'The child may answer in Urdu or English. Also on the printed <b>coach card</b>.' },
+    { at: 112, key: 'send', label: 'Send', card: 'enB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
+  ],
+  maths: () => [
+    { at: 0, key: 'start', label: 'Start', card: 'maF', title: 'Say the start line', lines: [line(SC().maths.start, GL.maths.start)] },
+    { at: 3, key: 'pairs', label: 'Pairs A–D', card: 'maF', coach: true, title: 'Point to each pair, A to D', lines: [line(SC().maths.compare, GL.maths.compare)].concat(SC().compare.map(c=>line(null, c.label+':  '+c.a+'  or  '+c.b, 'Right: '+c.answer))) },
+    { at: 23, key: 'sums', label: 'Sums 1–4', card: 'maF', coach: true, title: 'Point to each sum, 1 to 4', lines: [line(SC().maths.sum, GL.maths.sum)].concat(SC().sums.map(s=>line(null, s.label+':  '+s.prompt+' =', 'Right: '+s.answer))).concat([line(SC().maths.next, GL.maths.next+'  (no answer after a slow count of 5)')]), hint: 'The child may use the paper.' },
+    { at: 63, key: 'wp', label: '2 word problems', card: 'maB', coach: true, title: 'Card face down. Read each problem aloud', lines: [line(SC().maths.wp_intro, GL.maths.wp_intro)].concat(SC().wps.map((w,i)=>line(w.prompt_ur, (i+1)+'. '+w.prompt_en, 'Right: '+w.answer))), hint: 'Read slowly, once. Don\'t explain. Both problems and answers are also on the printed <b>coach card</b>.' },
+    { at: 100, key: 'stop', label: 'Stop', card: 'maB', title: 'Stop', lines: [line(SC().maths.stop, GL.maths.stop)] },
+    { at: 103, key: 'send', label: 'Send', card: 'maB', title: 'Send the voice note', lines: [], hint: 'Tap <b>➤</b> on the phone.' },
+  ],
+};
+const FB = {
+  urdu: () => ({ key: 'fb', label: 'Non-reader', card: 'urL', title: 'The child can\'t read the first line', lines: [line(SC().fallback ? SC().urdu.fallback : SC().urdu.fallback, GL.urdu.fallback)], hint: 'Turn the card over. The child reads the letters, then the words. <b>Skip the questions</b>, then send.' }),
+  english: () => ({ key: 'fb', label: 'Non-reader', card: 'enL', title: 'The child can\'t read the first line', lines: [line(null, SC().english.fallback)], hint: 'Turn the card over. Letters, then words. <b>Skip the questions</b>, then send.' }),
+  maths: () => null,
+};
+function cardHTML(k, coach){ const c = CARD[k];
+  const pic = c.img ? `<button type="button" class="cardimg" data-full="img/pack/${c.img}.jpg" data-cap="${esc(c.title)} · print pack, Set A" aria-label="${esc(c.title)}: see it full size"><img src="img/pack/${c.img}-t.jpg" alt="">${c.tag?`<span class="tag">${c.tag}</span>`:''}<span class="zh">⤢ Zoom</span></button>` : '<div class="cardimg">No card</div>';
+  return `<div class="cardview">${pic}<div class="cardcap"><b>${esc(c.title)}</b>${esc(c.cap)}</div></div>` + (coach ? COACH_MINI : ''); }
+const COACH_MINI = `<div class="coachmini"><button type="button" class="cardimg" data-full="img/pack/coach-card-g3.jpg" data-cap="Coach card · Grade 3, in the coach's hand, never shown to the child · print pack, Set A" aria-label="Coach card, Grade 3: see it full size"><img src="img/pack/coach-card-g3-t.jpg" alt=""></button><span><b>In the coach's hand:</b> the coach card, with these lines and the answers that count. Click it to read it.</span></div>`;
+function linesHTML(lines){ return `<div class="say">${lines.map((l)=>`<div class="line">${l.ur?`<span class="ur">«${esc(l.ur)}»</span>`:''}<span class="${l.ur?'en':'en'}" style="${l.ur?'':'color:var(--ink);font-size:15.5px'}">${l.ur?'':'«'}${esc(l.en)}${l.ur?'':'»'}</span>${l.extra?`<span class="acc">${esc(l.extra)}</span>`:''}</div>`).join('')}</div>`; }
+function drawTable(p, block, ph, jump, onFallback){
+  tip(TIPMAP[block + ':' + p.key]);
+  table.innerHTML = `<div class="panel"><span class="eyebrow">On the table now</span>${cardHTML(p.card, p.coach)}</div>
+    <div class="panel"><span class="eyebrow">${{urdu:'1 of 3 · Urdu story',english:'2 of 3 · English story',maths:'3 of 3 · Maths'}[block]} · recording</span>
+      <div class="phases">${ph.map(x=>`<button type="button" data-k="${x.key}" class="${x.key===p.key?'on':''}">${x.label}</button>`).join('')}${FB[block]()?`<button type="button" data-fb="1" class="${p.key==='fb'?'on':''}">Can't read? (non-reader)</button>`:''}</div>
+      <h3>${esc(p.title)}</h3>${p.lines.length?`<span class="eyebrow" style="font-size:11px">Say this</span>`+linesHTML(p.lines):''}${p.hint?`<p class="hint">${p.hint}</p>`:''}</div>`;
+  table.querySelectorAll('.phases button[data-k]').forEach(b=>b.addEventListener('click',()=>jump(b.dataset.k)));
+  const fbb = table.querySelector('.phases button[data-fb]'); if (fbb) fbb.addEventListener('click', onFallback);
+}
+function panel(card, eyebrow, title, body, acts=[]){
+  table.innerHTML = `<div class="panel"><span class="eyebrow">On the table now</span>${cardHTML(card)}</div><div class="panel"><span class="eyebrow">${esc(eyebrow)}</span><h3>${esc(title)}</h3>${body}${acts.length?`<div class="acts">${acts.map((a,i)=>`<button type="button" class="btn ${a.primary?'primary':''}" data-i="${i}">${esc(a.label)}</button>`).join('')}</div>`:''}</div>`;
+  table.querySelectorAll('.acts button').forEach(b=>b.addEventListener('click',()=>acts[+b.dataset.i].act()));
+}
+
+// ---------- tips: the side rail ----------
+const TIPS = {
+  egra: ['Built for a coach with no EGRA training', 'Every step comes from the phone: which card, what to say, when to stop, when to send. The coach never counts or marks anything live.'],
+  school: ['One grade per visit', 'The bot picks Grade 3 or Grade 5 for the visit; the children come one at a time.'],
+  list: ['No roll numbers', 'Full name, the class the way the school writes it, and the class teacher. In the NIETE roster every child has a full name, 92% of classes have a section letter and 99% a reachable class teacher. Two classmates with the same name (2%) get the father\'s name.', 1],
+  teachers: ['The teachers send the children', 'Each class teacher gets only their own room\'s children, in order, so the coach stays seated.'],
+  setup: ['The only picture, before any recording', 'Opening a picture can stop a locked voice note, so the one picture comes before the first child. Every step after this is plain text.'],
+  presence: ['Nobody is picked by hand', 'The server draws the children. If one is absent or unwilling, the next child on the list comes in: a random sample, as in EGRA.'],
+  noRotation: ['One card set, every school, all term', 'EGRA gives every child in a round the same form; that is what makes schools comparable. So there is no rotation: one set per grade for the term (Set A now, Set B next term), and the message names the card.', 1],
+  step: ['Why the step message has no buttons', 'Plain text stays the last thing in the chat, right above the recorder, so the coach can read the next line while recording.'],
+  dontCount: ['The coach never counts', 'EGRA assessors train for 5+ days to mark every word live, and still disagree. Here the AI counts from the recording: on the May Rawalpindi children it agreed with the enumerators more often than a second trained person did (Urdu: 74% vs 58% within ±5 words).', 1],
+  stop: ['The story goes away before the questions', 'EGRA removes the passage before asking about it, so the child answers from memory, not by finding the line. Turning the card face down does the same.'],
+  questions: ['The questions are never on the child\'s card', 'EGRA asks them aloud from the assessor\'s sheet; here they are in the phone message and on the printed coach card. Pakistan asks 5; we ask 3. One gap: EGRA asks only about the part the child read, and the bot still asks all three.', 1],
+  fb: ['EGRA\'s stop rule', 'A child who can\'t read any word of the first line stops the story there. The card\'s back has 10 letters and 10 words, so the visit still says something about a non-reader.'],
+  english: ['English, the same three steps', 'Same card layout, same timing, same rules: start line, one minute, stop, card face down, three questions.'],
+  enQ: ['Answers in Urdu count', 'The child may answer the English questions in Urdu or English: this tests reading, not spoken English.'],
+  mathsStep: ['The child reads the numbers; the coach reads the stories', 'EGMA reads word problems aloud so a weak reader isn\'t marked down in maths. One maths card, no strip, nothing written down for later.', 1],
+  pairs: ['A short form of EGMA', 'EGMA\'s core battery has 6 tasks and takes about 20 minutes per child. We keep three of them, at 4, 4 and 2 items, to fit five children in 30 minutes.', 1],
+  sums: ['Two of these sums are too hard', 'From the May results: 6% of Grade 3 children got sum 3 (92 − 41) right, and 6% sum 4 (85 + 37). Swapping in two easier May sums is one of the cheap fixes.', 1],
+  wp: ['Read once, don\'t explain', 'As in EGMA: read slowly, once. The child may use paper and pencil. The card is face down, so there is nothing to read.'],
+  nudge: ['If the recording stops', 'WhatsApp can stop a locked voice note when the coach opens something else. If no note arrives for 4 minutes, the bot sends this.'],
+  next: ['The old "rotation" is gone', 'No second child writing maths, no form between children: one child at a time, start to finish. Measured on real WhatsApp: about 5 minutes per child, about 27 minutes for five, plus a 1-minute review.', 1],
+  review: ['Only what the recording couldn\'t settle', 'Counts are never asked. The coach marks only the answers the AI was unsure about: 7 for five children in the test run.'],
+  saved: ['Both marks are kept', 'The AI\'s mark and the coach\'s answer are saved side by side, so a disagreement can be checked later.'],
+};
+const TIPMAP = { 'urdu:start': 'step', 'urdu:story': 'dontCount', 'urdu:stop': 'stop', 'urdu:q': 'questions', 'urdu:fb': 'fb', 'english:q': 'enQ', 'english:fb': 'fb', 'maths:pairs': 'pairs', 'maths:sums': 'sums', 'maths:wp': 'wp' };
+const tipsEl = $('#tips'); let lastTip = null;
+function tip(k){
+  const t = TIPS[k]; if (!t || k === lastTip) return; lastTip = k;
+  tipsEl.querySelectorAll('.tip').forEach((x) => { x.classList.remove('new'); x.classList.add('old'); });
+  const d = document.createElement('div'); d.className = 'tip new';
+  d.innerHTML = `<b class="tt">${esc(t[0])}</b><span>${esc(t[1])}</span>` + (t[2] ? '<a href="#faq">More in the FAQ</a>' : '');
+  tipsEl.querySelector('.tiphead').after(d);
+  [...tipsEl.querySelectorAll('.tip')].slice(2).forEach((x) => x.remove());
+}
+function clearTips(){ tipsEl.querySelectorAll('.tip').forEach((x) => x.remove()); lastTip = null; }
+$('#tipsoff').onclick = (e) => { const off = tipsEl.dataset.off !== '1'; tipsEl.dataset.off = off ? '1' : '0'; e.currentTarget.textContent = off ? 'Show tips' : 'Hide tips'; e.currentTarget.setAttribute('aria-pressed', String(off)); };
+
+// ---------- the visit ----------
+function start(){
+  run++; clearInterval(timer); clock = 9*60+2; child = 'Ayesha Khan'; chat.innerHTML = '<div class="day">TODAY</div>'; screen='00-school';
+  wa.querySelector('.sheet')?.remove();
+  footEgra(); clearTips(); tip('egra');
+  panel('none', 'Step 1', 'Open the test', `<p class="hint">The coach types <b>/egra</b>. Tap <b>➤</b> on the phone.</p>`);
+}
+function pickSchool(){
+  screen='00-school'; const P = D().pick; tip('school');
+  bubble(md(P.body)); buttons([{ label: '☰ ' + P.button, next: true, act: () => openList(P) }]);
+  panel('none', 'Step 1', 'Pick the school', `<p class="hint">Asked only when the coach visits more than one school. Tap <b>${esc(P.button)}</b>.</p>`);
+}
+function openList(P){
+  const sh = document.createElement('div'); sh.className='sheet';
+  sh.innerHTML = `<div class="sh"><span>${esc(P.button)}</span><button type="button" aria-label="Close">✕</button></div><div class="sb"><div class="hint" style="color:#667781">${esc(P.section)}</div>${P.rows.map((r,i)=>`<label><span><b dir="auto">${esc(r.title)}</b><br><span style="color:#667781;font-size:12.5px">${esc(r.desc)}</span></span><input type="radio" name="sch" value="${i}" ${i===0?'checked':''}></label>`).join('')}</div><div class="sf"><button type="button">Send</button></div>`;
+  wa.appendChild(sh);
+  sh.querySelector('.sh button').onclick = () => { sh.remove(); };
+  sh.querySelector('.sf button').onclick = () => { const i = +sh.querySelector('input:checked').value; sh.remove(); me(P.rows[i].title); bot(list); };
+}
+function list(){
+  screen='01-list'; const L = D().list; tip('list');
+  bubble(md(L.body)); buttons([{ label: L.buttons[0], next: true, act: () => { me(L.buttons[0]); bot(setup); } }, { label: L.buttons[1], act: () => { me(L.buttons[1]); bot(teachers); } }]);
+  panel('none', 'Step 2', "Today's children, by classroom", `<p class="hint"><b>No roll numbers.</b> Full name, the class the way the school writes it, and the class teacher. <b>${esc(L.buttons[1])}</b> sends each teacher only their own room's children. Then tap <b>${esc(L.buttons[0])}</b>.</p>`);
+}
+function teachers(){
+  const T = D(); bubble(md(T.sentTeachers)); tip('teachers');
+  const L = D().list; buttons([{ label: L.buttons[0], next: true, act: () => { me(L.buttons[0]); bot(setup); } }]);
+  panel('none', 'What each class teacher receives', 'One message per room', `<div class="mini">${T.teachers.map(x=>`<div class="to">To ${esc(x.to)}</div><div class="tb" dir="auto">${esc(x.body)}</div>`).join('')}</div><p class="hint">Each teacher sends their children one at a time. Now tap <b>${esc(L.buttons[0])}</b>.</p>`);
+}
+function setup(){
+  screen='02-setup'; const U = D().setup; tip('setup');
+  bubble(`<img src="img/setup-${lang}.jpg" alt="Where to sit: away from the class, card flat in front of the child, phone screen away from the child"><div class="cap">${md(U.body)}</div>`, false, 'img');
+  buttons([{ label: U.button, next: true, act: () => { me(U.button); bot(presence); } }]);
+  panel('none', 'Step 3 · once per visit', 'Before the first child', `<p class="hint">The only picture in the visit, sent before anything is recording: opening a picture can stop a locked voice note.</p>`);
+}
+function presence(){
+  screen='03-presence'; const P = D().presence; tip('presence');
+  bubble(md(sub(P.body)));
+  buttons([{ label: P.buttons[0], next: true, act: () => { me(P.buttons[0]); bot(urduStep); } }, { label: P.buttons[1], act: () => { me(P.buttons[1]); bot(absent); } }, { label: P.buttons[2], act: () => { me(P.buttons[2]); bot(absent); } }]);
+  panel('none', 'Step 4', 'Is the child here?', `<p class="hint">The coach greets the child with the line shown (in Urdu), then taps <b>${esc(P.buttons[0])}</b>. Absent or unwilling: the next child on the server's list comes in; nobody is picked by hand.</p>`);
+}
+function absent(){
+  const A = D().absent; bubble(md(A.body)); child = 'Bilal Ahmed';
+  bot(() => { bubble(md(A.next.body)); buttons([{ label: A.next.buttons[0], next: true, act: () => { me(A.next.buttons[0]); bot(urduStep); } }]); }, 500);
+}
+function stepMsg(body, block, scr){
+  screen = scr; bubble(md(sub(body))); tip({urdu:'noRotation',english:'english',maths:'mathsStep'}[block]);
+  footIdle(() => footRec(block));
+  const p = PH[block]()[0];
+  panel(p.card, {urdu:'1 of 3 · Urdu story',english:'2 of 3 · English story',maths:'3 of 3 · Maths'}[block], 'The step message', `<p class="hint">Plain text, <b>no buttons</b>, so it stays the last thing in the chat, right above the recorder. Scroll it on the phone: the words to say are in «quotes», the ${block==='maths'?'word problems':'questions'} are in it.</p><p class="hint">Tap the <b>🎤</b> on the phone to start recording.</p>`,
+    [{ label: 'What if the recording stops?', act: () => { bubble(md(sub(D().nudge))); screen='08-nudge-and-next'; tip('nudge'); } }]);
+}
+const urduStep = () => stepMsg(D().urduStep, 'urdu', 'msg-urdu');
+const NEXT = {
+  urdu: () => bot(() => stepMsg(D().englishStep, 'english', 'msg-english'), 900),
+  english: () => bot(() => stepMsg(D().mathsStep, 'maths', 'msg-maths'), 900),
+  maths: () => bot(doneNext, 900),
+};
+function doneNext(){
+  screen='08-nudge-and-next'; const N = D().doneNext; tip('next');
+  let body = N.body;
+  if (child !== 'Ayesha Khan') {
+    // Ayesha was absent, so Bilal was child 1: the next child is Hamza (3-B, Tariq Mehmood).
+    const cut = body.indexOf('\n\n'); let head = body.slice(0, cut), tail = body.slice(cut);
+    tail = tail.split('Bilal Ahmed').join('Hamza Ali').split('Grade 3 - A').join('Grade 3 - B').split('جماعت سوم - A').join('جماعت سوم - B').split('Saima Bibi').join('Tariq Mehmood');
+    body = head.split('Ayesha Khan').join(child) + tail;
+  }
+  bubble(md(body)); buttons([{ label: N.buttons[0], act: null }, { label: N.buttons[1], act: null }, { label: N.buttons[2], act: null }]);
+  panel('none', 'Child 1 done', 'Straight to the next child', `<p class="hint">No list to reopen, no form to fill between children. The next three children repeat the same three steps.</p>`,
+    [{ label: 'Skip ahead: the other four children', primary: true, act: fastForward }]);
+}
+function fastForward(){
+  const d=document.createElement('div'); d.className='b sys'; d.textContent='… Bilal, Hamza, Zainab and Fatima: the same three steps each, about 5 minutes per child …'; add(d);
+  bot(() => { bubble(md(D().lastDone)); bot(() => { bubble(md(D().visitEnd)); bot(reviewMsg, 900); }, 500); }, 600);
+}
+function reviewMsg(){
+  screen='09-end-of-visit'; const R = D().review; tip('review');
+  bubble(md(R.body)); buttons([{ label: '▣ ' + R.button, next: true, act: openReview }]);
+  panel('none', 'End of the visit', 'One message: results, and what needs your ear', `<p class="hint">Each child's results (words per minute, answers right, maths out of 10). Then only the answers the recording could not settle: <b>${R.items.length}</b> for five children. <b>Counts are never asked.</b> Tap <b>${esc(R.button)}</b>.</p>`);
+}
+function openReview(){
+  screen='10-review-form'; const R = D().review;
+  const sh=document.createElement('div'); sh.className='sheet';
+  sh.innerHTML = `<div class="sh"><span dir="auto">${esc(R.heading)}</span><button type="button" aria-label="Close">✕</button></div><div class="sb"><div dir="auto" style="color:#3b4a54">${esc(R.intro)}</div>${R.items.map((it,i)=>`<div class="item"><div class="who" dir="auto">${esc(it.who)}</div><div class="q" dir="auto">${esc(it.text)}</div><div class="heard" dir="auto">${esc(R.mark)} · ${esc(it.heard)}</div><div class="opt">${[R.right,R.wrong,R.none].map((o,j)=>`<label><span dir="auto">${esc(o)}</span><input type="radio" name="r${i}" value="${j}"></label>`).join('')}</div></div>`).join('')}</div><div class="sf"><button type="button" disabled>${esc(R.save)}</button></div>`;
+  wa.appendChild(sh);
+  const save = sh.querySelector('.sf button');
+  sh.addEventListener('change', () => { save.disabled = sh.querySelectorAll('input:checked').length < R.items.length; });
+  sh.querySelector('.sh button').onclick = () => sh.remove();
+  save.onclick = () => { sh.remove(); me('▣ ' + R.button + '\nResponse sent'); bot(() => { screen='12-saved'; bubble(md(R.saved)); tip('saved'); panel('none', 'Done', 'The visit is complete', `<p class="hint">Every part of every child is saved: the AI's marks, and beside them the coach's answers with any change. Tap <b>Restart</b> to run it again, or switch the coach's language.</p>`); }); };
+  panel('none', 'The review', 'Mark only what the recording did not settle', `<p class="hint">Each item names the child and the part, shows the question and what the recording heard. Tap <b>Right</b>, <b>Wrong</b> or <b>Didn't answer</b> for each, then <b>Save</b>.</p>`);
+}
+
+// ---------- controls ----------
+function setLang(l){ lang = l; $('#lang-en').setAttribute('aria-pressed', l==='en'); $('#lang-ur').setAttribute('aria-pressed', l==='ur'); start(); }
+$('#lang-en').onclick = () => setLang('en'); $('#lang-ur').onclick = () => setLang('ur');
+$('#sp-1').onclick = () => { speed = 1; $('#sp-1').setAttribute('aria-pressed','true'); $('#sp-8').setAttribute('aria-pressed','false'); };
+$('#sp-8').onclick = () => { speed = 8; $('#sp-8').setAttribute('aria-pressed','true'); $('#sp-1').setAttribute('aria-pressed','false'); };
+$('#restart').onclick = start;
+const SHOTS = { '00-school':'img/v2/00-school.jpg', '01-list':'img/v2/01-list.jpg', '02-setup':'img/v2/02-setup.jpg', '03-presence':'img/v2/03-presence.jpg', 'msg-urdu':'img/v2/msg-urdu.jpg', 'msg-english':'img/v2/msg-english.jpg', 'msg-maths':'img/v2/msg-maths.jpg', '08-nudge-and-next':'img/v2/08-nudge-and-next.jpg', '09-end-of-visit':'img/v2/09-end-of-visit.jpg', '10-review-form':'img/v2/10-review-form.jpg', '12-saved':'img/v2/12-saved.jpg' };
+const lb = $('#lb'), lbImg = $('#lb-img'), lbFig = $('#lb-fig'), lbZoom = $('#lb-zoom');
+function setZoom(on, fx = 0.5, fy = 0.2){
+  lb.classList.toggle('zoomed', on); lbZoom.textContent = on ? 'Fit to screen' : 'Zoom in';
+  if (on) requestAnimationFrame(() => { lbFig.scrollLeft = fx * lbImg.scrollWidth - lbFig.clientWidth / 2; lbFig.scrollTop = fy * lbImg.scrollHeight - lbFig.clientHeight / 2; });
+}
+function openLB(src, cap){ setZoom(false); lbImg.src = src; $('#lb-cap').textContent = cap + ' · Click the page to zoom in.'; lb.hidden = false; lbZoom.focus(); }
+function closeLB(){ lb.hidden = true; setZoom(false); }
+lbImg.addEventListener('click', (e) => { const r = lbImg.getBoundingClientRect(); setZoom(!lb.classList.contains('zoomed'), (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height); });
+lbZoom.onclick = () => setZoom(!lb.classList.contains('zoomed'));
+$('#lb-close').onclick = closeLB;
+lb.addEventListener('click', (e) => { if (e.target === lb) closeLB(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !lb.hidden) closeLB(); });
+// Every zoomable picture (the card on the table, the coach card, the print pack) carries data-full.
+document.addEventListener('click', (e) => { const z = e.target.closest('[data-full]'); if (z) openLB(z.dataset.full, z.dataset.cap); });
+$('#realscreen').onclick = () => openLB(SHOTS[screen] || SHOTS['01-list'], 'Real WhatsApp, NIETE sandbox, 4 Oct 2026 (coach in English; test children)');
+start();
+})();
+</script>
+</body>
+</html>
